@@ -1,0 +1,15 @@
+[build]
+target-dir = "C:/temp/WinStoreRegion/target"
+
+# The CRT is linked statically on every Windows target: the product ships one
+# portable executable with no DLLs beside it, and a target that missed this
+# would quietly start depending on a runtime the target machine may not have.
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
+
+[target.aarch64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
+
+[target.i686-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
+

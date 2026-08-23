@@ -1,0 +1,70 @@
+[package]
+name = "winstoreregion"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "Native Win32 GUI for WinStoreRegion"
+build = "build.rs"
+
+[[bin]]
+name = "WinStoreRegion"
+path = "src/main.rs"
+
+[package.metadata.winres]
+FileDescription = "WinStoreRegion"
+OriginalFilename = "WinStoreRegion.exe"
+ProductName = "WinStoreRegion"
+ProductVersion = "0.1.0"
+
+[dependencies]
+serde_json = "=1.0.151"
+sha2 = "=0.10.9"
+winstoreregion-core = { path = "../../crates/winstoreregion-core" }
+
+[target.'cfg(windows)'.dependencies]
+windows = { version = "=0.62.2", features = [
+    "Win32_Foundation",
+    "Win32_Globalization",
+    "Win32_Graphics_Gdi",
+    "Win32_Networking_WinHttp",
+    "Win32_Security",
+    "Win32_Security_Cryptography",
+    "Win32_Security_Cryptography_Catalog",
+    "Win32_Security_Cryptography_Sip",
+    "Win32_Security_WinTrust",
+    "Win32_Storage_FileSystem",
+    "Win32_Storage_Packaging_Appx",
+    "Win32_System_Console",
+    "Win32_System_Com",
+    "Win32_System_Com_StructuredStorage",
+    "Win32_System_DataExchange",
+    "Win32_System_EventLog",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Memory",
+    "Win32_System_Ole",
+    "Win32_System_Registry",
+    "Win32_System_SystemServices",
+    "Win32_System_Time",
+    "Win32_System_Threading",
+    "Win32_System_WinRT",
+    "Win32_UI_Controls",
+    "Win32_UI_Controls_Dialogs",
+    "Win32_UI_HiDpi",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_UI_Shell",
+    "Win32_UI_WindowsAndMessaging",
+    "ApplicationModel",
+    "Management_Deployment",
+] }
+windows-core = "=0.62.2"
+windows-collections = "=0.3.2"
+windows-future = "=0.3.2"
+
+[target.'cfg(windows)'.build-dependencies]
+winres = "=0.1.12"
+# Only the build reads the language files; nothing of this ships in the exe.
+toml = "=0.9.8"
+
+[lints]
+workspace = true

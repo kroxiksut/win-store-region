@@ -1,0 +1,471 @@
+# WinStoreRegion
+
+![Status](https://img.shields.io/badge/status-v0.1%20%E2%80%94%20end--to--end%20verified-brightgreen)
+![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue)
+![Platform](https://img.shields.io/badge/platform-Windows%20x64-0078d4)
+![Rust](https://img.shields.io/badge/rust-1.85%2B%20edition%202024-b7410e)
+![Tests](https://img.shields.io/badge/tests-240%20passing-brightgreen)
+![UI](https://img.shields.io/badge/UI-EN%20%7C%20RU%20%7C%20ZH-lightgrey)
+![Admin rights](https://img.shields.io/badge/admin%20rights-not%20required-success)
+
+A Windows utility that switches the Windows region for the length of one
+installation, hands the installation to Microsoft Store's own mechanism, and
+puts the region back once it has seen the actual result.
+
+One portable `WinStoreRegion.exe` for x64, about 1.3 MB. It neither needs nor
+requests administrator rights.
+
+**English** · [Русский](README.ru.md) · [简体中文](README.zh-CN.md)
+
+![The Installation tab in English](assets/screenshots/installation-en.png)
+
+<details>
+<summary>The same window in Russian and in Chinese</summary>
+
+![The Installation tab in Russian](assets/screenshots/installation-ru.png)
+
+![The Installation tab in Chinese](assets/screenshots/installation-zh.png)
+
+</details>
+
+Region names come from Windows itself, in the language Windows uses for them —
+which is why the field is labelled "Windows list", and why the Chinese window
+still names its regions in Russian. The screenshots were taken on a Russian
+Windows at 125% scaling.
+
+## Contents
+
+- [Why this exists](#why-this-exists)
+- [What it does and does not do](#what-it-does-and-does-not-do)
+- [What has actually been verified](#what-has-actually-been-verified)
+- [Requirements](#requirements)
+- [Using it](#using-it)
+- [Starting it from the command line](#starting-it-from-the-command-line)
+- [When the Store will not serve your region](#when-the-store-will-not-serve-your-region)
+- [Finding a region by market](#finding-a-region-by-market)
+- [The Updates tab](#the-updates-tab)
+- [The operation journal](#the-operation-journal)
+- [Where data is kept](#where-data-is-kept)
+- [When something goes wrong](#when-something-goes-wrong)
+- [Known limits and open issues](#known-limits-and-open-issues)
+- [Translations](#translations)
+- [Building from source](#building-from-source)
+- [License](#license)
+- [Legal notices](#legal-notices)
+
+## Why this exists
+
+The Windows region is a setting, not a place of residence, and the two drift
+apart constantly. Someone can live in the United States and run a Russian
+Windows with the region set to Russia: Microsoft Store will then not offer the
+applications available in their actual country — the streaming services and the
+like.
+
+Microsoft documents changing the country or region as an ordinary procedure:
+[Change your country or region in Microsoft Store](https://support.microsoft.com/en-us/account-billing/change-your-country-or-region-in-microsoft-store-5895e006-34f4-10f7-16b1-999e40adb048).
+WinStoreRegion automates exactly that and nothing beyond it: a Windows setting
+changes, Microsoft Store performs the installation, and the setting goes back.
+What changes is the delivery route of an application, not the mechanism. The
+same article opens from the program: **Help → Microsoft: change your country or
+region**.
+
+Done by hand the procedure is: change the region in Settings, wait for the Store
+to notice, find the application, start the installation, remember to put the
+region back, and not misremember what it was. That last step is where the
+trouble is: a region is easy to leave foreign, and an operation interrupted
+half-way leaves no trace. This utility performs the same steps, but it writes
+the original region to disk before it changes anything, and restores it even
+after a crash or a restart.
+
+## What it does and does not do
+
+It does:
+
+- write the current Windows region to disk **before** changing anything;
+- switch the region and confirm the switch by reading it back;
+- look the application up in the catalogue **under the temporary region**;
+- ask the catalogue, before touching the region, whether this device can be
+  served the product at all;
+- start the installation through the ordinary mechanism and show its progress;
+- restore the original region without waiting for the installation to end, but
+  only after the installation has demonstrably started;
+- confirm completion by the application's package appearing, not by a return
+  code;
+- fetch Microsoft's own Store installer for a product when the ordinary
+  mechanism cannot install it, and run that installer under the temporary
+  region;
+- keep a local operation journal and a diagnostic log;
+- restore the region on the next start if the previous session was cut short.
+
+It does not:
+
+- change the region of your Microsoft account;
+- change your IP address or spoof your network location;
+- download Store packages from unofficial servers;
+- modify Windows or Microsoft Store, patch anything, or bypass anything;
+- promise to defeat every restriction: what is available is decided by Microsoft
+  Store, not by this utility;
+- come from Microsoft.
+
+The consequences of the region differing for a while are the user's own:
+content and subscriptions bought in one region may behave differently in
+another. The utility does not hide this and promises nothing about it.
+
+## What has actually been verified
+
+This section exists because "it works" is a claim, and claims in this project
+are expected to name their evidence. Every line below is backed by a dated run
+recorded in the diagnostic log.
+
+| What | Where | When |
+|---|---|---|
+| Full install cycle: record → switch with read-back → resolve under the temporary region → install with progress → early restore → confirmed completion | Windows 10 22H2 (19045) | Verified on two applications, 21–22.08.2026 |
+| Handoff: verify an installer's signature, switch region, run it, restore region, journal the outcome | Windows 10 22H2 | Verified, 21.08.2026 |
+| Fetching the Store installer by Product ID, signature and signer checked | Windows 10 22H2 | Verified against the live service, 22.08.2026 |
+| Refusing an installation the catalogue says this device cannot receive, before the region changes | Windows 10 22H2 | Verified on a product that ships Xbox packages only |
+| Region transaction survives failure: region restored and the recovery record cleared in every failed run | Windows 10 22H2 | Verified across every failing run so far |
+| Region switching, read-back and recovery mechanics | Windows 11 virtual machine | Verified earlier in development |
+
+Not verified, and stated as such:
+
+- **No run on a machine other than the developer's** since the button-driven
+  paths were completed. The dedicated test virtual machine has not been used
+  for the current build.
+- **Whether the Store installer updates an already installed application.** The
+  Updates tab therefore lists and explains, and does not offer a one-click
+  update. See [Known limits](#known-limits-and-open-issues).
+- **Appearance at 150% scaling.** The layout is checked arithmetically at
+  100–200%, which cannot tell whether a caption fits inside a button.
+- **The native ARM64 build.** It compiles from these sources unchanged, but it
+  has never run on an ARM64 device and is not shipped.
+
+## Requirements
+
+- **Windows 10 version 1809 (build 17763) or later, or any Windows 11.** The
+  floor is set by App Installer, which carries the installation COM interface
+  and itself requires 1809; everything else this program calls is older —
+  `GetDpiForWindow` needs 1607 and per-monitor v2 scaling needs 1703. The
+  manifest declares Windows 10 and 11 support. Tested on Windows 10 22H2 and,
+  earlier in development, on Windows 11.
+- x64. On ARM64 devices the x64 build runs under Windows emulation; a native
+  ARM64 build compiles from the same sources (see
+  [Building from source](#building-from-source)).
+- **App Installer** (`Microsoft.DesktopAppInstaller`) — the installation runs
+  through it. Without it the utility says so and offers to open its Store page.
+- **Microsoft Store** (`Microsoft.WindowsStore`).
+- The directory the `.exe` runs from must be writable: on first start a copy of
+  `Microsoft.Management.Deployment.winmd` appears beside the program, taken from
+  the installed App Installer. Without it the installation COM interfaces are
+  unavailable. The program does not copy itself elsewhere to work around this —
+  it reports the unmet condition instead.
+- No administrator rights.
+
+## Using it
+
+1. Name the application on the **Installation** tab: a Microsoft Store link or a
+   Product ID. A Store installer file (`.exe`) can also be dropped on the
+   window; it is checked for a trusted Microsoft signature and run under the
+   temporary region, but it cannot be identified — such a file carries no
+   readable Product ID, so the application it installs is your claim, not a
+   fact this program can check.
+2. Choose a temporary region. As soon as the Product ID is parsed, the utility
+   asks the source for the application's card under that region — name,
+   publisher and delivery kind are visible before anything changes.
+3. If the application is not offered in the chosen region, press **Find a region
+   where installation is offered**. About forty major markets are asked, and the
+   list narrows to those that actually offer it. **Remaining regions** completes
+   the sweep; **Show every region** restores the full list.
+4. Press **Install**. From here the utility works on its own: it switches the
+   region, confirms the change by reading it back, finds the application, hands
+   the installation to the Store, shows progress, and restores the region.
+5. The outcome appears on the **Journal** tab.
+
+There is deliberately no "cancel installation" button. Windows owns the
+installation: it can be stopped or the application removed in Microsoft Store or
+in **Settings → Apps**. The dialog shown when closing the window during an
+operation says so.
+
+The interface works from the keyboard, honours display scaling, and switches
+between the languages it carries without a restart.
+
+## Starting it from the command line
+
+There is no headless mode. The command line only decides what the window opens
+with — one optional application input, prefilled into the Installation tab. It
+starts nothing: the region is not touched and no installation begins until you
+press the button.
+
+```powershell
+# Open the window with nothing filled in.
+.\WinStoreRegion.exe
+
+# Open it with a Product ID already in the field.
+.\WinStoreRegion.exe 9WZDNCRFJ3PZ
+
+# A Store web address does the same.
+.\WinStoreRegion.exe https://apps.microsoft.com/detail/9WZDNCRFJ3PZ
+
+# So does the ms-windows-store URI.
+.\WinStoreRegion.exe "ms-windows-store://pdp/?productid=9WZDNCRFJ3PZ"
+
+# Quote an address containing & — PowerShell treats it as its own operator.
+.\WinStoreRegion.exe "https://apps.microsoft.com/detail/9WZDNCRFJ3PZ?hl=en-us"
+
+# Print the usage and exit without opening a window.
+.\WinStoreRegion.exe --help
+.\WinStoreRegion.exe -h
+```
+
+Whatever is passed is only *stored* in the field. It is parsed the moment the
+window opens, so a value that is not a Product ID or a Store address is reported
+in the window rather than at the prompt.
+
+Exit codes, since a script may want them:
+
+| Code | Meaning |
+|---|---|
+| `0` | The window ran and closed, or `--help` printed the usage. |
+| `1` | The graphical interface could not be started. |
+| `2` | The command line was wrong. |
+
+Only two things are wrong enough for code `2`, and both name themselves before
+repeating the usage on standard error:
+
+```powershell
+PS> .\WinStoreRegion.exe --install
+Unknown option: --install
+
+Usage:
+...
+
+PS> .\WinStoreRegion.exe 9WZDNCRFJ3PZ 9N1SV6841F0B
+Only one application input is allowed.
+
+Usage:
+...
+```
+
+Two details are worth knowing. The executable is a windowed program, so it
+attaches to the console that launched it to print these messages; started
+without one — from the Run dialog or a shortcut — it shows the same text in a
+dialog box instead. And the command-line text is **English in every interface
+language**: the interface language is chosen inside the window, which does not
+exist yet when the arguments are read, and guessing from the system language
+would answer in a language nobody selected.
+
+## When the Store will not serve your region
+
+Some products the ordinary mechanism cannot install even under the right region.
+When that happens the window offers a second path: **Download the Store
+installer**.
+
+The utility asks Microsoft for the same signed installer a person would receive
+from the Store web page, addressed by Product ID. That file is then treated
+exactly like one you picked by hand — the same signature gate, the same
+confirmation showing name, publisher and SHA-256, the same region transaction.
+
+Three things are worth knowing about this path, all measured rather than assumed:
+
+- The download does not depend on your region, so the file is fetched while the
+  machine still holds your own region. Only running it needs the temporary one.
+- The installer opens a window of its own and **does not install silently**. You
+  finish the installation there, and only then press **Restore region**.
+- Because Microsoft Store owns that work and reports nothing back, this path can
+  never claim an application was installed. The journal records it as *handed to
+  the installer*, which is what actually happened.
+
+Downloaded installers are not kept. They are deleted when the handoff ends and
+again at the next start, because the file can always be fetched afresh and a
+folder of Store installers is not something anyone asked to accumulate.
+
+## Finding a region by market
+
+The Microsoft Store catalogue answers only about the region in force right now,
+so an application absent from your home region usually does not appear at all
+before the region changes. The utility works around this by asking the source
+per market, and it distinguishes three answers: offered, not offered, and no
+answer. The third is never presented as a refusal — a market that could not be
+reached may well be the one you need.
+
+The set of forty markets is deliberately incomplete, and the utility says so.
+The full list is some two hundred and fifty requests, so it runs as a second
+step and only on an explicit command.
+
+The source's answer is a reference, not permission to install: inside the
+operation the application is looked up again under the region actually in force.
+
+## The Updates tab
+
+Microsoft Store will not update an application it does not serve in your current
+region. The Updates tab finds those: it lists the installed Store applications
+whose product the source refuses in your region while offering it elsewhere,
+with the installed version beside the version the catalogue offers.
+
+What the tab deliberately does **not** claim is that an update was released.
+Two facts stand in the way, both measured:
+
+- `winget` cannot update a Store product at all. Asked to, it answers "no
+  applicable update", because the `msstore` source reports the version as
+  `Unknown`.
+- The two version numbers are not always comparable. The catalogue numbers a
+  bundle independently of the package inside it, and publishers change their
+  numbering schemes. The version shown is the one that would actually land on
+  this machine, read from inside the bundle rather than from its name.
+
+So the tab shows both numbers and states what is provable: this region's Store
+will not serve this product. Acting on an entry carries its Product ID to the
+Installation tab and starts the region search; updating is not a separate kind
+of operation, and every gate stays where it already is.
+
+Scan results are remembered between runs and shown with the time they were
+taken, for the same region only.
+
+## The operation journal
+
+The **Journal** tab shows what was installed: application, Product ID, kind, the
+region the application was found under, date, version and outcome. Unfinished
+and uncertain operations stand out — those are the ones that need attention.
+
+Only safe actions are offered for a selected entry: open the application's Store
+page, carry the Product ID into a new installation draft, copy the Product ID,
+delete the local entry. None of them starts an installation or changes a region.
+
+## Where data is kept
+
+Everything lives in the user profile, under `%LOCALAPPDATA%\WinStoreRegion`:
+
+| File | Purpose |
+|---|---|
+| `journal.json` | operation history: what, when, under which region, with what outcome |
+| `pending-restore.json` | the recovery record; exists only while a region is temporarily changed |
+| `updates-scan.json` | the last Updates scan, so reopening the window costs no network |
+| `installers\` | a Store installer being handed off right now; emptied when it is done |
+| `logs\winstoreregion.log` | rotating diagnostic log |
+
+There is no telemetry. The log records neither clipboard contents, nor typed
+text, nor full file paths: a chosen file is recorded by name and SHA-256.
+
+## When something goes wrong
+
+The region stays temporary exactly until a confirmed restore. If the process
+died or the machine rebooted, the next start finds the recovery record, says so,
+and offers to put the original region back or keep the current one. No new
+installation begins until that record is resolved.
+
+An installation started by a previous run survives the death of the process: a
+Windows service performs it. On start the utility notices and resumes observing
+rather than treating the operation as abandoned.
+
+Every operation is written to the diagnostic log: start, recovery record, the
+region switch with both values and the read-back result, the lookup, the
+installer's answer with its codes, installation phases, the restore and the
+outcome. **Help → Open diagnostic log** opens the folder; **Help → Copy details**
+puts the technical block of the current error on the clipboard.
+
+## Known limits and open issues
+
+- Only applications the Store delivers as Microsoft Store packages are
+  installed. Applications with their own Win32 installer are out of scope:
+  completion cannot be proven for them, and an installation nobody can verify
+  should not be offered.
+- The Updates tab has no one-click update button. Whether the Store installer
+  updates an application that is already installed has not been measured, and a
+  button that might do nothing is worse than no button.
+- **Open defect:** on 21.08.2026 Windows closed the window as unresponsive after
+  five failing operations in quick succession. The region transaction was
+  unaffected — it was restored in every one of them — so the fault is in the
+  interface, not in the model. It has not reproduced since, and the build it
+  happened on predates several fixes; the cause is not yet known and is not
+  guessed at here.
+- Interface languages are English, Russian and Simplified Chinese. The
+  Chinese text is a machine-made draft that no Chinese reader has checked; the
+  file says so at the top.
+- One instance of the program runs at a time.
+
+## Translations
+
+A language is a file. `lang/ru.toml`, `lang/en.toml`, and whatever you add:
+copy one, translate the values, open a pull request. There is no Rust to write —
+the build reads that directory and generates the language list, the chooser and
+the tables, so `lang/zh.toml` is all it takes to offer Chinese.
+
+**A new language is approved without a linguistic review**, because nobody here
+can read it. What is checked is structure, and the build does it: a missing key,
+an unknown key, a list of the wrong length, or a string whose `{placeholders}`
+differ from the original all fail the build. After approval the maintainer aims
+to publish a release carrying the language.
+
+Because there is no review, one rule matters more than the rest. Many strings
+here are deliberately careful — they say that a completion was *not proven*,
+that an answer came from a single market, that a set is incomplete. Those hedges
+are what makes this application safe to trust, and a translation has to keep
+them even where a bolder sentence reads better.
+
+The same reason makes the languages already shipping the ones most likely to be
+wrong. **If you read one and something is off, please open an issue** — a
+mistranslation, a clipped caption, a hedge that got lost, or wording that is
+merely unnatural. Name the language and the key; a suggested wording is welcome
+but not required. A pull request does the same job, and an issue is the lower
+bar on purpose.
+
+Translators are named in the `authors` field of the language file, and that name
+appears in **Help → About** beside the language, under the author and licence of
+the application itself. The credit is generated from the file, so it cannot
+drift away from the work it belongs to.
+
+A translation is a contribution like any other: accepted under
+**GPL-3.0-or-later** and no other licence, with the copyright staying yours and
+no right to relicense granted to anyone.
+
+A language file covers everything on screen — captions, statuses, diagnostics
+and dialogs alike. The one thing it does not cover is the command line, which is
+English in every language, because arguments are read before a language has been
+chosen. The full checklist is in
+[CONTRIBUTING.md](CONTRIBUTING.md#translations).
+
+## Building from source
+
+Stable Rust 1.85 or newer for `x86_64-pc-windows-msvc`.
+
+```
+cargo build --release
+cargo test
+cargo clippy --all-targets
+cargo fmt --all --check
+```
+
+Other architectures build from the same sources with a target added; the machine
+needs the matching MSVC build-tools component. The application manifest is
+architecture-neutral, so nothing else changes:
+
+```
+rustup target add aarch64-pc-windows-msvc
+cargo build --release --target aarch64-pc-windows-msvc
+
+rustup target add i686-pc-windows-msvc
+cargo build --release --target i686-pc-windows-msvc
+```
+
+Neither of these has been run on a real device of its architecture, so neither
+is published as a release artefact yet. They compile, and that is all that is
+claimed.
+
+Some tests are marked `#[ignore]`: they change the Windows region, install
+applications, or reach the network. The ones that change the region are run only
+on a dedicated test machine.
+
+## License
+
+GPL-3.0-or-later.
+
+## Legal notices
+
+This project is independent of Microsoft: not affiliated with, endorsed by, or
+supported by it. The names Microsoft, Windows, Microsoft Store and WinGet are
+used only to describe compatibility and purpose accurately. Microsoft logos and
+trade dress are not used.
+
+WinStoreRegion does not change the region of a Microsoft account, does not
+change your IP address, does not download Microsoft Store packages from
+unofficial servers, and does not guarantee that every availability restriction
+can be worked around.

@@ -1,0 +1,63 @@
+# Cargo writes build output to C:\temp\WinStoreRegion. Ignore an accidental
+# in-tree target directory, but keep Cargo.lock for reproducible application builds.
+/target/
+**/*.rs.bk
+
+# Local Cargo configuration and dependency caches.
+.cargo/config.local.toml
+.cargo-home/
+
+# Local task tracking, assistant context, and project-specific skills.
+AGENTS.md
+AI_CONTEXT.md
+AI_RULES.md
+ARCHITECTURE.md
+CLAUDE*.md
+TASKS*.md
+.codex/
+
+# Build, package, coverage, and diagnostic artifacts.
+/build/
+/dist/
+/coverage/
+/assets/design/
+*.profraw
+*.profdata
+*.gcda
+*.gcno
+*.log
+*.ndjson
+errors/
+
+# Native Windows linker and debugger output.
+*.pdb
+*.ilk
+*.exp
+*.lib
+
+# Local environment and runtime data.
+.env
+.env.*
+!.env.example
+configs/local/
+presets/local/
+runtime/
+
+# Editor and Windows user state.
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.rsuser
+*.code-workspace
+*.swp
+*.swo
+*~
+Thumbs.db
+Desktop.ini
+
+# Store installer stubs are user input, never project source. The checked-in
+# PowerShell drag-and-drop wrapper remains versioned.
+*.exe
+!StoreRegionRun.cmd

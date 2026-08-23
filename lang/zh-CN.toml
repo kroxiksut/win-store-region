@@ -1,0 +1,518 @@
+# 用于 WinStoreRegion 的简体中文界面文本。
+#
+# 一个文件，一种语言。构建会解析此目录并将文件转换为 Rust 表：缺失的键和
+# 未知的键都会导致构建失败，因此不完整的翻译无法通过构建。
+#
+# 这里的许多字符串刻意表达谨慎的态度：它们说明完成未经证实、答案来自单一
+# 市场、集合不完整。这些保留意见是这个产品的核心，而不是填充内容。翻译必须
+# 保留这些保留意见，即使更加肯定的表述读起来更好。
+#
+# 出处：本文件由机器翻译草拟，未经中文母语者校对。项目本身不审校任何翻译，
+# 而这一份连译者都没有，因此它比其他语言更可能出错。发现问题请提交 issue 或
+# pull request；如果你愿意署名接手这份翻译，请把自己写进上面的 authors。
+
+
+variant = "Chinese"
+code = "zh-CN"
+name = "中文 (zh-CN)"
+order = 2
+authors = []
+
+[strings]
+title = "WinStoreRegion"
+subtitle = "安全的临时地区切换"
+language = "语言"
+current_region = "当前地区（将被保留）"
+input = "Microsoft Store 链接或 Product ID"
+source_title = "要安装的应用"
+source_hint = "选择链接/Product ID 或安装程序文件。非活跃的草稿会被保留。"
+source_link = "链接或 Product ID"
+source_file = "安装程序文件 (.exe)"
+paste = "粘贴"
+choose_file = "选择文件"
+clear_file = "清除"
+clear_input = "清除"
+download_installer = "下载 Store 安装程序"
+downloading_installer = "正在下载安装程序…"
+no_file = "未选择文件"
+drop_overlay = "在此处放下 .exe"
+app_card = "选择临时地区并且 Store 目录作出回答后，应用卡片会出现。"
+temporary_region = "临时安装地区（Windows 列表）"
+find_region = "寻找提供安装的地区"
+check_remaining = "其他地区"
+show_all_regions = "显示所有地区"
+availability_idle = "未检查地区。"
+availability_incomplete = "集合不完整。"
+availability_none = "所有已检查的地区都不提供此应用。"
+availability_offline = "源未响应。"
+status = "安装暂不可用：尚未命名应用，也未全部通过使其安全的检查。"
+install = "安装"
+restore = "安装完成 — 恢复地区"
+open_store_page = "打开 Store 页面"
+details = "技术详情"
+journal_placeholder = "操作日志将在实现本地日志后可用。安装和恢复不在此标签页上运行。"
+journal_loading = "正在加载本地操作日志…"
+journal_empty = "日志为空。这里只会显示已确认或需要恢复的操作结果。"
+journal_open_store = "打开 Store 页面"
+journal_repeat = "重复安装"
+journal_delete = "删除条目"
+journal_copy_id = "复制 Product ID"
+journal_clear = "清除日志"
+journal_columns = ["时间 (UTC)", "应用", "标识符", "结果"]
+updates_idle = "按“检查”查看已安装的 Microsoft Store 应用，以及 Store 在当前地区不为其提供的应用。"
+updates_scanning = "正在检查已安装的应用…"
+updates_refresh = "检查"
+updates_open = "在安装中打开"
+updates_none = "未找到 Microsoft Store 在当前地区不为其提供的应用。"
+updates_columns = ["应用", "Product ID", "已安装", "在 Store 目录中"]
+updates_unavailable = "Windows 未报告已安装的应用，无法生成列表。"
+updates_choose_entry = "从列表中选择应用。"
+# 记住的答案有用处，但不能误认为是最新的答案，因此它说明了自己的年份。
+# {button} 是再次检查的按钮标签。
+updates_scan_age = """
+来自 {taken} (UTC) 的检查数据。按 "{button}" 重新查询。
+
+"""
+# 已知的关于一个条目的所有信息。这里从不说已发布更新：一个 Store
+# 产品根本无法从此处更新，且两个版本号并非总是可比较的。唯一陈述的可证实事实
+# 是 Store 在此地区不为此产品提供。{button} 是将条目转移到"安装"标签的按钮标签。
+updates_entry_details = """
+{name}
+Product ID：{id}
+包系列：{family}
+已安装版本：{installed}
+Store 目录中的版本：{offered}
+
+Microsoft Store 在当前地区不为此应用提供，因此不会在此处更新它。"{button}" 会将 Product ID 转移到"安装"标签，并启动搜索提供此应用的地区。
+
+这里没有陈述已发布更新：上述两个版本可能按不同的方案编号，此时它们之间的顺序没有意义。"""
+updates_version_not_named = "目录未命名版本"
+
+# 应用卡片。最后一行不是装饰：目录提供的东西和安装找到的东西不是同一回事，
+# 卡片说明显示的是其中哪一个。
+card_publisher_not_provided = "未提供发布者"
+card_product_id = "Product ID：{id}"
+card_store_catalogue = "Store 目录：{market}"
+card_version = "版本：{version}"
+# 目录报告的下载大小。单位名称为二进制单位；书写方式不同的语言可在此更改，
+# 小数点分隔符随句子一起走。
+card_size_bytes = "大小：{size} 字节"
+card_size = "大小：{whole}.{tenths} {unit}"
+card_size_kibibytes = "KiB"
+card_size_mebibytes = "MiB"
+card_offered_installable = "在选定地区提供。这是目录所说的，不是安装检查：应用会在临时地区重新查找。"
+card_offered_not_installable = "在选定地区提供，但此版本不安装以这种方式交付的应用。"
+
+# 已知的关于一个选定地区的信息。每一句说明知识的范围：一个地区的答案与检查所有地区不同。
+region_checking_selected = "正在检查所选地区…"
+region_offered_here = "在选定地区提供。其他地区未检查。"
+region_not_offered_here = "在选定地区不提供。"
+region_no_answer_here = "源对所选地区未响应。其他地区未检查。"
+# "未检查"读起来像"未在检查"，而在一个永不启用的按钮旁边这正是使窗口看起来
+# 有问题的原因。文件不命名应用，所以检查没有推迟 — 没有要问的。
+region_nothing_to_check = "对于文件无法检查：需要 Product ID。"
+region_checked_progress = "已检查 {done} 个（共 {total} 个）…"
+region_found = "找到 {count} 个地区。"
+
+card_syntax_accepted = "Product ID {id} 已接受。选择临时地区，即可请求应用卡片。"
+card_retrieving = "正在从 Store 获取应用卡片…"
+# 目录在当前生效的地区而非临时地区下回答，因此这里的应用缺失对所选
+# 地区无法说明。命名查询地区防止卡片读起来像对该选择的判决。
+card_unavailable_in_region = """
+应用卡片不可用：应用在当前 Windows 地区 ({region}) 中不可见。
+临时地区尚未应用，这对安装没有阻碍。"""
+card_unavailable = """
+应用卡片不可用：应用在当前 Windows 地区中不可见。
+临时地区尚未应用，这对安装没有阻碍。"""
+
+# 卡片的最后一行：安装是否可以启动。三件事必须满足，文本用用户的条件而非程序的条件
+# 命名它们 — 恢复地区、无未完成的操作、安装程序本身。
+card_install_ready = "准备好安装。"
+card_install_not_ready = "尚未准备好安装：恢复地区、无未完成的操作和安装程序本身不全都已确认。"
+
+# 受保护操作的进展，一句话。这里没有在安装报告之前说过"已安装"，也没有在
+# 重新读取之前说过"地区已返回"。
+operation_switching_region = "正在切换地区并通过读回确认。"
+operation_looking_up = "临时地区已确认。正在在其中查找应用。"
+operation_found = "已找到 {name}。正在启动安装。"
+operation_restoring_region = "安装已完成。正在恢复原始地区。"
+operation_done = "完成：应用已安装，地区是原始地区。"
+operation_completion_uncertain = "无法确认完成。决定权在你。"
+operation_started = "操作已启动。等待第一个报告。"
+# 附加到操作正在说的内容，前导空格保持。
+operation_region_already_back = " 原始地区已返回。"
+installing_phase_running = "正在安装"
+installing_phase_finishing = "正在完成安装"
+installing_without_progress = "{phase}。"
+installing_with_progress = "{phase}：{percent}%。"
+
+# 移交 Store 安装程序文件。这里不报告进度或完成，因为该操作没有任何一项：
+# Store 执行工作并对此窗口不说任何内容。{button} 是恢复按钮的标签。
+handoff_switching_region = "正在切换地区并通过读回确认。文件尚未启动。"
+handoff_handed_off = "地区已切换到 {region} 并已确认。安装已移交给 Microsoft Store 安装程序：在 Store 中完成它。此处不显示进度，此应用不确认已安装的内容。完成后，按 “{button}”。"
+handoff_restoring_region = "正在恢复原始地区并通过读回确认。"
+handoff_restored = "完成：原始地区已返回并已确认，恢复记录已清除。Microsoft Store 安装的内容不是此应用检查的内容。"
+# 当它停止时：原因首先，然后是唯一决定下一步要做什么的事实 — Windows 是否
+# 仍然持有临时地区。
+handoff_did_not_happen = "安装程序未启动。"
+handoff_region_may_be_temporary = "Windows 可能仍然持有临时地区：按 “{button}”。"
+handoff_region_original = "Windows 仍然持有原始地区。"
+handoff_declined = "启动已取消。地区未更改，文件未启动，没有修改任何内容。"
+
+resolution_card_confirmed = "应用卡片已确认。安装仍然等待其安全检查：恢复地区、无未完成的操作和安装程序。"
+resolution_catalogue_not_searchable = "此 Windows 配置文件上的 Store 目录无法搜索。地区未更改；安装不可用。"
+resolution_checked_in_region = "在当前 Windows 地区中检查：{region}。"
+resolution_checked_in_current_region = "在当前 Windows 地区中检查。"
+resolution_still_possible = "临时地区尚未应用，这对安装没有阻碍：应用会在其下重新查找。"
+
+# Microsoft 自己的安装程序，通过 Product ID 请求。文本说明按钮现在会执行什么，
+# 因为其含义在用户下方已改变：同一按钮现在将文件转移到 Store 而不是直接安装。
+# {button} 是该按钮的标签，{restore} 是返回地区的按钮。
+installer_download_ready = "Microsoft Store 安装程序已下载并选作源。按 “{button}”：将检查签名、切换地区并启动安装程序。它不报告完成 — 你会在其窗口中完成安装，之后用 “{restore}” 返回地区。"
+# 为什么它没有到达。每一句说明建立了什么和没有建立什么；没有一句说应用不存在。
+installer_download_network = "无法联系 Microsoft 获得安装程序：网络不可用。"
+installer_download_refused = "Microsoft 未返回此应用的安装程序。"
+installer_download_refused_with_status = "Microsoft 未返回此应用的安装程序 (HTTP {status})。"
+installer_download_too_large = "Microsoft 的回答大于此应用将写入的大小。"
+installer_download_not_writable = "安装程序已到达，但无法写入数据文件夹。"
+
+# 输入的应用源对随后的命令的含义。状态"不可用"在启用的按钮旁比根本无状态更糟糕，
+# 因此每一句命名唯一缺失的条件。{button} 标签从按钮本身填充。
+source_choose_region = "Product ID {id} 已接受。选择临时地区，或按 “{button}”。"
+# 恢复标记也从 false 开始，在检查前，因此这里不能陈述未完成的操作存在。
+source_recovery_pending = "Product ID {id} 已接受。安装将在检查未完成的较早操作后变得可用；如果有，必须先处理。"
+source_prerequisites_unmet = "安装前提条件未满足。"
+# 目录在触及任何东西之前回答，因此无法在此处交付的应用在地区仍是用户自己的时被拒绝。
+source_other_device_only = "Product ID {id}：Microsoft Store 不会将此应用交付给此设备 — 它针对另一种设备类型。没有地区更改可以改变这一点，因此安装不可用。"
+source_newer_windows_required = "Product ID {id}：此应用需要 Windows {version} 或更新版本，而此机器较旧。没有地区更改可以改变这一点，因此安装不可用。"
+source_ready = "Product ID {id} 已接受，临时地区：{region}。安装可以启动：应用将在该地区查找。"
+source_syntax_accepted = "Product ID {id} 具有有效语法。安装将保持不可用，直到 Store 目录回答了关于它的内容。"
+
+# 所选文件对随后的命令的含义。顺序与上面相同：命名唯一缺失的条件而非一般句子
+# 让用户猜测哪一个适用。
+file_choose = "选择 Microsoft Store 安装程序文件 (.exe)。它永远不会被修改，Store 本身会继续安装。链接草稿被保留。"
+file_recovery_pending = "文件通过了检查，但在检查未完成的较早操作之前无法移交；如果有，必须先处理。"
+file_store_not_confirmed = "文件通过了检查，但此机器上未确认 Microsoft Store，而是由 Store 完成安装。地区未更改。"
+file_choose_region = "文件由 Microsoft Store 签名且未运行。选择临时地区：文件将在其下启动。"
+# 安装程序文件不命名应用，因此地区搜索没有要问的内容。说这一点胜于让一个死按钮困惑。
+file_region_is_your_choice = "文件的地区由你选择：安装程序不命名应用。要查找一个，粘贴链接，按 “{button}”，然后切换回文件 — 所选文件保持不变。"
+file_ready = """
+文件 {name} 由 Microsoft Store 签名且尚未运行。临时地区：{region}。安装可以移交：地区将通过读回切换，然后安装程序本身启动，你在 Microsoft Store 中完成工作。
+
+{unchecked}"""
+
+# 为什么所选文件不会运行。原因是下面句子中的片段，没有一个调用文件恶意：
+# 每一个只说明无法建立什么。
+file_refusal_signature_not_trusted = "Windows 未确认文件签名"
+file_refusal_signer_unavailable = "Windows 未提供发布者证书"
+file_refusal_not_store_signed = "文件不由 Microsoft Store 签名"
+file_refusal_changed_while_checked = "文件在检查时改变了"
+file_refusal_identity_incomplete = "无法建立文件名和 SHA-256"
+file_refused = "此文件不会启动：{reason}。地区未更改。选择由 Microsoft Store 签名的安装程序，或粘贴 Microsoft Store 链接或 Product ID。"
+
+file_inspecting = "只读检查所选 .exe：其 SHA-256 和签名。文件不运行。"
+file_changed_during_inspection = "文件在检查时改变或被替换。结果已丢弃；安装保持不可用。"
+file_unreadable = "所选文件无法安全读取。结果已丢弃；安装保持不可用。"
+
+# 为什么根本没有采用文件。在这些情况中都没有改变任何东西，句子明确说明这一点
+# 而不是留给猜测。
+file_error_empty_path = "文件路径为空"
+file_error_unsupported_extension = "仅支持 .exe 文件"
+file_error_not_a_file = "路径不指向现有文件"
+file_error_link_or_device_path = "不支持快捷方式和特殊系统路径"
+file_error_multiple_files = "恰好放下一个文件"
+file_not_selected = "文件未被选择：{detail}。当前源和两个草稿未被改变。"
+
+# 区域在列表和当前区域框中的显示方式。名称排在前面，因为列表框按条目开头
+# 的文本搜索：当国家代码在前面时，输入名称找不到任何东西，这就是为什么
+# 两百个区域的列表在没有鼠标的情况下无法使用。这个数字是 Windows 本身保留的，
+# 这里所以用户可以根据这个窗口检查 Windows 而不是相信它。
+region_choice = "{name} · {code}（地区代码 {geo_id}）"
+region_choice_without_code = "{name}（地区代码 {geo_id}）"
+
+region_choose_from_list = "从 Windows 列表选择临时地区。地区未更改，应用未查找。"
+region_not_confirmed = "Windows 无法确认所选地区。地区未更改，应用未查找。"
+menu_file = "文件"
+menu_paste = "粘贴链接/ID"
+menu_exit = "退出"
+menu_help = "帮助"
+menu_about = "关于"
+menu_open_diagnostic_log = "打开诊断日志"
+menu_copy_details = "复制详情"
+menu_recheck = "重新检查前提条件"
+menu_get_app_installer = "获取 App Installer"
+menu_region_documentation = "Microsoft：更改国家或地区"
+menu_github = "项目 GitHub"
+tabs = ["安装", "日志", "更新"]
+region_unavailable = "无法读取当前 Windows 地区。"
+
+# 失败原因，每个诊断代码对应一个。
+diagnostic_backend_failed = "安装程序报告了故障。"
+diagnostic_backend_reported_unknown_failure = "未执行安装：Microsoft Store 报告了此处不知道的错误代码。代码在详情中。"
+diagnostic_backend_unavailable = "此应用没有支持的安装路径可用。"
+diagnostic_clipboard_unavailable = "剪贴板不可用。"
+diagnostic_completion_uncertain = "安装完成未被确认。"
+diagnostic_install_kind_not_supported = "此应用以此版本不支持的方式交付。可以在 Microsoft Store 中打开。"
+diagnostic_installer_file_not_a_store_stub = "这不是 Microsoft Store 安装程序。"
+diagnostic_installer_file_not_admitted = "此文件不会启动：其签名或签署者未通过检查。"
+diagnostic_installer_file_not_supported = "需要一个现有的 `.exe` 文件。"
+diagnostic_installer_file_unreadable = "无法读取所选文件。"
+diagnostic_installer_launch_rejected = "Windows 未启动已验证的安装程序。"
+diagnostic_journal_unavailable = "操作日志不可用。"
+diagnostic_microsoft_account_required = "需要 Microsoft 帐户登录。"
+diagnostic_microsoft_store_unavailable = "Microsoft Store 不可用。"
+diagnostic_ms_store_source_terms_not_accepted = "未接受 Microsoft Store 源条款。未执行安装，下载无法解决此问题。"
+diagnostic_ms_store_source_unavailable = "Microsoft Store 目录作为安装源不可用。"
+diagnostic_network_unavailable = "无网络连接。"
+diagnostic_operation_sequence_violated = "操作因内部序列故障而停止。未执行安装。"
+diagnostic_product_already_installed = "应用已在此计算机上安装。地区已恢复，未执行安装。"
+diagnostic_product_already_installing = "此应用已在安装。等待当前安装完成。"
+diagnostic_product_not_found = "未找到此 Product ID 的应用。"
+diagnostic_product_not_on_this_device = "Microsoft Store 不会将此应用交付给此设备：它针对另一种设备类型或更新的 Windows。地区不是障碍，更改它无法解决问题。"
+diagnostic_product_unavailable_in_region = "应用在选定地区不可用。"
+diagnostic_recovery_record_unreadable = "无法安全读取恢复数据。"
+diagnostic_region_change_rejected = "Windows 拒绝了地区更改。"
+diagnostic_region_conflict = "当前地区既不与原始地区匹配，也不与临时地区匹配。"
+diagnostic_region_unavailable = "Windows 未报告当前地区。"
+diagnostic_region_unchanged = "地区未更改。"
+diagnostic_resolver_answer_mismatch = "目录回答了不同的应用，因此结果被拒绝。"
+diagnostic_resolver_unavailable = "无法连接到 Microsoft Store 目录。"
+diagnostic_restore_failed = "恢复原始地区未被确认。"
+diagnostic_store_input_not_understood = "未识别链接或 Product ID。"
+diagnostic_store_page_launch_rejected = "Windows 无法打开 Microsoft Store 页面。"
+diagnostic_store_refused_without_reason = "Microsoft Store 拒绝，未提供原因。"
+diagnostic_temporary_region_not_applied = "源未接受临时地区：在安装开始前它返回到原始地区。请重试。"
+diagnostic_unsupported_market = "目录不接受选定的地区。"
+diagnostic_win_get_missing = "未找到用于安装 Store 应用的 Windows 组件。"
+
+# 技术详情，仅显示在详情区域中，供复制。
+diagnostic_details_heading = "技术详情"
+
+# 安装前提条件。对于每一个，界面区分"我们检查了，它缺失"与"检查本身未成功"：
+# 第二种不是缺失的证据，措辞不能将其转变为证据。
+prerequisite_heading = "安装不可用：前提条件未满足。"
+prerequisite_app_installer_missing = "App Installer 未安装。Windows 用它安装 Store 应用，可以从其 Microsoft Store 页面安装。"
+prerequisite_app_installer_unknown = "无法确定是否存在 App Installer。安装保持不可用，直到检查成功。"
+prerequisite_microsoft_store_missing = "Microsoft Store 缺失。其不存在独立下载：Windows 必须被修复。"
+prerequisite_microsoft_store_unknown = "无法确定是否存在 Microsoft Store。安装保持不可用，直到检查成功。"
+prerequisite_com_metadata_missing = "应用目录不可写，因此无法在其旁边放置安装依赖的元数据文件。将应用移到你可以写入的目录。"
+prerequisite_com_metadata_unknown = "无法在应用旁边准备元数据文件。安装保持不可用，直到检查成功。"
+
+# 日志标签页。
+journal_journal_details = "文件未被修改地保留。"
+
+# 日志条目说明关于自己的内容。两个主题有不同的块，因为它们知道不同的东西：
+# 为安装程序文件建立的条目不知道应用名称、发布者、版本或包标识，并说明一次而不是
+# 用"未知"填充六个字段。标签被翻译；旁边的值是当时记录的。
+journal_details_product = """
+应用：{name}
+Product ID：{id}
+类型：{kind}
+发布者：{publisher}
+版本：{version}
+包系列：{family}"""
+journal_details_file = """
+文件：{name}
+SHA-256：{sha256}
+应用未被命名：Microsoft Store 安装程序携带无 Product ID。"""
+journal_details_common = """
+日期：{date}
+地区代码：{geo_id}
+操作：{operation}
+方法：{backend}
+结果：{result}"""
+# 说明代替从未建立的值。没有一个主张该值不存在 — 仅此条目不携带它。
+journal_details_kind_unknown = "未知"
+journal_details_publisher_not_provided = "未提供"
+journal_details_version_not_confirmed = "未确认"
+journal_details_family_not_confirmed = "未确认"
+
+# 日志结果。
+journal_result_installed = "已安装并恢复"
+journal_result_handed_off_to_installer = "已移交给 Microsoft Store 安装程序 — 未检查完成"
+journal_result_completion_uncertain = "完成未被确认 — 需要验证/恢复"
+journal_result_recovery_required = "需要恢复或手动决定"
+journal_result_failed = "失败"
+
+# 对话框。
+dialog_filter_executables = "可执行文件 (*.exe)"
+dialog_filter_all_files = "所有文件 (*.*)"
+dialog_show_stub_details = "签署者：不可用"
+
+# 移交确认。答案依赖的所有内容在一个屏幕上：哪个文件、谁签名了它、其摘要、
+# 哪个地区会被保留以及此应用之后会和不会知道什么。最后一段不能被软化 —
+# Store 执行安装，此应用不学习是否成功。{button} 填充了返回地区的按钮标签，
+# 所以两者不能漂移。
+dialog_confirm_handoff = """
+启动 Microsoft Store 安装程序？
+
+文件：{file}
+发布者：{publisher}
+SHA-256：{sha256}
+临时地区：{region}
+
+Windows 地区将被临时更改并通过读回确认，然后文件才会启动。文件本身永远不会被修改。
+
+Microsoft Store 从那里接手安装：此处不显示进度，此应用不确认已安装的内容。Store 完成后，使用 "{button}"。
+
+是 — 切换地区并启动文件。否 — 不改变任何内容。"""
+
+# 安装程序文件检查，按要求显示。这是证据而非建议：标签命名从文件中读取的内容，
+# 值按 Windows 报告的方式再现。
+dialog_stub_details = """
+SHA-256：{sha256}
+大小：{size} 字节
+签名：{signature}
+Store 安装程序检查：{status}
+Product ID：{product_id}
+
+{signer}
+
+{warnings}"""
+dialog_stub_signer = """
+签署者主体：{subject}
+颁发者：{issuer}
+序列号：{serial}
+SHA-256 证书指纹：{thumbprint}
+有效期：{valid_from} — {valid_to}
+允许签署代码：{eku}"""
+dialog_stub_product_id_not_extracted = "未提取"
+dialog_stub_eku_yes = "是"
+dialog_stub_eku_no = "否"
+# 检查可以注意到而不调用文件坏的内容。每一个说明建立了什么和没有建立什么，
+# 没有一个是对文件的判决。
+dialog_stub_warning_native_verification_code = "Windows 验证代码本地保留"
+dialog_stub_warning_product_id_not_available = "Product ID 未提取"
+dialog_stub_warning_signer_data_unavailable = "Windows 未提供签署者证书"
+
+# 恢复。
+recovery_ask_pending_recovery = """
+{situation}
+
+是 — 恢复原始地区：在写入前重新读取它，并在写入后确认它。
+否 — 保持当前地区；恢复记录被保留，新安装保持被阻止。"""
+recovery_recovery_execution_status = "恢复记录已保留。"
+
+# 移交记录无 Product ID 可显示。它命名了被移交给 Microsoft Store 的文件和其字节的摘要，
+# 调用那是 Product ID 会是错误的 — 用户无法对其采取行动。
+recovery_subject_installer_file = "安装程序文件：{value}"
+
+# 在启动时找到：前一次运行已经返回地区，只留下记录。现在没有恢复任何东西，
+# 文本说明这一点。
+recovery_verified_record_cleaned = "前一次操作已经恢复了原始地区。已为 {id} 清除已验证恢复记录。"
+
+# 为什么要求做决定。每一个命名现在地区的真实情况，没有一个责备用户。
+recovery_situation_temporary_region_active = "Windows 仍在使用临时地区。"
+recovery_situation_external_region_conflict = "当前地区在此操作外被更改。"
+recovery_situation_original_region_active = "原始地区已是活跃的。"
+
+# 完整启动通知。记录不存储显示名称，因此通知不能主张一个：下面的每一行
+# 是操作开始时实际写下的内容。
+recovery_required = """
+需要恢复
+
+{situation}
+
+{subject}
+启动时间：{started}
+方法：{backend}
+原始地区代码：{original}
+临时地区代码：{temporary}
+当前地区代码：{current}
+最后状态：{state}
+
+此窗口做出明确决定后，新安装才能进行。"""
+recovery_startup_blocked = "新安装被阻止。"
+
+# 一个恢复操作实现的内容。"恢复"仅在写入后读回地区时主张；其他人说左单独的东西。
+recovery_restored = "原始地区已恢复并通过读回确认。恢复记录已移除。"
+recovery_verified_record_cleared = "原始地区已是活跃的。已验证恢复记录已移除。"
+recovery_pending_record_retained = "当前地区保持不变。恢复记录已保留，新安装被阻止。"
+recovery_restore_conflict = "地区在检查和写入间改变（现在是地区代码 {geo_id}）。没有改变任何东西，记录已保留。"
+
+
+# 窗口及其对话框。
+window_request_window_close = "关闭已取消。窗口保持打开。"
+
+# 操作已到达的位置，作为片段命名所以可以放入句子。每一个仅说明建立了什么：
+# "已确认"在某物被读回出现，且只在那里。
+window_state_region_switched = "临时地区已确认"
+window_state_refreshing_store_context = "Store 上下文正在被刷新"
+window_state_starting_install = "安装正在启动"
+window_state_install_requested = "安装请求已被接受"
+window_state_install_observed = "安装观察待处理"
+window_state_installing = "安装正在运行"
+window_state_completion_uncertain = "安装完成未被确认"
+window_state_installed = "安装已确认但地区未被恢复"
+window_state_restoring_region = "地区正在被恢复"
+window_state_restored = "恢复等待最终验证"
+window_state_failed_with_temporary_region = "操作失败，临时地区保持活跃"
+window_state_restore_conflict = "检测到当前地区冲突"
+window_state_restore_failed = "地区恢复未被确认"
+# 为没有上面一行命名的状态说明，所以稍后添加的状态仍被报告而非显示为无。
+window_state_requires_recovery = "操作需要恢复"
+
+# 在安装仍在运行时关闭。最后一段是重要的：此应用从不取消安装，对话框说明
+# 用户可以的地方。{state} 是上面的片段之一。
+window_close_with_running_operation = """
+操作仍然是活跃的：{state}。
+
+提前恢复地区可能会中断安装。恢复数据必须保留，直到恢复被验证。
+
+是 — 在安全地区恢复后关闭。
+否 — 在保留临时地区和恢复数据以供下一次启动时关闭。
+取消 — 继续工作。
+
+安装本身在 Microsoft Store 或 Windows 设置下的应用中停止或移除：Windows 拥有安装，此应用没有。"""
+
+# 在移交仍持有临时地区时关闭。没有什么要取消，没有什么要等待：Store 拥有安装，
+# 此窗口只拥有地区。{button} 是返回它的按钮的标签。
+window_close_with_pending_handoff = """
+Windows 仍然持有临时地区，Microsoft Store 正在完成安装。
+
+是 — 关闭：恢复记录已保留，下一次启动会提供地区。
+否 — 留在此处并使用 "{button}"。"""
+
+window_installation_resumed = "前一次运行的安装仍在进行。恢复观察。"
+window_journal_entry_deleted = "本地日志条目已被删除。安装和地区未改变。"
+# {cause} 是说明出了什么问题的句子。
+window_journal_entry_not_deleted = "{cause} 没有改变任何东西。"
+
+# 窗口命令。
+command_begin_handoff = "未提供"
+command_dispatch_command = "从日志中打开了 Store 页面。这不是安装请求；地区未更改。"
+command_dispatch_command_2 = "Windows 无法从日志中打开 Store 页面。地区未更改。"
+command_dispatch_command_3 = "日志 Product ID 已复制到安装草稿。未启动安装；地区未更改。"
+command_dispatch_command_4 = "Product ID 已复制到剪贴板。安装和地区未更改。"
+command_dispatch_command_5 = "删除本地日志的所有条目？整个操作历史将被清除。已安装的应用、Windows 地区和恢复记录不会改变。"
+command_dispatch_command_6 = "仅删除此本地日志条目？安装、地区和恢复记录不会改变。"
+command_dispatch_command_7 = "在 Microsoft Store 中打开了应用页面。这不是安装请求；地区未更改。"
+command_dispatch_command_8 = "Windows 无法在 Microsoft Store 中打开应用页面。地区未更改。"
+command_dispatch_ui_event = "无法更新应用菜单。"
+command_begin_resolution_if_ready = "Windows 未报告哪个 Store 目录为所选临时地区提供，所以没有查找任何东西。"
+command_begin_resolution_if_ready_2 = "正在从结构化 Store 源获取应用卡片…"
+# {id} 是安装程序被要求的 Product ID。第二句是要点：Microsoft 返回的文件被检查
+# 就像手工选择的文件一样，且对其来源不做例外。
+command_installer_download_requested = "要求 Microsoft 获得 {id} 的 Store 安装程序。它由 Microsoft 签名，将被检查就像手工选择的文件一样。"
+# {cause} 是说明剪贴板发生什么问题的句子。
+command_clipboard_copy_failed = "{cause} 没有改变任何东西。"
+# 菜单项回答什么。每一对说明发生了什么，并且同样重要，没有发生什么：
+# 菜单项从不安装任何东西，也从不更改地区，答案说明这一点而不是留给假设。
+menu_documentation_opened = "Microsoft 文档页面已打开。这不是安装；地区未更改。"
+menu_documentation_not_opened = "Windows 无法打开文档页面。没有改变任何东西。"
+menu_app_installer_page_opened = "App Installer 页面已打开。这不是安装；地区未更改。"
+menu_app_installer_page_not_opened = "Windows 无法打开 App Installer 页面。没有改变任何东西。"
+# 启动失败时命名该地址，所以浏览器未出现的用户仍然知道去哪里。{address} 是项目存储库。
+menu_project_page_opened = "项目页面已在浏览器中打开。"
+menu_project_page_not_opened = "Windows 未打开项目页面。地址是 {address}。"
+menu_log_directory_opened = "诊断日志目录已打开。"
+menu_log_directory_not_opened = "无法打开日志目录。没有改变任何记录。"
+menu_details_copied = "详情已复制到剪贴板。"
+menu_details_not_copied = "剪贴板不可用。没有改变任何东西。"
+menu_prerequisites_all_met = "满足每个安装前提条件。地区未更改。"
+
+# 关于对话框。应用名称和版本由应用添加，因此此段落不携带要过时的版本号。
+about_description = "此实用工具临时更改 Windows 家庭位置以供标准 Microsoft Store 机制使用。仅改变了 Windows 设置：Microsoft Store 和 Windows 都未被修改，Store 执行安装本身。它不是 Microsoft 产品。"
+about_translations = "翻译："
+about_author = "作者"
+about_license = "许可证"
