@@ -2,7 +2,7 @@
 
 ![Status](https://img.shields.io/badge/status-v0.1%20%E2%80%94%20end--to--end%20verified-brightgreen)
 ![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue)
-![Platform](https://img.shields.io/badge/platform-Windows%20x64-0078d4)
+![Platform](https://img.shields.io/badge/platform-Windows%20x64%20%7C%20ARM64%20%7C%20x86-0078d4)
 ![Rust](https://img.shields.io/badge/rust-1.85%2B%20edition%202024-b7410e)
 [![CI](https://github.com/kroxiksut/win-store-region/actions/workflows/ci.yml/badge.svg)](https://github.com/kroxiksut/win-store-region/actions/workflows/ci.yml)
 ![UI](https://img.shields.io/badge/UI-EN%20%7C%20RU%20%7C%20ZH-lightgrey)
@@ -10,7 +10,7 @@
 
 一个 Windows 实用程序，在安装期间临时切换 Windows 地区，将安装移交给 Microsoft Store 本身的机制，并在看到实际结果后将地区改回。
 
-一个便携式 `WinStoreRegion.exe`，用于 x64，约 1.3 MB。它既不需要也不申请管理员权限。
+一个便携式 `WinStoreRegion.exe`，约 1.3 MB，发布 x64、ARM64 与 32 位 x86 三种版本。它既不需要也不申请管理员权限。只有 x64 版本被实际运行过——参见[实际验证过的内容](#实际验证过的内容)。
 
 [English](README.md) · [Русский](README.ru.md) · **简体中文** · [更新日志](CHANGELOG.md)
 
@@ -96,11 +96,11 @@ Microsoft 记录了改变国家或地区是一个普通程序：[在 Microsoft S
 - **自按钮驱动的路径完成以来，没有在开发者以外的机器上运行过。**
 - **Store 安装程序是否更新已安装的应用程序**。因此更新选项卡列出并解释，而不提供单击更新。参见 [已知限制](#已知限制和打开的问题)。
 - **150% 缩放处的外观**。布局在 100–200% 处通过算术检查，这无法判断标题是否适合按钮内。
-- **ARM64 与 32 位 x86 构建在真实设备上的表现**。持续集成在每次推送时构建全部三种架构，因此它们都能编译；但这两者从未在真实设备上启动过，且只有 x64 随版本发布。
+- **ARM64 与 32 位 x86 构建在真实设备上的表现**。三种架构在每次推送时都会构建，并随每个发布版一起提供，因此它们都能编译。但这两者从未在真实设备上启动过。提供它们，是因为能运行它们的机器是改变这一点的唯一途径，而不是因为这里有谁声称它们可用。
 ## 要求
 
 - **Windows 10 版本 1809（构建 17763）或更高版本，或任何 Windows 11**。底线由 App Installer 设置，它提供安装 COM 接口并自身需要 1809；此程序调用的其他所有内容都较旧——`GetDpiForWindow` 需要 1607，每监视器 v2 缩放需要 1703。清单宣称 Windows 10 和 11 支持。已在 Windows 10 22H2 和早期开发中的 Windows 11 上测试。
-- x64。在 ARM64 设备上，x64 构建在 Windows 仿真下运行；本地 ARM64 构建从相同源编译（见 [从源代码构建](#从源代码构建)）。
+- x64、ARM64 或 32 位 x86——每个发布版都包含全部三种。在 ARM64 设备上，x64 构建也可在 Windows 仿真下运行，这条路径至少在 x64 硬件上被走通过。
 - **App Installer**（`Microsoft.DesktopAppInstaller`）——安装通过它运行。没有它，实用程序说这一点并提供打开其 Store 页面。
 - **Microsoft Store**（`Microsoft.WindowsStore`）。
 - `.exe` 运行所在的目录必须可写：首次启动时，`Microsoft.Management.Deployment.winmd` 的副本出现在程序旁边，取自已安装的 App Installer。没有它，安装 COM 接口不可用。程序不会将自己复制到其他地方来解决这个问题——它改为报告不满足的条件。
@@ -286,7 +286,7 @@ rustup target add i686-pc-windows-msvc
 cargo build --release --target i686-pc-windows-msvc
 ```
 
-这些都没有在其架构的真实设备上运行，所以它们都未作为发行版工制品发布。它们编译，这是所有声称的。
+这些都没有在其架构的真实设备上运行过。但它们仍随每个发布版一起提供，因为能运行它们的机器是改变这一点的唯一途径。它们能编译，这就是全部的声称。
 
 一些测试被标记 `#[ignore]`：它们改变 Windows 地区、安装应用程序或到达网络。改变地区的那些仅在专用测试机器上运行。
 

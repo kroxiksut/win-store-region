@@ -89,10 +89,10 @@ jobs:
             Set-Content -Path release/SHA256SUMS.txt -Encoding ascii
           Get-Content release/SHA256SUMS.txt
 
-      # Only the x64 build is attached. The README says that architecture is the
-      # only one shipped, and attaching the other two to a release would be
-      # shipping them. They stay in the workflow's artifacts, where a build is
-      # a build and not a download offered to a user.
+      # All three architectures are attached. Attaching a binary is shipping it,
+      # so the README says the same thing: the two that have never run on a real
+      # device are offered because a machine that can run them is the only way
+      # that changes, not because anything here claims they work.
       - name: Create the release
         shell: pwsh
         env:
@@ -101,4 +101,13 @@ jobs:
           $version = '${{ github.ref_name }}' -replace '^v', ''
           $notes = (Get-Content .github/release-notes.md -Raw) -replace '\{version\}', $version
           Set-Content -Path notes.md -Value $notes -Encoding utf8
-          gh release create '${{ github.ref_name }}' "release/WinStoreRegion-$version-x64.exe" "release/SHA256SUMS.txt" --title "WinStoreRegion $version" --notes-file notes.md
+          $files = @(
+            "release/WinStoreRegion-$version-x64.exe",
+            "release/WinStoreRegion-$version-arm64.exe",
+            "release/WinStoreRegion-$version-x86.exe",
+            "release/SHA256SUMS.txt"
+          )
+          foreach ($file in $files) {
+            if (-not (Test-Path $file)) { throw "missing release file: $file" }
+          }
+          gh release create '${{ github.ref_name }}' @files --title "WinStoreRegion $version" --notes-file notes.md

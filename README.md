@@ -2,7 +2,7 @@
 
 ![Status](https://img.shields.io/badge/status-v0.1%20%E2%80%94%20end--to--end%20verified-brightgreen)
 ![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue)
-![Platform](https://img.shields.io/badge/platform-Windows%20x64-0078d4)
+![Platform](https://img.shields.io/badge/platform-Windows%20x64%20%7C%20ARM64%20%7C%20x86-0078d4)
 ![Rust](https://img.shields.io/badge/rust-1.85%2B%20edition%202024-b7410e)
 [![CI](https://github.com/kroxiksut/win-store-region/actions/workflows/ci.yml/badge.svg)](https://github.com/kroxiksut/win-store-region/actions/workflows/ci.yml)
 ![UI](https://img.shields.io/badge/UI-EN%20%7C%20RU%20%7C%20ZH-lightgrey)
@@ -12,8 +12,9 @@ A Windows utility that switches the Windows region for the length of one
 installation, hands the installation to Microsoft Store's own mechanism, and
 puts the region back once it has seen the actual result.
 
-One portable `WinStoreRegion.exe` for x64, about 1.3 MB. It neither needs nor
-requests administrator rights.
+One portable `WinStoreRegion.exe`, about 1.3 MB, published for x64, ARM64 and
+32-bit x86. It neither needs nor requests administrator rights. Only the x64
+build has ever been run — see [what is verified](#what-has-actually-been-verified).
 
 **English** · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [Changelog](CHANGELOG.md)
 
@@ -140,9 +141,11 @@ Not verified, and stated as such:
   update. See [Known limits](#known-limits-and-open-issues).
 - **Appearance at 150% scaling.** The layout is checked arithmetically at
   100–200%, which cannot tell whether a caption fits inside a button.
-- **The ARM64 and 32-bit x86 builds on real devices.** Continuous integration
-  builds all three architectures on every push, so they compile; neither of
-  those two has ever been started on an actual device, and only x64 is shipped.
+- **The ARM64 and 32-bit x86 builds on real devices.** All three architectures
+  are built on every push and published with every release, so they compile.
+  Neither of those two has ever been started on an actual device. They are
+  offered because a machine that can run them is the only way that will change,
+  not because anything here says they work.
 ## Requirements
 
 - **Windows 10 version 1809 (build 17763) or later, or any Windows 11.** The
@@ -151,9 +154,9 @@ Not verified, and stated as such:
   `GetDpiForWindow` needs 1607 and per-monitor v2 scaling needs 1703. The
   manifest declares Windows 10 and 11 support. Tested on Windows 10 22H2 and,
   earlier in development, on Windows 11.
-- x64. On ARM64 devices the x64 build runs under Windows emulation; a native
-  ARM64 build compiles from the same sources (see
-  [Building from source](#building-from-source)).
+- x64, ARM64 or 32-bit x86. Each release carries all three. On an ARM64 device
+  the x64 build also runs under Windows emulation, which is the path that has at
+  least been exercised on x64 hardware.
 - **App Installer** (`Microsoft.DesktopAppInstaller`) — the installation runs
   through it. Without it the utility says so and offers to open its Store page.
 - **Microsoft Store** (`Microsoft.WindowsStore`).
@@ -469,9 +472,9 @@ rustup target add i686-pc-windows-msvc
 cargo build --release --target i686-pc-windows-msvc
 ```
 
-Neither of these has been run on a real device of its architecture, so neither
-is published as a release artefact yet. They compile, and that is all that is
-claimed.
+Neither of these has been run on a real device of its architecture. Both are
+published with every release all the same, because a machine that can run them
+is the only way that changes. They compile, and that is all that is claimed.
 
 Some tests are marked `#[ignore]`: they change the Windows region, install
 applications, or reach the network. The ones that change the region are run only
