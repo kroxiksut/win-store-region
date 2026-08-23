@@ -9,6 +9,7 @@ use crate::gui::diagnostic::{
     stub_diagnostic,
 };
 use crate::gui::handoff::HandoffStage;
+use crate::gui::ids::WindowLong;
 use crate::gui::journal::{insert_row, journal_details, rebuild_journal_list};
 use crate::gui::layout::layout_controls;
 use crate::gui::state::{
@@ -502,7 +503,7 @@ unsafe fn show_progress(controls: &Controls, state: &AppState) {
         return;
     };
     let style = unsafe { GetWindowLongPtrW(controls.progress, GWL_STYLE) };
-    let marquee = isize::try_from(PBS_MARQUEE).unwrap_or(0);
+    let marquee = WindowLong::try_from(PBS_MARQUEE).unwrap_or(0);
     if let Some(progress) = running.progress {
         // Leaving marquee first: a bar still animating ignores a position.
         if style & marquee != 0 {

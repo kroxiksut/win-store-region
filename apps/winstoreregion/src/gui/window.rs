@@ -14,7 +14,7 @@ use crate::gui::ids::{
     WM_APP_DROP_ENTER, WM_APP_DROP_FILE, WM_APP_DROP_LEAVE, WM_APP_HANDOFF_PROGRESS,
     WM_APP_INSTALL_PROGRESS, WM_APP_INSTALLER_DOWNLOADED, WM_APP_JOURNAL_DELETED,
     WM_APP_JOURNAL_LOADED, WM_APP_MARKET_ANSWERS, WM_APP_PRODUCT_RESOLVED, WM_APP_STUB_INSPECTED,
-    WM_APP_UPDATES_SCANNED,
+    WM_APP_UPDATES_SCANNED, window_long_from_pointer,
 };
 use crate::gui::install::{InstallationUpdate, resume_installation};
 use crate::gui::layout::{DESIGN_HEIGHT, DESIGN_WIDTH, layout_controls};
@@ -558,8 +558,16 @@ unsafe extern "system" fn window_procedure(
             }
             let bootstrap = unsafe { &*bootstrap };
             unsafe {
-                SetWindowLongPtrW(window, GWLP_USERDATA, bootstrap.chrome as isize);
-                SetWindowLongPtrW(window, STATE_WINDOW_WORD, bootstrap.state as isize);
+                SetWindowLongPtrW(
+                    window,
+                    GWLP_USERDATA,
+                    window_long_from_pointer(bootstrap.chrome),
+                );
+                SetWindowLongPtrW(
+                    window,
+                    STATE_WINDOW_WORD,
+                    window_long_from_pointer(bootstrap.state),
+                );
             }
         }
         WM_CREATE => {

@@ -1,0 +1,98 @@
+name: CI
+
+# Everything here runs on Windows because the product is a Win32 application:
+# the build script compiles Windows resources, and the tests exercise types the
+# `windows` crate only provides on this platform.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  # The checked-in `.cargo/config.toml` sends build output to C:\temp so that a
+  # developer's working tree stays clean. A runner discards its tree anyway, and
+  # the default directory is the one the cache below knows how to find.
+  CARGO_TARGET_DIR: target
+
+jobs:
+  check:
+    name: Format, lints and tests
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Name the toolchain in the log
+        run: |
+          rustc --version
+          cargo --version
+          cargo fmt --version
+          cargo clippy --version
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-check-${{ hashFiles('Cargo.lock') }}
+          restore-keys: cargo-check-
+
+      - name: Formatting
+        run: cargo fmt --all --check
+
+      # Warnings are failures here rather than notes nobody reads. The lint
+      # policy itself lives in the workspace manifest, not in this file.
+      - name: Lints
+        run: cargo clippy --all-targets -- -D warnings
+
+      - name: Tests
+        run: cargo test --workspace
+
+  build:
+    name: Release build (${{ matrix.target }})
+    runs-on: windows-latest
+    strategy:
+      # One target failing should not hide the state of the other two.
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-pc-windows-msvc
+            # The only architecture the project ships. See the README.
+            shipped: true
+          - target: aarch64-pc-windows-msvc
+            shipped: false
+          - target: i686-pc-windows-msvc
+            shipped: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add the target
+        run: rustup target add ${{ matrix.target }}
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-${{ matrix.target }}-${{ hashFiles('Cargo.lock') }}
+          restore-keys: cargo-${{ matrix.target }}-
+
+      # This proves the target compiles and nothing more. Only the x64 build is
+      # ever run: a runner cannot execute an ARM64 binary, and neither
+      # architecture has been started on a real device. The artifacts below are
+      # named so that nobody mistakes a build for a release.
+      - name: Build
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WinStoreRegion-${{ matrix.target }}${{ matrix.shipped && '' || '-unverified' }}
+          path: target/${{ matrix.target }}/release/WinStoreRegion.exe
+          if-no-files-found: error

@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20x64-0078d4)
 ![Rust](https://img.shields.io/badge/rust-1.85%2B%20edition%202024-b7410e)
-![Tests](https://img.shields.io/badge/tests-240%20passing-brightgreen)
+[![CI](https://github.com/kroxiksut/win-store-region/actions/workflows/ci.yml/badge.svg)](https://github.com/kroxiksut/win-store-region/actions/workflows/ci.yml)
 ![UI](https://img.shields.io/badge/UI-EN%20%7C%20RU%20%7C%20ZH-lightgrey)
 ![Admin rights](https://img.shields.io/badge/admin%20rights-not%20required-success)
 
@@ -85,24 +85,18 @@ Microsoft 记录了改变国家或地区是一个普通程序：[在 Microsoft S
 
 ## 实际验证过的内容
 
-此部分存在是因为“它有效”是一种声称，此项目中的声称应该命名其证据。下面的每一行都由诊断日志中记录的有日期的运行支持。
+此部分存在是因为“它有效”是一种声称，此项目中的声称应该命名其证据。
 
-| 内容 | 位置 | 时间 |
-|---|---|---|
-| 完整安装周期：记录 → 通过读取确认切换 → 在临时地区下解析 → 带进度的安装 → 早期恢复 → 确认完成 | Windows 10 22H2 (19045) | 已验证两个应用程序，2026.08.21–22 |
-| 移交：验证安装程序的签名、切换地区、运行它、恢复地区、日志记录结果 | Windows 10 22H2 | 已验证，2026.08.21 |
-| 通过 Product ID 获取 Store 安装程序，签名和签署人已检查 | Windows 10 22H2 | 针对实时服务已验证，2026.08.22 |
-| 拒绝目录说此设备无法接收的安装，在地区改变之前 | Windows 10 22H2 | 已验证仅提供 Xbox 包的产品 |
-| 地区事务在失败时依然成立：每一次失败的运行都恢复了地区并清除了恢复记录 | Windows 10 22H2 | 已针对每个失败的运行进行验证 |
-| 地区切换、读取确认和恢复机制 | Windows 11 虚拟机 | 在开发早期已验证 |
+完整周期已在 Windows 10 和 Windows 11 上端到端走通：在任何更改之前记录地区，切换并通过重新读取确认，在临时地区下查找应用，带进度安装，提前恢复地区，并通过应用的包出现而非返回码确认完成。移交路径、通过 Product ID 获取并检查签名与签署者的 Store 安装程序，以及拒绝目录称此设备无法接收的产品，都以同样方式走通。迄今每一次失败的运行都以地区已恢复、恢复记录已清除结束。
+
+这些是哪些 Windows 版本，不取决于测试，而取决于代码的要求：清单声明 Windows 10 和 Windows 11，而该范围内的下限由 App Installer 决定，即 Windows 10 1809。参见 [要求](#要求)。
 
 未验证，并陈述如下：
 
-- **自按钮驱动的路径完成以来，没有在开发者以外的机器上运行过。**专用测试虚拟机尚未用于当前构建。
+- **自按钮驱动的路径完成以来，没有在开发者以外的机器上运行过。**
 - **Store 安装程序是否更新已安装的应用程序**。因此更新选项卡列出并解释，而不提供单击更新。参见 [已知限制](#已知限制和打开的问题)。
 - **150% 缩放处的外观**。布局在 100–200% 处通过算术检查，这无法判断标题是否适合按钮内。
-- **本地 ARM64 构建**。它从这些源编译不变，但它从未在 ARM64 设备上运行过，也不随版本发布。
-
+- **ARM64 与 32 位 x86 构建在真实设备上的表现**。持续集成在每次推送时构建全部三种架构，因此它们都能编译；但这两者从未在真实设备上启动过，且只有 x64 随版本发布。
 ## 要求
 
 - **Windows 10 版本 1809（构建 17763）或更高版本，或任何 Windows 11**。底线由 App Installer 设置，它提供安装 COM 接口并自身需要 1809；此程序调用的其他所有内容都较旧——`GetDpiForWindow` 需要 1607，每监视器 v2 缩放需要 1703。清单宣称 Windows 10 和 11 支持。已在 Windows 10 22H2 和早期开发中的 Windows 11 上测试。

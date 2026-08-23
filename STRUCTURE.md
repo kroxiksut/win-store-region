@@ -86,6 +86,7 @@ to `C:\temp\WinStoreRegion`.
 │               ├── record.rs       pending-restore.json and its wire schema
 │               ├── startup.rs      Conflict-safe classification and execution
 │               └── store.rs        Durable storage boundary for the record
+├── .github/workflows/ci.yml        Format, lints, tests, and a release build per architecture
 ├── Cargo.lock                      Locked Rust dependency graph
 ├── Cargo.toml                      Workspace manifest and shared lint policy
 ├── CLA.md                          Contributor licence agreement, in English

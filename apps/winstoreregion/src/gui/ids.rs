@@ -8,6 +8,27 @@ pub(super) const WINDOW_CLASS: PCWSTR = w!("WinStoreRegion.MainWindow");
 
 pub(super) const BASE_DPI_I32: i32 = 96;
 
+/// The integer a window word holds, as wide as a pointer.
+///
+/// `GetWindowLongPtrW` and `SetWindowLongPtrW` are typed `LONG_PTR`, which is
+/// pointer-sized: `isize` on x64 and ARM64, `i32` on 32-bit x86. The `windows`
+/// crate follows the API exactly, so code that writes `isize` compiles on two
+/// of the three targets this project builds for and fails on the third. The
+/// alias makes the width follow the target instead of the developer's machine.
+#[cfg(target_pointer_width = "64")]
+pub(super) type WindowLong = isize;
+#[cfg(target_pointer_width = "32")]
+pub(super) type WindowLong = i32;
+
+/// Put a pointer into a window word.
+///
+/// The window word exists to hold a pointer — that is what `LONG_PTR` is for —
+/// so this is the storage the API asks for rather than a narrowing conversion.
+#[allow(clippy::cast_possible_wrap, clippy::cast_possible_truncation)]
+pub(super) fn window_long_from_pointer<T>(pointer: *mut T) -> WindowLong {
+    pointer as usize as WindowLong
+}
+
 pub(super) const ID_LANGUAGE: usize = 100;
 
 pub(super) const ID_TABS: usize = 101;

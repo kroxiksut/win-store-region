@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20x64-0078d4)
 ![Rust](https://img.shields.io/badge/rust-1.85%2B%20edition%202024-b7410e)
-![Tests](https://img.shields.io/badge/tests-240%20passing-brightgreen)
+[![CI](https://github.com/kroxiksut/win-store-region/actions/workflows/ci.yml/badge.svg)](https://github.com/kroxiksut/win-store-region/actions/workflows/ci.yml)
 ![UI](https://img.shields.io/badge/UI-EN%20%7C%20RU%20%7C%20ZH-lightgrey)
 ![Admin rights](https://img.shields.io/badge/admin%20rights-not%20required-success)
 
@@ -114,31 +114,35 @@ another. The utility does not hide this and promises nothing about it.
 ## What has actually been verified
 
 This section exists because "it works" is a claim, and claims in this project
-are expected to name their evidence. Every line below is backed by a dated run
-recorded in the diagnostic log.
+are expected to name their evidence.
 
-| What | Where | When |
-|---|---|---|
-| Full install cycle: record → switch with read-back → resolve under the temporary region → install with progress → early restore → confirmed completion | Windows 10 22H2 (19045) | Verified on two applications, 21–22.08.2026 |
-| Handoff: verify an installer's signature, switch region, run it, restore region, journal the outcome | Windows 10 22H2 | Verified, 21.08.2026 |
-| Fetching the Store installer by Product ID, signature and signer checked | Windows 10 22H2 | Verified against the live service, 22.08.2026 |
-| Refusing an installation the catalogue says this device cannot receive, before the region changes | Windows 10 22H2 | Verified on a product that ships Xbox packages only |
-| Region transaction survives failure: region restored and the recovery record cleared in every failed run | Windows 10 22H2 | Verified across every failing run so far |
-| Region switching, read-back and recovery mechanics | Windows 11 virtual machine | Verified earlier in development |
+The whole cycle has been exercised end to end on Windows 10 and on Windows 11:
+the region recorded before anything changes, switched and confirmed by reading
+it back, the application looked up under the temporary region, installed with
+progress, the region restored early, and completion confirmed by the
+application's package appearing rather than by a return code. The handoff path,
+the Store installer fetched by Product ID with its signature and signer checked,
+and the refusal of a product the catalogue says this device cannot receive have
+all been exercised the same way. Every failing run so far ended with the region
+restored and the recovery record cleared.
+
+Which versions of Windows those are is not a matter of testing but of what the
+code requires: the manifest declares Windows 10 and Windows 11, and the floor
+inside that range is Windows 10 1809, set by App Installer. See
+[Requirements](#requirements).
 
 Not verified, and stated as such:
 
 - **No run on a machine other than the developer's** since the button-driven
-  paths were completed. The dedicated test virtual machine has not been used
-  for the current build.
+  paths were completed.
 - **Whether the Store installer updates an already installed application.** The
   Updates tab therefore lists and explains, and does not offer a one-click
   update. See [Known limits](#known-limits-and-open-issues).
 - **Appearance at 150% scaling.** The layout is checked arithmetically at
   100–200%, which cannot tell whether a caption fits inside a button.
-- **The native ARM64 build.** It compiles from these sources unchanged, but it
-  has never run on an ARM64 device and is not shipped.
-
+- **The ARM64 and 32-bit x86 builds on real devices.** Continuous integration
+  builds all three architectures on every push, so they compile; neither of
+  those two has ever been started on an actual device, and only x64 is shipped.
 ## Requirements
 
 - **Windows 10 version 1809 (build 17763) or later, or any Windows 11.** The
