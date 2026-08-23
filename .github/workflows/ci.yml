@@ -25,7 +25,7 @@ jobs:
     name: Format, lints and tests
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Name the toolchain in the log
         run: |
@@ -34,7 +34,7 @@ jobs:
           cargo fmt --version
           cargo clippy --version
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: |
             ~/.cargo/registry
@@ -62,20 +62,23 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # The suffix is spelled out rather than derived from a flag: in a
+          # GitHub expression an empty string is falsy, so `shipped && '' ||
+          # '-unverified'` marked every artifact unverified, x64 included.
           - target: x86_64-pc-windows-msvc
             # The only architecture the project ships. See the README.
-            shipped: true
+            suffix: ''
           - target: aarch64-pc-windows-msvc
-            shipped: false
+            suffix: '-unverified'
           - target: i686-pc-windows-msvc
-            shipped: false
+            suffix: '-unverified'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Add the target
         run: rustup target add ${{ matrix.target }}
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: |
             ~/.cargo/registry
@@ -91,8 +94,23 @@ jobs:
       - name: Build
         run: cargo build --release --target ${{ matrix.target }}
 
-      - uses: actions/upload-artifact@v4
+      # The binary is unsigned, so its digest is the only thing a user can check
+      # it against. Putting it in the run summary and beside the binary makes
+      # that check possible without trusting this file or anyone who passed it
+      # on. Single-quoted strings below: a backtick is PowerShell's escape
+      # character, and the summary line wants literal ones.
+      - name: Publish the digest
+        shell: pwsh
+        run: |
+          $exe = "target/${{ matrix.target }}/release/WinStoreRegion.exe"
+          $hash = (Get-FileHash $exe -Algorithm SHA256).Hash.ToLower()
+          Set-Content -Path "$exe.sha256" -Value ($hash + ' *WinStoreRegion.exe') -Encoding ascii
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value ('- **${{ matrix.target }}** `' + $hash + '`')
+
+      - uses: actions/upload-artifact@v7
         with:
-          name: WinStoreRegion-${{ matrix.target }}${{ matrix.shipped && '' || '-unverified' }}
-          path: target/${{ matrix.target }}/release/WinStoreRegion.exe
+          name: WinStoreRegion-${{ matrix.target }}${{ matrix.suffix }}
+          path: |
+            target/${{ matrix.target }}/release/WinStoreRegion.exe
+            target/${{ matrix.target }}/release/WinStoreRegion.exe.sha256
           if-no-files-found: error

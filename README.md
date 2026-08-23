@@ -15,7 +15,7 @@ puts the region back once it has seen the actual result.
 One portable `WinStoreRegion.exe` for x64, about 1.3 MB. It neither needs nor
 requests administrator rights.
 
-**English** · [Русский](README.ru.md) · [简体中文](README.zh-CN.md)
+**English** · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [Changelog](CHANGELOG.md)
 
 ![The Installation tab in English](assets/screenshots/installation-en.png)
 
@@ -163,6 +163,25 @@ Not verified, and stated as such:
   unavailable. The program does not copy itself elsewhere to work around this —
   it reports the unmet condition instead.
 - No administrator rights.
+
+**The binary is not signed, and Windows will say so.** On first run SmartScreen
+shows "Windows protected your PC" and hides the run button behind **More info →
+Run anyway**. That is what Windows does with any executable that carries no
+Authenticode signature and no download reputation; it is not a statement about
+this file in particular. Two things follow, and both are yours to weigh:
+
+- The warning is removed only by signing the release with a code-signing
+  certificate. Nothing in the build can suppress it, and nothing here tries to.
+- What can be checked instead is identity. Every build publishes the SHA-256 of
+  the binary it produced — in the run summary, and in a file beside the binary
+  inside the artifact — and the run itself is public. Compare what you have with
+  `Get-FileHash .\WinStoreRegion.exe -Algorithm SHA256` and the file is either
+  the one that run built or it is not.
+
+A file downloaded from a browser also carries a mark that keeps SmartScreen
+involved after extraction. `Unblock-File .\WinStoreRegion.exe` in PowerShell, or
+**Properties → Unblock**, removes that mark. Unblock the archive before
+extracting it and the files inside come out clean.
 
 ## Using it
 

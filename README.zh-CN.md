@@ -12,7 +12,7 @@
 
 一个便携式 `WinStoreRegion.exe`，用于 x64，约 1.3 MB。它既不需要也不申请管理员权限。
 
-[English](README.md) · [Русский](README.ru.md) · **简体中文**
+[English](README.md) · [Русский](README.ru.md) · **简体中文** · [更新日志](CHANGELOG.md)
 
 > **本文档由机器翻译，未经中文母语者校对。**本项目不审校任何翻译，而这一份连译者都没有，因此它比英文原文更可能出错。发现问题请提交 issue 或 pull request。以 [English](README.md) 为准。
 
@@ -105,6 +105,13 @@ Microsoft 记录了改变国家或地区是一个普通程序：[在 Microsoft S
 - **Microsoft Store**（`Microsoft.WindowsStore`）。
 - `.exe` 运行所在的目录必须可写：首次启动时，`Microsoft.Management.Deployment.winmd` 的副本出现在程序旁边，取自已安装的 App Installer。没有它，安装 COM 接口不可用。程序不会将自己复制到其他地方来解决这个问题——它改为报告不满足的条件。
 - 无需管理员权限。
+
+**该可执行文件未签名，Windows 会这样说。**首次运行时 SmartScreen 会显示“Windows 已保护你的电脑”，并把运行按钮藏在**详细信息 → 仍要运行**后面。Windows 对任何没有 Authenticode 签名、也没有下载信誉的可执行文件都会这样做；这不是针对此文件的判断。由此有两点，且都由你权衡：
+
+- 只有用代码签名证书为发布版签名才能去掉该警告。构建过程不会抑制它，这里也不试图抑制。
+- 可以核对的是来源。每次构建都会公布所生成二进制文件的 SHA-256——在运行摘要中，以及作为工件内二进制文件旁边的一个文件——而运行本身是公开的。用 `Get-FileHash .\WinStoreRegion.exe -Algorithm SHA256` 核对你手上的文件：它要么正是该次运行构建的那个，要么不是。
+
+通过浏览器下载的文件还带有一个标记，解压后 SmartScreen 仍会介入。用 PowerShell 的 `Unblock-File .\WinStoreRegion.exe`，或**属性 → 解除锁定**，可以移除该标记。先解锁压缩包再解压，里面的文件就是干净的。
 
 ## 使用它
 

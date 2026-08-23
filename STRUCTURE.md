@@ -86,9 +86,14 @@ to `C:\temp\WinStoreRegion`.
 │               ├── record.rs       pending-restore.json and its wire schema
 │               ├── startup.rs      Conflict-safe classification and execution
 │               └── store.rs        Durable storage boundary for the record
-├── .github/workflows/ci.yml        Format, lints, tests, and a release build per architecture
+├── .github/
+│   ├── release-notes.md            Release text, with {version} filled in by the workflow
+│   └── workflows/
+│       ├── ci.yml                  Format, lints, tests, and a release build per architecture
+│       └── release.yml             Tag-triggered build and GitHub release
 ├── Cargo.lock                      Locked Rust dependency graph
 ├── Cargo.toml                      Workspace manifest and shared lint policy
+├── CHANGELOG.md                    What changed in each version, in English only
 ├── CLA.md                          Contributor licence agreement, in English
 ├── CONTRIBUTING.md                 How to contribute and the rules that bind, English
 ├── assets/screenshots/             Interface screenshots used by the READMEs
