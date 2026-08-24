@@ -82,11 +82,17 @@ pub enum InstallationOperationState {
 
 impl InstallationOperationState {
     /// Whether recovery state must remain available for this state.
+    ///
+    /// `SwitchingRegion` is in the list because the record is published before
+    /// the writer runs, not after it: from the moment this state is entered a
+    /// region write may already have landed, and a failure here must not be
+    /// allowed to declare "nothing was changed".
     #[must_use]
     pub const fn requires_recovery(self) -> bool {
         matches!(
             self,
-            Self::RegionSwitched
+            Self::SwitchingRegion
+                | Self::RegionSwitched
                 | Self::RefreshingStoreContext
                 | Self::StartingInstall
                 | Self::InstallRequested
@@ -707,6 +713,48 @@ mod tests {
                 from: InstallationOperationState::FailedBeforeRegionChange,
                 event: InstallationOperationEvent::BeginRefreshingStoreContext,
             })
+        );
+    }
+
+    #[test]
+    fn a_failure_while_the_region_is_being_written_never_claims_nothing_changed() {
+        let mut machine = InstallationOperationMachine::new();
+        let mut persistence = RecordingPersistence::default();
+        for event in [
+            InstallationOperationEvent::BeginResolvingProduct,
+            InstallationOperationEvent::ProductResolved,
+            InstallationOperationEvent::BeginPreparing,
+            InstallationOperationEvent::BeginSavingRecoveryState,
+            InstallationOperationEvent::RecoveryStateSaved,
+        ] {
+            machine.apply(event, &mut persistence).expect("legal setup");
+        }
+        assert_eq!(machine.state(), InstallationOperationState::SwitchingRegion);
+        assert!(machine.state().requires_recovery());
+
+        // The record is already published and the writer may already have run,
+        // so both events that mean "no recovery is owed" are refused here.
+        for event in [
+            InstallationOperationEvent::FailBeforeRegionChange,
+            InstallationOperationEvent::Cancel,
+        ] {
+            assert_eq!(
+                machine.apply(event, &mut persistence),
+                Err(InstallationOperationError::InvalidTransition {
+                    from: InstallationOperationState::SwitchingRegion,
+                    event,
+                })
+            );
+        }
+        machine
+            .apply(
+                InstallationOperationEvent::FailWithTemporaryRegion,
+                &mut persistence,
+            )
+            .expect("a failure mid-write keeps the recovery record");
+        assert_eq!(
+            machine.state(),
+            InstallationOperationState::FailedWithTemporaryRegion
         );
     }
 

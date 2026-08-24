@@ -12,7 +12,7 @@
 //! and the file is re-verified against the digest the user confirmed.
 
 use crate::gui::diagnostic::stub_diagnostic;
-use crate::gui::ids::WM_APP_HANDOFF_PROGRESS;
+use crate::gui::ids::{WM_APP_HANDOFF_PROGRESS, post_boxed};
 use crate::gui::install::{append_journal_record, now_utc};
 use crate::platform::diagnostic_log::record;
 use crate::platform::handoff::launch_admitted_installer;
@@ -20,11 +20,9 @@ use crate::platform::observation_timestamp_now;
 use crate::platform::region::{Win32RegionReader, Win32RegionWriter};
 use crate::platform::storage::Win32RecoveryStore;
 use crate::platform::stub::inspect_installer_stub;
-use std::ffi::c_void;
 use std::path::PathBuf;
 use std::thread;
-use windows::Win32::Foundation::{HWND, LPARAM, WPARAM};
-use windows::Win32::UI::WindowsAndMessaging::PostMessageW;
+use windows::Win32::Foundation::HWND;
 use winstoreregion_core::{
     Diagnostic, DiagnosticCode, DurableOperationState, GeoId, HandoffFileIdentity, JournalRecord,
     JournalResult, JournalSubject, LogEvent, LogEventCode, LogLevel, OperationId,
@@ -156,20 +154,8 @@ pub(super) fn start_region_restore(window: HWND) {
 }
 
 /// Post one update to the window, discarding it if the window has gone.
-#[allow(unsafe_code)]
 fn post_update(window_handle: usize, update: HandoffUpdate) {
-    let raw = Box::into_raw(Box::new(update));
-    let posted = unsafe {
-        PostMessageW(
-            Some(HWND(window_handle as *mut c_void)),
-            WM_APP_HANDOFF_PROGRESS,
-            WPARAM(raw as usize),
-            LPARAM(0),
-        )
-    };
-    if posted.is_err() {
-        unsafe { drop(Box::from_raw(raw)) };
-    }
+    post_boxed(window_handle, WM_APP_HANDOFF_PROGRESS, update);
 }
 
 /// Carry out one handoff, reporting every step through `post`.
@@ -229,14 +215,18 @@ fn run(request: &HandoffRequest, post: &dyn Fn(HandoffUpdate)) {
     );
 
     // The record names the file because there is no product identifier to name.
-    let Ok(pending) = PendingRestore::prepared(
-        identity.clone(),
-        now_utc(),
-        original,
-        request.temporary_region,
-        file.record_text(),
-        STORE_INSTALLER_HANDOFF_BACKEND,
-    ) else {
+    let prepared = now_utc().and_then(|started_at| {
+        PendingRestore::prepared(
+            identity.clone(),
+            started_at,
+            original,
+            request.temporary_region,
+            file.record_text(),
+            STORE_INSTALLER_HANDOFF_BACKEND,
+        )
+        .ok()
+    });
+    let Some(pending) = prepared else {
         let diagnostic = Diagnostic::new(DiagnosticCode::RecoveryRecordUnreadable);
         report(&identity, &diagnostic);
         post(HandoffUpdate::safe_failure(diagnostic));
@@ -313,6 +303,24 @@ fn run(request: &HandoffRequest, post: &dyn Fn(HandoffUpdate)) {
     // The milestone is durable before the launch, so a restart that finds this
     // record knows the region was actually written.
     let _ = guard.update_state(DurableOperationState::RegionSwitched);
+
+    // The bytes were admitted before the region changed, and changing a region
+    // is not instant. What runs has to be what was admitted, not whatever the
+    // path names now, so the file answers for itself once more with nothing
+    // between the answer and the launch.
+    let file = match inspect_installer_stub(&request.path)
+        .map_err(stub_diagnostic)
+        .and_then(|inspection| {
+            admit_confirmed_installer_handoff(&inspection, &request.confirmed_sha256)
+                .map_err(Diagnostic::from)
+        }) {
+        Ok(file) => file,
+        Err(diagnostic) => {
+            report(&identity, &diagnostic);
+            post(HandoffUpdate::pending_failure(diagnostic, original));
+            return;
+        }
+    };
 
     let Err(error) = launch_admitted_installer(&request.path) else {
         record(
@@ -518,7 +526,8 @@ fn write_handoff_entry(
     region: GeoId,
     result: JournalResult,
 ) {
-    let written = handoff_record(identity, file, region, result, now_utc())
+    let written = now_utc()
+        .and_then(|at| handoff_record(identity, file, region, result, at))
         .is_some_and(append_journal_record);
     record(
         &LogEvent::new(

@@ -125,6 +125,7 @@ pub(super) const fn diagnostic_message(language: Language, code: DiagnosticCode)
         DiagnosticCode::OperationSequenceViolated => strings.diagnostic_operation_sequence_violated,
         DiagnosticCode::ProductAlreadyInstalled => strings.diagnostic_product_already_installed,
         DiagnosticCode::ProductAlreadyInstalling => strings.diagnostic_product_already_installing,
+        DiagnosticCode::ProductNoLongerOffered => strings.diagnostic_product_no_longer_offered,
         DiagnosticCode::ProductNotFound => strings.diagnostic_product_not_found,
         DiagnosticCode::ProductNotOnThisDevice => strings.diagnostic_product_not_on_this_device,
         DiagnosticCode::ProductUnavailableInRegion => {

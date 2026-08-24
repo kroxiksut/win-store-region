@@ -10,7 +10,7 @@
 
 一个 Windows 实用程序，在安装期间临时切换 Windows 地区，将安装移交给 Microsoft Store 本身的机制，并在看到实际结果后将地区改回。
 
-一个便携式 `WinStoreRegion.exe`，约 1.3 MB，发布 x64、ARM64 与 32 位 x86 三种版本。它既不需要也不申请管理员权限。只有 x64 版本被实际运行过——参见[实际验证过的内容](#实际验证过的内容)。
+一个便携式 `WinStoreRegion.exe`，约 2 MB，发布 x64、ARM64 与 32 位 x86 三种版本。它既不需要也不申请管理员权限。只有 x64 版本被实际运行过——参见[实际验证过的内容](#实际验证过的内容)。
 
 [English](README.md) · [Русский](README.ru.md) · **简体中文** · [更新日志](CHANGELOG.md)
 
@@ -18,16 +18,7 @@
 
 ![安装选项卡（简体中文）](assets/screenshots/installation-zh.png)
 
-<details>
-<summary>同一窗口的英文版和俄文版</summary>
-
-![安装选项卡（英文）](assets/screenshots/installation-en.png)
-
-![安装选项卡（俄文）](assets/screenshots/installation-ru.png)
-
-</details>
-
-地区名称来自 Windows 本身，使用 Windows 称呼它们的语言——这既是该字段被标注为“Windows 列表”的原因，也是中文窗口中地区名称仍为俄文的原因。屏幕截图是在俄文 Windows 上以 125% 缩放拍摄的。
+地区名称来自 Windows 本身，使用 Windows 称呼它们的语言——这既是该字段被标注为“Windows 列表”的原因，也是中文窗口中地区名称仍为俄文的原因。此屏幕截图是在俄文 Windows 上以 125% 缩放拍摄的。
 
 ## 目录
 

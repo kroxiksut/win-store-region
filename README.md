@@ -12,7 +12,7 @@ A Windows utility that switches the Windows region for the length of one
 installation, hands the installation to Microsoft Store's own mechanism, and
 puts the region back once it has seen the actual result.
 
-One portable `WinStoreRegion.exe`, about 1.3 MB, published for x64, ARM64 and
+One portable `WinStoreRegion.exe`, about 2 MB, published for x64, ARM64 and
 32-bit x86. It neither needs nor requests administrator rights. Only the x64
 build has ever been run — see [what is verified](#what-has-actually-been-verified).
 
@@ -20,18 +20,9 @@ build has ever been run — see [what is verified](#what-has-actually-been-verif
 
 ![The Installation tab in English](assets/screenshots/installation-en.png)
 
-<details>
-<summary>The same window in Russian and in Chinese</summary>
-
-![The Installation tab in Russian](assets/screenshots/installation-ru.png)
-
-![The Installation tab in Chinese](assets/screenshots/installation-zh.png)
-
-</details>
-
 Region names come from Windows itself, in the language Windows uses for them —
-which is why the field is labelled "Windows list", and why the Chinese window
-still names its regions in Russian. The screenshots were taken on a Russian
+which is why the field is labelled "Windows list", and why the window above
+still names its regions in Russian. The screenshot was taken on a Russian
 Windows at 125% scaling.
 
 ## Contents

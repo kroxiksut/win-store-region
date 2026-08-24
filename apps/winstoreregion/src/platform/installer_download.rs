@@ -100,12 +100,7 @@ impl Drop for Handle {
 pub(crate) fn download_store_installer(
     product_id: &StoreProductId,
 ) -> Result<DownloadedInstaller, InstallerDownloadError> {
-    let (status, body, disposition) = fetch(product_id)?;
-    if status != 200 {
-        return Err(InstallerDownloadError::Refused {
-            status: Some(status),
-        });
-    }
+    let (body, disposition) = fetch(product_id)?;
     let directory = installer_directory().ok_or(InstallerDownloadError::NotWritable)?;
     fs::create_dir_all(&directory).map_err(|_| InstallerDownloadError::NotWritable)?;
     let name = file_name(product_id, disposition.as_deref());
@@ -165,7 +160,21 @@ fn installer_directory() -> Option<PathBuf> {
 /// downloads differ in bytes that identify nothing, so
 /// keeping both would only accumulate copies of the same installer.
 fn write_whole(path: &Path, body: &[u8]) -> Result<(), InstallerDownloadError> {
-    fs::write(path, body).map_err(|_| InstallerDownloadError::NotWritable)
+    // Written under a name nothing looks for and renamed into place afterwards.
+    // The admission gate takes the file it finds at the final name, and a write
+    // that stopped halfway would leave a partial installer sitting under
+    // exactly that name — which is the one thing the comment above promises
+    // cannot happen. The rename replaces an existing file in one operation.
+    let staging = path.with_extension("partial");
+    if fs::write(&staging, body).is_err() {
+        let _ = fs::remove_file(&staging);
+        return Err(InstallerDownloadError::NotWritable);
+    }
+    if fs::rename(&staging, path).is_err() {
+        let _ = fs::remove_file(&staging);
+        return Err(InstallerDownloadError::NotWritable);
+    }
+    Ok(())
 }
 
 /// The name to store the file under.
@@ -207,9 +216,7 @@ fn disposition_file_name(header: &str) -> Option<String> {
 
 /// Perform the request, returning status, body, and the disposition header.
 #[allow(unsafe_code)]
-fn fetch(
-    product_id: &StoreProductId,
-) -> Result<(u32, Vec<u8>, Option<String>), InstallerDownloadError> {
+fn fetch(product_id: &StoreProductId) -> Result<(Vec<u8>, Option<String>), InstallerDownloadError> {
     let unavailable = InstallerDownloadError::TransportUnavailable;
     let agent = HSTRING::from(APPLICATION_NAME);
     let session = Handle::new(unsafe {
@@ -271,9 +278,18 @@ fn fetch(
     }
     .map_err(|_| InstallerDownloadError::Refused { status: None })?;
 
+    // The status is answered before a single byte of the body is read. An error
+    // page is a body too, and reading it to the cap would spend megabytes of
+    // the user's connection on text nothing will look at.
+    if status != 200 {
+        return Err(InstallerDownloadError::Refused {
+            status: Some(status),
+        });
+    }
+
     let disposition = header_text(&request, WINHTTP_QUERY_CONTENT_DISPOSITION);
     let body = read_body(&request)?;
-    Ok((status, body, disposition))
+    Ok((body, disposition))
 }
 
 /// Read one response header as text, or nothing when it is absent.

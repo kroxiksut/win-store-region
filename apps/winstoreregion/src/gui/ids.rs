@@ -1,7 +1,9 @@
 //! Window class, control identifiers, private messages, and colours.
 
-use windows::Win32::Foundation::COLORREF;
-use windows::Win32::UI::WindowsAndMessaging::{WINDOW_STYLE, WM_APP};
+use std::ffi::c_void;
+use std::sync::atomic::{AtomicUsize, Ordering};
+use windows::Win32::Foundation::{COLORREF, HWND, LPARAM, WPARAM};
+use windows::Win32::UI::WindowsAndMessaging::{PostMessageW, WINDOW_STYLE, WM_APP};
 use windows::core::{PCWSTR, w};
 
 pub(super) const WINDOW_CLASS: PCWSTR = w!("WinStoreRegion.MainWindow");
@@ -27,6 +29,56 @@ pub(super) type WindowLong = i32;
 #[allow(clippy::cast_possible_wrap, clippy::cast_possible_truncation)]
 pub(super) fn window_long_from_pointer<T>(pointer: *mut T) -> WindowLong {
     pointer as usize as WindowLong
+}
+
+/// The window posted results belong to, for as long as it exists.
+///
+/// Windows reuses window handles. A worker holds its window as a plain value
+/// for as long as its request takes — a market sweep runs for half a minute —
+/// and a handle reused in the meantime would be handed the raw pointer of a
+/// payload meant for a window that is gone. This is published when the window
+/// is created and withdrawn when it is destroyed, so a post can be refused
+/// before it is made rather than interpreted by whatever now answers to that
+/// value.
+static LIVE_WINDOW: AtomicUsize = AtomicUsize::new(0);
+
+/// Record the window that may receive posted results.
+pub(super) fn publish_live_window(window: HWND) {
+    LIVE_WINDOW.store(window.0 as usize, Ordering::Release);
+}
+
+/// Withdraw a window that is being destroyed, if it is still the live one.
+pub(super) fn withdraw_live_window(window: HWND) {
+    let _ = LIVE_WINDOW.compare_exchange(window.0 as usize, 0, Ordering::AcqRel, Ordering::Relaxed);
+}
+
+/// Hand one owned value to a window as the payload of one message.
+///
+/// The value crosses the thread boundary as a raw pointer and the handler takes
+/// ownership back with `Box::from_raw`. A window that has gone refuses the
+/// post, and then the value is still owned here and is dropped rather than
+/// leaked — the one thing every hand-written copy of this had to remember, in
+/// ten places that each did it identically.
+#[allow(unsafe_code)]
+pub(super) fn post_boxed<T>(window_handle: usize, message: u32, value: T) {
+    // A result for a window that is gone is dropped here. The value is still
+    // owned at this point, and posting it to a handle that has been reused
+    // would hand a raw pointer to a window that knows nothing about it.
+    if window_handle == 0 || LIVE_WINDOW.load(Ordering::Acquire) != window_handle {
+        return;
+    }
+    let raw = Box::into_raw(Box::new(value));
+    let posted = unsafe {
+        PostMessageW(
+            Some(HWND(window_handle as *mut c_void)),
+            message,
+            WPARAM(raw as usize),
+            LPARAM(0),
+        )
+    };
+    if posted.is_err() {
+        unsafe { drop(Box::from_raw(raw)) };
+    }
 }
 
 pub(super) const ID_LANGUAGE: usize = 100;
@@ -136,6 +188,12 @@ pub(super) const WM_APP_INSTALLER_DOWNLOADED: u32 = WM_APP + 12;
 
 /// One report from the scan behind the Updates tab.
 pub(super) const WM_APP_UPDATES_SCANNED: u32 = WM_APP + 13;
+
+/// The startup checks that ask Windows have finished.
+pub(super) const WM_APP_STARTUP_CHECKED: u32 = WM_APP + 14;
+
+/// Whether an installation from a previous run is still going.
+pub(super) const WM_APP_RESUME_PROBED: u32 = WM_APP + 15;
 
 pub(super) const SINGLE_INSTANCE_MUTEX: PCWSTR = w!("Local\\WinStoreRegion-v0");
 

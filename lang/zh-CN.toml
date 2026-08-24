@@ -139,6 +139,21 @@ operation_restoring_region = "安装已完成。正在恢复原始地区。"
 operation_done = "完成：应用已安装，地区是原始地区。"
 operation_completion_uncertain = "无法确认完成。决定权在你。"
 operation_started = "操作已启动。等待第一个报告。"
+
+# Windows 未说明存在哪些地区。屏幕上的列表为空，本身什么也不说明，
+# 因此由窗口来说明。
+window_no_regions_listed = "Windows 未命名任何地区，没有可供选择的临时地区。在此之前无法安装任何内容。"
+
+# 当观察期限已过而临时地区仍然生效时询问。三个答案就是 core 协议接受的
+# 那三个，按下第二个即是对其警告的确认。{state} 是操作所处的位置。
+operation_ask_timeout_resolution = """
+安装尚未报告完成：{state}。
+
+Windows 仍在使用临时地区。安装由 Windows 管理，无法从此窗口停止。
+
+是 — 安装已结束，恢复原始地区。
+否 — 立即恢复原始地区，即使安装仍在进行；它可能被中断。
+取消 — 继续等待；窗口将再次接入该安装。"""
 # 附加到操作正在说的内容，前导空格保持。
 operation_region_already_back = " 原始地区已返回。"
 installing_phase_running = "正在安装"
@@ -282,6 +297,10 @@ diagnostic_store_input_not_understood = "未识别链接或 Product ID。"
 diagnostic_store_page_launch_rejected = "Windows 无法打开 Microsoft Store 页面。"
 diagnostic_store_refused_without_reason = "Microsoft Store 拒绝，未提供原因。"
 diagnostic_temporary_region_not_applied = "源未接受临时地区：在安装开始前它返回到原始地区。请重试。"
+
+# 地区已确认，目录刚刚还在其下作出回答；到请求安装时该应用已不在那里。
+# 这里不责备地区：地区正是已被证明的那一个事实。
+diagnostic_product_no_longer_offered = "源不再提供此应用：在临时地区下它曾对其作出回答，而要安装时却无物可装。它可能已下架。请重试或选择另一个地区。"
 diagnostic_unsupported_market = "目录不接受选定的地区。"
 diagnostic_win_get_missing = "未找到用于安装 Store 应用的 Windows 组件。"
 
@@ -401,10 +420,22 @@ recovery_subject_installer_file = "安装程序文件：{value}"
 # 文本说明这一点。
 recovery_verified_record_cleaned = "前一次操作已经恢复了原始地区。已为 {id} 清除已验证恢复记录。"
 
+# 同一条记录，在发现其安装已不再进行之后。不主张它是否成功：历史中
+# 写入一条未确认的结果，记录随之清除。
+recovery_outcome_unknown_recorded = "上一次运行的安装已不再进行，其完成未获确认。历史中现在有一条相应记录，并已为 {id} 清除恢复记录。"
+
+# 同一条记录，但上一次运行正在安装的应用现在已在这台机器上。记录写于那次
+# 安装开始之前，因此它的出现就是那次安装的完成，历史可以这样说。
+recovery_outcome_installed_recorded = "上一次运行的安装已完成：应用已在这台机器上。历史中现在有一条相应记录，并已为 {id} 清除恢复记录。"
+
 # 为什么要求做决定。每一个命名现在地区的真实情况，没有一个责备用户。
 recovery_situation_temporary_region_active = "Windows 仍在使用临时地区。"
 recovery_situation_external_region_conflict = "当前地区在此操作外被更改。"
 recovery_situation_original_region_active = "原始地区已是活跃的。"
+
+# 一条其操作从未报告结果的记录。地区已经返回，这正是它容易被误认为
+# 已完成操作的原因，因此这一行命名真正未知的内容。
+recovery_situation_outcome_unknown = "上一次运行的安装从未报告它如何结束。"
 
 # 完整启动通知。记录不存储显示名称，因此通知不能主张一个：下面的每一行
 # 是操作开始时实际写下的内容。

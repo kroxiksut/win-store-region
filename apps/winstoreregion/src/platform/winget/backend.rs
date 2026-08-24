@@ -204,7 +204,12 @@ impl InstallBackend for WinGetComBackend {
             .session
             .find_exact(request.product_id().as_str())
             .map_err(|code| self.refused(code, InstallBackendError::RequestRejected))?
-            .ok_or(InstallBackendError::TemporaryRegionNotApplied)?;
+            // An empty answer is not evidence about the region: this call runs
+            // under a region confirmed by read-back, and the same catalogue
+            // named the product under it moments ago. Whatever happened to the
+            // product since, saying "the temporary region did not apply" would
+            // be a statement this backend cannot support.
+            .ok_or(InstallBackendError::PackageNotOffered)?;
 
         let options: InstallOptions =
             unsafe { CoCreateInstance(&CLSID_INSTALL_OPTIONS, None, CLSCTX_ALL) }

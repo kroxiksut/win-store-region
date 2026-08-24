@@ -20,9 +20,9 @@ use winstoreregion_core::{
     ApplicationSourceDraft, ApplicationSourceKind, AvailabilitySurvey, DeviceCompatibility,
     Diagnostic, GeoId, GuiLaunch, HandoffFileIdentity, InstallPhase, InstallProgress,
     InstallationOperationState, JournalRecord, MarketAnswer, MarketCode, OfferedProduct,
-    PrerequisiteReport, ProductResolutionSession, ProductResolutionState, Region, RegionReadError,
-    ResolveFailure, ResolveRequest, ResolvedProduct, StoreInputCandidate, StoreProductId,
-    StubInspection, SurveyScope, UpdateCandidate, admit_installer_handoff,
+    PendingRestore, PrerequisiteReport, ProductResolutionSession, ProductResolutionState, Region,
+    RegionReadError, ResolveFailure, ResolveRequest, ResolvedProduct, StoreInputCandidate,
+    StoreProductId, StubInspection, SurveyScope, UpdateCandidate, admit_installer_handoff,
 };
 
 /// A modal call that is on the stack right now, and what arrived meanwhile.
@@ -235,6 +235,12 @@ pub(super) struct AppState {
     pub(super) installer_download: Option<StoreProductId>,
     /// What the Updates tab has learned, and how far it got.
     pub(super) updates: UpdatesView,
+    /// Which scan the window is showing.
+    ///
+    /// A scan cannot be stopped once its workers are asking the network, so a
+    /// second one started over the first is told apart by this number instead:
+    /// reports from the older scan arrive and are dropped.
+    pub(super) updates_scan_generation: u64,
     /// Which entry of the updates list the user is looking at.
     pub(super) selected_update_index: Option<usize>,
     /// When the shown scan was taken, for a scan remembered from a past run.
@@ -398,6 +404,7 @@ impl AppState {
             device_compatibility: None,
             installer_download: None,
             updates: UpdatesView::Idle,
+            updates_scan_generation: 0,
             selected_update_index: None,
             updates_taken: None,
         };
@@ -424,6 +431,22 @@ impl AppState {
     /// A verdict recorded for anything else is not an answer to the question
     /// being asked now, and silence is the default: nothing is refused on a
     /// question nobody answered.
+    /// Whether this is the exact question the window is asking right now.
+    ///
+    /// An answer to anything else belongs to a product or region the user has
+    /// since moved on from. It is not merely useless: stored, it would replace
+    /// the answer that is current with one nothing will ask for again.
+    pub(super) fn asks_about(&self, product_id: &StoreProductId, market: &MarketCode) -> bool {
+        let (Some(current), Some(region)) = (
+            self.accepted_product_id(),
+            self.selected_temporary_region.as_ref(),
+        ) else {
+            return false;
+        };
+        *current == *product_id
+            && MarketCode::from_region(region).is_ok_and(|current| current == *market)
+    }
+
     pub(super) fn device_verdict(&self) -> DeviceCompatibility {
         let Some((asked_product, asked_market, verdict)) = self.device_compatibility.as_ref()
         else {
@@ -638,6 +661,30 @@ pub(super) enum UiUpdate {
     JournalLoaded(std::result::Result<Vec<JournalRecord>, JournalStoreError>),
 }
 
+/// What the startup checks found once they were done asking Windows.
+///
+/// They run together on one thread because they run once, at the same moment,
+/// and none of them decides anything: each answers a question the window would
+/// otherwise have asked while it was still blank.
+pub(super) struct StartupChecksUpdate {
+    pub(super) prerequisites: PrerequisiteReport,
+    /// A scan remembered from a previous run, and when it was taken.
+    pub(super) remembered_scan: Option<(String, Vec<UpdateCandidate>)>,
+}
+
+/// Whether the installation a recovery record names is still going.
+pub(super) struct ResumeProbeUpdate {
+    /// The record the question was asked about.
+    pub(super) pending: PendingRestore,
+    /// Set when the package manager still has that installation in flight.
+    pub(super) resumable: bool,
+    /// Set when the identity the record was waiting for is installed now.
+    ///
+    /// Read only once the installation is over: it is what turns a record left
+    /// without an outcome into a history entry that can say "installed".
+    pub(super) package_present: bool,
+}
+
 pub(super) struct StubInspectionUpdate {
     pub(super) path: PathBuf,
     pub(super) result: std::result::Result<StubInspection, StubInspectionError>,
@@ -654,6 +701,8 @@ pub(super) struct JournalDeleteUpdate {
 
 /// One report from the scan behind the Updates tab.
 pub(super) struct UpdatesScanUpdate {
+    /// Which scan this report belongs to.
+    pub(super) generation: u64,
     /// Candidates gathered so far, replacing what the window held.
     pub(super) candidates: Vec<UpdateCandidate>,
     /// How many applications have been asked about, out of how many.

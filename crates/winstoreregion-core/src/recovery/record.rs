@@ -363,6 +363,20 @@ pub enum DurableOperationState {
     Restored,
 }
 
+impl DurableOperationState {
+    /// Whether the operation still owes an outcome even with the region back.
+    ///
+    /// Only one milestone can hold both at once. `RegionRestoredEarly` says the
+    /// original region was read back while the installation kept running, so a
+    /// later reader that sees the safe region has learnt nothing about how the
+    /// installation ended. `Restored` looks the same from the outside but is
+    /// written after the observation is over, which is what makes it final.
+    #[must_use]
+    pub const fn outcome_is_still_open(self) -> bool {
+        matches!(self, Self::RegionRestoredEarly)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

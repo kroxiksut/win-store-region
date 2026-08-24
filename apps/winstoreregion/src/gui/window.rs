@@ -13,15 +13,19 @@ use crate::gui::ids::{
     SINGLE_INSTANCE_MUTEX, STATUS_BACKGROUND, WHITE, WINDOW_CLASS, WM_APP_DEVICE_COMPATIBILITY,
     WM_APP_DROP_ENTER, WM_APP_DROP_FILE, WM_APP_DROP_LEAVE, WM_APP_HANDOFF_PROGRESS,
     WM_APP_INSTALL_PROGRESS, WM_APP_INSTALLER_DOWNLOADED, WM_APP_JOURNAL_DELETED,
-    WM_APP_JOURNAL_LOADED, WM_APP_MARKET_ANSWERS, WM_APP_PRODUCT_RESOLVED, WM_APP_STUB_INSPECTED,
-    WM_APP_UPDATES_SCANNED, window_long_from_pointer,
+    WM_APP_JOURNAL_LOADED, WM_APP_MARKET_ANSWERS, WM_APP_PRODUCT_RESOLVED, WM_APP_RESUME_PROBED,
+    WM_APP_STARTUP_CHECKED, WM_APP_STUB_INSPECTED, WM_APP_UPDATES_SCANNED, publish_live_window,
+    window_long_from_pointer, withdraw_live_window,
 };
-use crate::gui::install::{InstallationUpdate, resume_installation};
+use crate::gui::install::{
+    InstallationUpdate, follow_resumed_installation, record_operation_without_outcome,
+};
 use crate::gui::layout::{DESIGN_HEIGHT, DESIGN_WIDTH, layout_controls};
 use crate::gui::menu::replace_window_menu;
 use crate::gui::recovery::{
-    ask_pending_recovery, execute_gui_recovery, inspect_gui_startup_recovery,
-    recovery_execution_status, recovery_startup_notice, show_recovery_notice,
+    ask_pending_recovery, clear_verified_recovery_record, execute_gui_recovery,
+    inspect_gui_startup_recovery, recovery_execution_status, recovery_startup_notice,
+    show_recovery_notice,
 };
 use crate::gui::render::{
     installer_download_failed, installer_download_ready, operation_status, render,
@@ -30,17 +34,17 @@ use crate::gui::render::{
 use crate::gui::state::{
     AppState, DeviceCompatibilityUpdate, FileSelectionError, InstallerDownloadUpdate,
     JournalDeleteUpdate, MarketSurveyUpdate, ModalScope, OleGuard, ProductResolutionUpdate,
-    RunningOperation, SingleInstanceGuard, StubInspectionUpdate, UiEvent, UiUpdate,
-    UpdatesScanUpdate, UpdatesView, WindowBootstrap, WindowChrome, WindowContextOwner,
-    hold_until_modal_ends, modal_call_is_active,
+    ResumeProbeUpdate, RunningOperation, SingleInstanceGuard, StartupChecksUpdate,
+    StubInspectionUpdate, UiEvent, UiUpdate, UpdatesScanUpdate, UpdatesView, WindowBootstrap,
+    WindowChrome, WindowContextOwner, hold_until_modal_ends, modal_call_is_active,
 };
 use crate::gui::strings::{Language, fill};
-use crate::gui::work::start_journal_load;
+use crate::gui::work::{
+    start_installer_sweep, start_journal_load, start_resume_probe, start_startup_checks,
+};
 use crate::platform::diagnostic_log::record;
-use crate::platform::installer_download::sweep_downloaded_installers;
-use crate::platform::prerequisites::check_prerequisites;
 use crate::platform::region::Win32RegionReader;
-use crate::platform::storage::{JournalStoreError, load_updates_scan};
+use crate::platform::storage::JournalStoreError;
 use std::cell::{Cell, RefCell};
 use std::ffi::c_void;
 use std::mem::size_of;
@@ -74,9 +78,10 @@ use windows::Win32::UI::WindowsAndMessaging::{
 use windows::core::{HSTRING, PCWSTR, Result};
 use winstoreregion_core::{
     APPLICATION_NAME, Diagnostic, GuiLaunch, InstallationOperationState, JournalRecord, LogEvent,
-    LogEventCode, LogLevel, MarketCode, PendingRecoveryChoice, PendingRecoveryExecution,
+    LogEventCode, LogLevel, PendingRecoveryChoice, PendingRecoveryExecution,
     PendingRecoveryExecutionError, RegionReader, StartupRecoveryError, StartupRecoveryOutcome,
-    install_supported_in_v0_1, startup_recovery_admits_new_operation,
+    TimeoutResolution, TimeoutResolutionChoice, install_supported_in_v0_1, resolve_timeout_choice,
+    startup_recovery_admits_new_operation,
 };
 
 #[allow(unsafe_code)]
@@ -336,6 +341,8 @@ const fn is_posted_application_message(message: u32) -> bool {
             | WM_APP_DEVICE_COMPATIBILITY
             | WM_APP_INSTALLER_DOWNLOADED
             | WM_APP_UPDATES_SCANNED
+            | WM_APP_STARTUP_CHECKED
+            | WM_APP_RESUME_PROBED
     )
 }
 
@@ -417,6 +424,111 @@ fn operation_state_label(language: Language, state: InstallationOperationState) 
     }
 }
 
+/// Ask how an operation that reached its deadline should end.
+///
+/// The three answers are the three the core protocol accepts. Pressing the
+/// second one is the acknowledgement core requires before it will restore a
+/// region under an installation that may still be running.
+#[allow(unsafe_code)]
+unsafe fn ask_timeout_resolution(
+    window: HWND,
+    language: Language,
+    state: InstallationOperationState,
+) -> TimeoutResolutionChoice {
+    let message = HSTRING::from(fill(
+        language.strings().operation_ask_timeout_resolution,
+        &[("state", operation_state_label(language, state))],
+    ));
+    let title = HSTRING::from(APPLICATION_NAME);
+    let _modal = ModalScope::enter();
+    match unsafe {
+        MessageBoxW(
+            Some(window),
+            &message,
+            &title,
+            MB_YESNOCANCEL | MB_DEFBUTTON3 | MB_ICONWARNING,
+        )
+    } {
+        IDYES => TimeoutResolutionChoice::InstallationCompletedRestoreRegion,
+        IDNO => TimeoutResolutionChoice::RestoreRegionNow {
+            warning_acknowledged: true,
+        },
+        _ => TimeoutResolutionChoice::ContinueWaiting,
+    }
+}
+
+/// Carry out the user's answer about an operation left without an outcome.
+///
+/// The thread that ran the operation has finished; what it left behind is a
+/// published record and a temporary region. Both restoring answers go back
+/// through the core recovery protocol — the same one the next start would use —
+/// and waiting means attaching to the installation again.
+#[allow(unsafe_code)]
+unsafe fn resolve_uncertain_operation(window: HWND, chrome: &WindowChrome, app: &mut AppState) {
+    let asked = app.operation_state.unwrap_or_default();
+    let choice = unsafe { ask_timeout_resolution(window, app.language, asked) };
+    let strings = app.language.strings();
+    // The record is the only handle on the operation now. Without one there is
+    // nothing to restore and nothing to resume, and the window must at least
+    // stop showing an operation that is over.
+    let Ok(resolution) = resolve_timeout_choice(choice) else {
+        return;
+    };
+    let Ok(StartupRecoveryOutcome::UserDecisionRequired {
+        pending,
+        disposition,
+        ..
+    }) = inspect_gui_startup_recovery()
+    else {
+        app.running_operation = None;
+        strings
+            .operation_completion_uncertain
+            .clone_into(&mut app.operation_status);
+        return;
+    };
+    match resolution {
+        TimeoutResolution::ResumeObserver => {
+            if follow_resumed_installation(window, &pending) {
+                app.running_operation = Some(RunningOperation::default());
+                strings
+                    .window_installation_resumed
+                    .clone_into(&mut app.operation_status);
+            } else {
+                app.running_operation = None;
+                strings
+                    .operation_completion_uncertain
+                    .clone_into(&mut app.operation_status);
+            }
+        }
+        TimeoutResolution::RestoreAfterUserAffirmedCompletion
+        | TimeoutResolution::ForceRestoreAfterWarningAcknowledged => {
+            let outcome = execute_gui_recovery(
+                &pending,
+                disposition,
+                PendingRecoveryChoice::RestoreOriginalRegion,
+            );
+            record(
+                &LogEvent::new(LogLevel::Info, LogEventCode::RecoveryActionExecuted)
+                    .with_token("choice", "restore")
+                    .with_token("outcome", recovery_outcome_token(&outcome)),
+            );
+            app.running_operation = None;
+            app.operation_status = recovery_execution_status(app.language, &outcome);
+            let after = inspect_gui_startup_recovery();
+            app.recovery_admits_new_operation = startup_recovery_admits_new_operation(&after);
+            let region = Win32RegionReader.current_region();
+            unsafe {
+                dispatch_ui_event(
+                    window,
+                    chrome,
+                    app,
+                    UiEvent::StateUpdate(UiUpdate::CurrentRegion(region)),
+                );
+            };
+        }
+    }
+}
+
 /// Ask before closing while a handoff still holds the temporary region.
 ///
 /// There is nothing to cancel and nothing to wait for: Microsoft Store owns the
@@ -471,6 +583,7 @@ unsafe fn request_window_close(window: HWND, chrome: &WindowChrome, app: &mut Ap
                 // with it. Both are safe to close on.
                 Ok(
                     StartupRecoveryOutcome::UserDecisionRequired { .. }
+                    | StartupRecoveryOutcome::OperationWithoutOutcome { .. }
                     | StartupRecoveryOutcome::NoPendingRecord
                     | StartupRecoveryOutcome::VerifiedRecordCleaned { .. },
                 ) => true,
@@ -535,6 +648,113 @@ unsafe fn request_window_close(window: HWND, chrome: &WindowChrome, app: &mut Ap
     }
 }
 
+/// Decide what a recovery record deserves, once the probe has answered.
+///
+/// Every path a startup record can take ends here: taken over, restored on the
+/// user's answer, kept for the next start, or closed out with the history entry
+/// its own run never wrote. It runs from a posted message rather than from
+/// `WM_CREATE` because the question before it travels to a package manager over
+/// the network, and neither that wait nor the dialog after it belongs in front
+/// of a window that has not painted yet.
+#[allow(unsafe_code)]
+unsafe fn settle_pending_recovery(
+    window: HWND,
+    chrome: &WindowChrome,
+    state: &mut AppState,
+    update: &ResumeProbeUpdate,
+) {
+    if update.resumable && follow_resumed_installation(window, &update.pending) {
+        state.running_operation = Some(RunningOperation::default());
+        let resumed = state.language.strings().window_installation_resumed;
+        resumed.clone_into(&mut state.operation_status);
+        unsafe { render(window, chrome, state) };
+        return;
+    }
+    // Read the record again rather than carry it: the answer took a network
+    // round trip, and what is still owed is whatever the store says now.
+    let recovery = inspect_gui_startup_recovery();
+    let Some(message) = recovery_startup_notice(state.language, &recovery) else {
+        return;
+    };
+    match &recovery {
+        Ok(StartupRecoveryOutcome::UserDecisionRequired {
+            pending,
+            disposition,
+            ..
+        }) => {
+            let choice = unsafe { ask_pending_recovery(window, state.language, &message) };
+            let outcome = execute_gui_recovery(pending, *disposition, choice);
+            record(
+                &LogEvent::new(LogLevel::Info, LogEventCode::RecoveryActionExecuted)
+                    .with_token(
+                        "choice",
+                        match choice {
+                            PendingRecoveryChoice::RestoreOriginalRegion => "restore",
+                            PendingRecoveryChoice::KeepCurrentRegion => "keep_current",
+                        },
+                    )
+                    .with_token("outcome", recovery_outcome_token(&outcome)),
+            );
+            // A handoff that the previous run left behind gets its history
+            // entry here, because this is where its region actually came back.
+            if matches!(
+                outcome,
+                Ok(PendingRecoveryExecution::Restored { .. }
+                    | PendingRecoveryExecution::VerifiedRecordCleared)
+            ) {
+                record_restored_handoff(pending);
+                start_journal_load(window);
+            }
+            state.operation_status = recovery_execution_status(state.language, &outcome);
+            let region = Win32RegionReader.current_region();
+            unsafe {
+                dispatch_ui_event(
+                    window,
+                    chrome,
+                    state,
+                    UiEvent::StateUpdate(UiUpdate::CurrentRegion(region)),
+                );
+            };
+        }
+        Ok(StartupRecoveryOutcome::OperationWithoutOutcome { pending, .. }) => {
+            // The installation is over — nothing was left to take over — and
+            // the region is already the recorded original one. What the record
+            // is still owed is the history entry its own run never wrote; after
+            // that it may go.
+            record_operation_without_outcome(pending, update.package_present);
+            start_journal_load(window);
+            let outcome = clear_verified_recovery_record(pending);
+            record(
+                &LogEvent::new(LogLevel::Info, LogEventCode::RecoveryActionExecuted)
+                    .with_token("choice", "record_outcome")
+                    .with_token("outcome", recovery_outcome_token(&outcome)),
+            );
+            state.operation_status =
+                if matches!(outcome, Ok(PendingRecoveryExecution::VerifiedRecordCleared)) {
+                    let settled = if update.package_present {
+                        state.language.strings().recovery_outcome_installed_recorded
+                    } else {
+                        state.language.strings().recovery_outcome_unknown_recorded
+                    };
+                    fill(settled, &[("id", pending.product_id())])
+                } else {
+                    recovery_execution_status(state.language, &outcome)
+                };
+        }
+        // Nothing is published any more, so nothing is owed. The notice above
+        // has already said what was found.
+        _ => {}
+    }
+    // Re-inspect: a confirmed restore lifts the gate, anything else must leave
+    // it exactly where it was.
+    let after = inspect_gui_startup_recovery();
+    state.recovery_admits_new_operation = startup_recovery_admits_new_operation(&after);
+    if state.install_is_available() {
+        state.operation_status = source_status(state);
+    }
+    unsafe { render(window, chrome, state) };
+}
+
 #[allow(clippy::too_many_lines, unsafe_code)]
 unsafe extern "system" fn window_procedure(
     window: HWND,
@@ -557,6 +777,9 @@ unsafe extern "system" fn window_procedure(
                 return LRESULT(0);
             }
             let bootstrap = unsafe { &*bootstrap };
+            // From here workers may post to this window, and from `WM_NCDESTROY`
+            // they may not.
+            publish_live_window(window);
             unsafe {
                 SetWindowLongPtrW(
                     window,
@@ -603,33 +826,14 @@ unsafe extern "system" fn window_procedure(
                 );
             };
             start_journal_load(window);
-            // Installers this application downloaded are never kept. The user
-            // did not ask for a folder of Store stubs, cannot be expected to
-            // find it, and the file can always be fetched again by Product ID.
-            // Startup is where this works: nothing of ours is running the file.
-            sweep_downloaded_installers();
-            // A scan remembered from a previous run costs nothing to show and
-            // saves the user a wait. It is labelled with when it was taken
-            // rather than presented as current.
-            if let Ok(region) = Win32RegionReader.current_region()
-                && let Ok(market) = MarketCode::from_region(&region)
-                && let Some((taken, candidates)) = load_updates_scan(&market)
-            {
-                state.updates = UpdatesView::Ready(candidates);
-                state.updates_taken = Some(taken);
-            }
-            state.prerequisites = check_prerequisites();
-            record(
-                &LogEvent::new(LogLevel::Info, LogEventCode::PrerequisitesChecked).with_token(
-                    "install",
-                    if state.prerequisites.admits_installation() {
-                        "admitted"
-                    } else {
-                        "blocked"
-                    },
-                ),
-            );
-            if let Some(message) = prerequisite_status(state.language, state.prerequisites) {
+            // Everything that has to ask Windows something is asked from a
+            // worker: the answers arrive as messages, and the window is on
+            // screen while they are being fetched instead of blank.
+            start_startup_checks(window);
+            // A machine that names no regions can start nothing, and an empty
+            // list is the only thing the user would otherwise be shown.
+            if state.temporary_regions.is_empty() {
+                let message = state.language.strings().window_no_regions_listed.to_owned();
                 unsafe {
                     dispatch_ui_event(
                         window,
@@ -663,71 +867,27 @@ unsafe extern "system" fn window_procedure(
                         UiEvent::StateUpdate(UiUpdate::OperationStatus(message.clone())),
                     );
                 };
-                // A record that needs a decision gets one; everything else is
-                // only reported, because there is nothing for the user to do.
-                if let Ok(StartupRecoveryOutcome::UserDecisionRequired {
-                    pending,
-                    disposition,
-                    ..
-                }) = &recovery
-                {
-                    // An install started by a previous run may still be going:
-                    // the package manager outlives the process that asked for
-                    // it. Taking that over is better than asking the user to
-                    // decide about a region the operation still needs.
-                    if resume_installation(window, pending) {
-                        state.running_operation = Some(RunningOperation::default());
-                        let resumed = state.language.strings().window_installation_resumed;
-                        resumed.clone_into(&mut state.operation_status);
-                        unsafe { render(window, chrome, state) };
-                        return LRESULT(0);
-                    }
-                    let choice = unsafe { ask_pending_recovery(window, state.language, &message) };
-                    let outcome = execute_gui_recovery(pending, *disposition, choice);
-                    record(
-                        &LogEvent::new(LogLevel::Info, LogEventCode::RecoveryActionExecuted)
-                            .with_token(
-                                "choice",
-                                match choice {
-                                    PendingRecoveryChoice::RestoreOriginalRegion => "restore",
-                                    PendingRecoveryChoice::KeepCurrentRegion => "keep_current",
-                                },
-                            )
-                            .with_token("outcome", recovery_outcome_token(&outcome)),
-                    );
-                    // A handoff that the previous run left behind gets its
-                    // history entry here, because this is where its region
-                    // actually came back.
-                    if matches!(
-                        outcome,
-                        Ok(PendingRecoveryExecution::Restored { .. }
-                            | PendingRecoveryExecution::VerifiedRecordCleared)
-                    ) {
-                        record_restored_handoff(pending);
-                    }
-                    state.operation_status = recovery_execution_status(state.language, &outcome);
-                    // Re-inspect: a confirmed restore lifts the gate, anything
-                    // else must leave it exactly where it was.
-                    let after = inspect_gui_startup_recovery();
-                    state.recovery_admits_new_operation =
-                        startup_recovery_admits_new_operation(&after);
-                    let region = Win32RegionReader.current_region();
-                    unsafe {
-                        dispatch_ui_event(
-                            window,
-                            chrome,
-                            state,
-                            UiEvent::StateUpdate(UiUpdate::CurrentRegion(region)),
-                        );
-                    };
-                } else {
-                    unsafe { show_recovery_notice(&message) };
+                // An install started by a previous run may still be going: the
+                // package manager outlives the process that asked for it.
+                // Taking that over is better than asking the user to decide
+                // about a region the operation still needs, and for a record
+                // whose operation never reported an outcome it is the only way
+                // one is ever learnt. The question travels to the package
+                // manager over the network, so it is asked from a worker and
+                // answered in `WM_APP_RESUME_PROBED`, where the decision this
+                // record needs is then made.
+                match &recovery {
+                    Ok(
+                        StartupRecoveryOutcome::UserDecisionRequired { pending, .. }
+                        | StartupRecoveryOutcome::OperationWithoutOutcome { pending, .. },
+                    ) => start_resume_probe(window, pending.clone()),
+                    _ => unsafe { show_recovery_notice(&message) },
                 }
             }
-            // The status was written before recovery and the prerequisites were
-            // checked, so it can still name a condition those checks have since
-            // satisfied. It is recomputed only when the gate is now open: a real
-            // blocking notice keeps the gate closed and must survive.
+            // The status was written before recovery was inspected, so it can
+            // still name a condition that inspection has since settled. It is
+            // recomputed only when the gate is open: a real blocking notice
+            // keeps the gate closed and must survive.
             if state.install_is_available() {
                 state.operation_status = source_status(state);
             }
@@ -920,14 +1080,21 @@ unsafe extern "system" fn window_procedure(
                 (unsafe { chrome_ref(window) }, unsafe { state_mut(window) })
             {
                 let was_running = app.running_operation.is_some();
+                let awaiting_decision = update.awaiting_user_decision;
                 apply_installation_update(app, update);
+                // A deadline reached with the temporary region still in force is
+                // the one update the window has to answer rather than display.
+                if awaiting_decision {
+                    unsafe { resolve_uncertain_operation(window, chrome, app) };
+                } else {
+                    app.operation_status = operation_status(app);
+                }
                 // The operation writes its own history entry and then ends.
                 // Reading the journal only at startup would leave a product
                 // installed just now missing from the tab until the next launch.
                 if was_running && app.running_operation.is_none() {
                     start_journal_load(window);
                 }
-                app.operation_status = operation_status(app);
                 unsafe { render(window, chrome, app) };
                 return LRESULT(0);
             }
@@ -949,9 +1116,7 @@ unsafe extern "system" fn window_procedure(
                 if held_region && !app.region_restore_is_available() {
                     start_journal_load(window);
                     // The handoff is over, so its installer has no further use.
-                    // A stub still running holds the file open and survives
-                    // this; the sweep at the next startup catches it.
-                    sweep_downloaded_installers();
+                    start_installer_sweep();
                 }
                 // A finished handoff releases the machine, and the current
                 // region is worth re-reading: it just changed.
@@ -981,6 +1146,58 @@ unsafe extern "system" fn window_procedure(
                 return LRESULT(0);
             }
         }
+        WM_APP_STARTUP_CHECKED => {
+            if wparam.0 == 0 {
+                return LRESULT(0);
+            }
+            // Reclaim the posted allocation before anything can return early.
+            let update = unsafe { *Box::from_raw(wparam.0 as *mut StartupChecksUpdate) };
+            if let (Some(chrome), Some(app)) =
+                (unsafe { chrome_ref(window) }, unsafe { state_mut(window) })
+            {
+                app.prerequisites = update.prerequisites;
+                record(
+                    &LogEvent::new(LogLevel::Info, LogEventCode::PrerequisitesChecked).with_token(
+                        "install",
+                        if app.prerequisites.admits_installation() {
+                            "admitted"
+                        } else {
+                            "blocked"
+                        },
+                    ),
+                );
+                if let Some((taken, candidates)) = update.remembered_scan {
+                    app.updates = UpdatesView::Ready(candidates);
+                    app.updates_taken = Some(taken);
+                }
+                // A recovery record is the more urgent thing to say, and it is
+                // already on screen: a missing prerequisite blocks the same
+                // operation the record does, so saying so on top of it would
+                // replace the reason the user can still act on.
+                if app.recovery_admits_new_operation
+                    && let Some(message) = prerequisite_status(app.language, app.prerequisites)
+                {
+                    app.operation_status = message;
+                } else if app.install_is_available() {
+                    app.operation_status = source_status(app);
+                }
+                unsafe { render(window, chrome, app) };
+                return LRESULT(0);
+            }
+        }
+        WM_APP_RESUME_PROBED => {
+            if wparam.0 == 0 {
+                return LRESULT(0);
+            }
+            // Reclaim the posted allocation before anything can return early.
+            let update = unsafe { *Box::from_raw(wparam.0 as *mut ResumeProbeUpdate) };
+            if let (Some(chrome), Some(app)) =
+                (unsafe { chrome_ref(window) }, unsafe { state_mut(window) })
+            {
+                unsafe { settle_pending_recovery(window, chrome, app, &update) };
+                return LRESULT(0);
+            }
+        }
         WM_APP_UPDATES_SCANNED => {
             if wparam.0 == 0 {
                 return LRESULT(0);
@@ -990,6 +1207,12 @@ unsafe extern "system" fn window_procedure(
             if let (Some(chrome), Some(app)) =
                 (unsafe { chrome_ref(window) }, unsafe { state_mut(window) })
             {
+                // A scan the user has already replaced still finishes its
+                // requests, and its reports would otherwise overwrite the
+                // answer to the question actually being asked.
+                if update.generation != app.updates_scan_generation {
+                    return LRESULT(0);
+                }
                 app.updates = if update.unavailable {
                     UpdatesView::Unavailable
                 } else if update.finished {
@@ -1047,10 +1270,16 @@ unsafe extern "system" fn window_procedure(
             if let (Some(chrome), Some(app)) =
                 (unsafe { chrome_ref(window) }, unsafe { state_mut(window) })
             {
-                app.device_compatibility =
-                    Some((update.product_id, update.market, update.compatibility));
-                app.operation_status = source_status(app);
-                unsafe { render(window, chrome, app) };
+                // An answer about a product or region the user has moved on
+                // from is not merely useless: stored, it would replace the
+                // answer to the current question with one nobody will ask
+                // again, and the verdict would silently become unknown.
+                if app.asks_about(&update.product_id, &update.market) {
+                    app.device_compatibility =
+                        Some((update.product_id, update.market, update.compatibility));
+                    app.operation_status = source_status(app);
+                    unsafe { render(window, chrome, app) };
+                }
                 return LRESULT(0);
             }
         }
@@ -1132,6 +1361,9 @@ unsafe extern "system" fn window_procedure(
             return LRESULT(0);
         }
         WM_NCDESTROY => {
+            // Nothing may be posted to this handle any more: Windows is free to
+            // hand the same value to another window from here on.
+            withdraw_live_window(window);
             // Release only what needs a live window here. The allocation
             // itself belongs to `WindowContextOwner` in `run`.
             if let Some(chrome) = unsafe { chrome_mut(window) } {
@@ -1173,6 +1405,7 @@ const fn startup_recovery_token(
     match recovery {
         Ok(StartupRecoveryOutcome::NoPendingRecord) => "no_pending_record",
         Ok(StartupRecoveryOutcome::VerifiedRecordCleaned { .. }) => "verified_record_cleaned",
+        Ok(StartupRecoveryOutcome::OperationWithoutOutcome { .. }) => "operation_without_outcome",
         Ok(StartupRecoveryOutcome::UserDecisionRequired { .. }) => "user_decision_required",
         Err(StartupRecoveryError::Store(_)) => "store_unreadable",
         Err(StartupRecoveryError::Region(_)) => "region_unreadable",
@@ -1277,7 +1510,7 @@ mod tests {
         // A handler for one of these takes `&mut AppState`, and a modal dialog
         // dispatches whatever is in the queue while an outer handler already
         // holds that borrow. Missing one here is how that becomes a crash.
-        for offset in 1..=10 {
+        for offset in 1..=15 {
             let message = windows::Win32::UI::WindowsAndMessaging::WM_APP + offset;
             assert!(
                 is_posted_application_message(message),
@@ -1285,7 +1518,7 @@ mod tests {
             );
         }
         assert!(
-            !is_posted_application_message(windows::Win32::UI::WindowsAndMessaging::WM_APP + 14),
+            !is_posted_application_message(windows::Win32::UI::WindowsAndMessaging::WM_APP + 16),
             "a new posted message was added: extend `is_posted_application_message`              and the range this test walks"
         );
         // Everything the user drives reaches a window a modal call has disabled,

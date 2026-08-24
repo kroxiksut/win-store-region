@@ -11,10 +11,11 @@ use windows::Win32::UI::WindowsAndMessaging::{
 };
 use windows::core::HSTRING;
 use winstoreregion_core::{
-    APPLICATION_NAME, Diagnostic, DiagnosticCode, PendingRecoveryChoice,
-    PendingRecoveryDisposition, PendingRecoveryExecution, PendingRecoveryExecutionError,
-    PendingRestore, STORE_INSTALLER_HANDOFF_BACKEND, StartupRecoveryError, StartupRecoveryOutcome,
-    choose_pending_recovery_action, execute_pending_recovery_action, inspect_startup_recovery,
+    APPLICATION_NAME, Diagnostic, DiagnosticCode, GeoId, PendingRecoveryAction,
+    PendingRecoveryChoice, PendingRecoveryDisposition, PendingRecoveryExecution,
+    PendingRecoveryExecutionError, PendingRestore, STORE_INSTALLER_HANDOFF_BACKEND,
+    StartupRecoveryError, StartupRecoveryOutcome, choose_pending_recovery_action,
+    execute_pending_recovery_action, inspect_startup_recovery,
 };
 
 pub(super) fn inspect_gui_startup_recovery()
@@ -70,21 +71,22 @@ pub(super) fn recovery_startup_notice(
                     strings.recovery_situation_original_region_active
                 }
             };
-            let subject = recovery_subject_line(language, pending);
-            Some(fill(
-                strings.recovery_required,
-                &[
-                    ("situation", situation),
-                    ("subject", &subject),
-                    ("started", pending.started_at_utc().as_str()),
-                    ("backend", pending.backend()),
-                    ("original", &pending.original_region().value().to_string()),
-                    ("temporary", &pending.temporary_region().value().to_string()),
-                    ("current", &current_region.value().to_string()),
-                    ("state", &format!("{:?}", pending.state())),
-                ],
+            Some(recovery_notice(
+                language,
+                pending,
+                *current_region,
+                situation,
             ))
         }
+        Ok(StartupRecoveryOutcome::OperationWithoutOutcome {
+            pending,
+            current_region,
+        }) => Some(recovery_notice(
+            language,
+            pending,
+            *current_region,
+            language.strings().recovery_situation_outcome_unknown,
+        )),
         Err(error) => {
             let diagnostic = Diagnostic::from(*error);
             let blocked = language.strings().recovery_startup_blocked;
@@ -97,6 +99,29 @@ pub(super) fn recovery_startup_notice(
             ))
         }
     }
+}
+
+/// The full startup notice about one record, naming only what was written down.
+fn recovery_notice(
+    language: Language,
+    pending: &PendingRestore,
+    current_region: GeoId,
+    situation: &str,
+) -> String {
+    let subject = recovery_subject_line(language, pending);
+    fill(
+        language.strings().recovery_required,
+        &[
+            ("situation", situation),
+            ("subject", &subject),
+            ("started", pending.started_at_utc().as_str()),
+            ("backend", pending.backend()),
+            ("original", &pending.original_region().value().to_string()),
+            ("temporary", &pending.temporary_region().value().to_string()),
+            ("current", &current_region.value().to_string()),
+            ("state", &format!("{:?}", pending.state())),
+        ],
+    )
 }
 
 /// Ask the user what to do about a pending recovery record.
@@ -139,6 +164,25 @@ pub(super) fn execute_gui_recovery(
         Win32RecoveryStore::for_current_user().map_err(PendingRecoveryExecutionError::Store)?;
     execute_pending_recovery_action(
         action,
+        pending,
+        &mut store,
+        &Win32RegionReader,
+        &Win32RegionWriter,
+    )
+}
+
+/// Remove a record whose operation is over and whose region is confirmed back.
+///
+/// No user choice exists here: the region already matches the recorded original
+/// one, so there is nothing to offer and nothing to write. Core still re-reads
+/// the region and refuses to clear a record that does not match it.
+pub(super) fn clear_verified_recovery_record(
+    pending: &PendingRestore,
+) -> Result<PendingRecoveryExecution, PendingRecoveryExecutionError> {
+    let mut store =
+        Win32RecoveryStore::for_current_user().map_err(PendingRecoveryExecutionError::Store)?;
+    execute_pending_recovery_action(
+        PendingRecoveryAction::ClearVerifiedRecord,
         pending,
         &mut store,
         &Win32RegionReader,
@@ -274,6 +318,46 @@ mod tests {
             .next_back()
             .expect("the notice template ends with the blocking sentence");
         assert!(notice.contains(blocking));
+    }
+
+    #[test]
+    fn a_record_left_without_an_outcome_says_so_instead_of_naming_a_region_problem() {
+        let pending = PendingRestore::prepared(
+            OperationId::new("outcome-unknown").expect("non-empty operation identifier"),
+            UtcTimestamp::parse("2026-08-23T20:15:00Z").expect("valid UTC timestamp"),
+            GeoId::new(203).expect("positive original GeoId"),
+            GeoId::new(244).expect("positive temporary GeoId"),
+            "9WZDNCRFJ3PZ",
+            "test-backend",
+        )
+        .expect("complete pending record")
+        .with_state(DurableOperationState::RegionRestoredEarly);
+        let notice = recovery_startup_notice(
+            Language::Russian,
+            &Ok(StartupRecoveryOutcome::OperationWithoutOutcome {
+                pending,
+                current_region: GeoId::new(203).expect("positive current GeoId"),
+            }),
+        )
+        .expect("a record without an outcome must show a blocking notice");
+
+        assert!(
+            notice.contains(
+                Language::Russian
+                    .strings()
+                    .recovery_situation_outcome_unknown
+            )
+        );
+        // The region is back, so nothing may hint that it is the problem.
+        assert!(
+            !notice.contains(
+                Language::Russian
+                    .strings()
+                    .recovery_situation_temporary_region_active
+            ),
+            "the temporary region is not what is wrong here"
+        );
+        assert!(notice.contains("Product ID: 9WZDNCRFJ3PZ"));
     }
 
     #[test]

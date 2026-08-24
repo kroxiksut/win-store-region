@@ -356,6 +356,13 @@ pub enum InstallBackendError {
     /// Separate from a product that is genuinely unavailable in the region: here
     /// the operation itself was mistimed, and repeating it can succeed.
     TemporaryRegionNotApplied,
+    /// The source offered nothing under this identifier when asked to install.
+    ///
+    /// Separate from a mistimed region: the temporary region was confirmed and
+    /// the catalogue answered under it moments earlier. A product withdrawn
+    /// between the resolve and the request reaches the backend this way, and so
+    /// does a catalogue that simply answered a second question differently.
+    PackageNotOffered,
     /// The same product is already being installed, by this application or another.
     AlreadyInstalling,
     /// The handle belongs to another backend or is otherwise invalid.

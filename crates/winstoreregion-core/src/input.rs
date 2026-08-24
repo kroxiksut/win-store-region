@@ -106,14 +106,32 @@ fn extract_product_id(value: &str) -> Result<StoreProductId, StoreInputError> {
         .iter()
         .position(|part| part.eq_ignore_ascii_case("detail"))
     {
+        // Not simply the last segment: a page of the product — its reviews, its
+        // system requirements — is a segment too, and taking it produced a
+        // product named REVIEWS out of an address the user pasted intact. Only
+        // a segment shaped like a catalogue identifier is accepted, which also
+        // steps over the slug in `/detail/example-app/9WZDNCRFJ3PZ`.
         return parts
             .get(detail_index + 1..)
-            .and_then(|tail| tail.last())
+            .and_then(|tail| tail.iter().rev().find(|part| is_catalogue_identifier(part)))
             .map_or(Err(StoreInputError::MissingProductId), |product| {
                 StoreProductId::parse(product)
             });
     }
     Err(StoreInputError::MissingProductId)
+}
+
+/// Length of a Microsoft Store catalogue identifier.
+const CATALOGUE_IDENTIFIER_LENGTH: usize = 12;
+
+/// Whether a path segment has the shape of a Store catalogue identifier.
+///
+/// The shape is not a promise that the product exists — only the catalogue can
+/// say that. It is enough to tell an identifier from the other segments a
+/// product address carries, which is all this parser has to decide.
+fn is_catalogue_identifier(part: &str) -> bool {
+    part.len() == CATALOGUE_IDENTIFIER_LENGTH
+        && part.bytes().all(|byte| byte.is_ascii_alphanumeric())
 }
 
 #[cfg(test)]
@@ -177,6 +195,35 @@ mod tests {
             .product_id()
             .as_str(),
             "ABC123"
+        );
+    }
+
+    #[test]
+    fn a_page_of_the_product_is_not_the_product() {
+        // Pasting the address of a subpage is ordinary; reading its name as the
+        // product turned that into two false diagnostics, one about a product
+        // that does not exist and one about the region it was not found in.
+        assert_eq!(
+            StoreInputCandidate::parse("https://apps.microsoft.com/detail/9WZDNCRFJ3PZ/reviews")
+                .unwrap()
+                .product_id()
+                .as_str(),
+            "9WZDNCRFJ3PZ"
+        );
+        assert_eq!(
+            StoreInputCandidate::parse(
+                "https://apps.microsoft.com/detail/example-app/9wzdncrfj3pz/system-requirements"
+            )
+            .unwrap()
+            .product_id()
+            .as_str(),
+            "9WZDNCRFJ3PZ"
+        );
+        // Nothing in this address is shaped like an identifier, and inventing
+        // one out of the slug is what this rule exists to stop.
+        assert_eq!(
+            StoreInputCandidate::parse("https://apps.microsoft.com/detail/example-app"),
+            Err(StoreInputError::MissingProductId)
         );
     }
 

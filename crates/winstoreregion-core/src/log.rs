@@ -51,6 +51,16 @@ pub enum LogEventCode {
     OperationStarted,
     /// The recovery record was published before Windows was touched.
     RecoveryRecordWritten,
+    /// Windows was asked for the list of regions it knows.
+    ///
+    /// Recorded only when the answer is unusable: an empty list is what the
+    /// user sees, and nothing on screen explains where it came from.
+    RegionListUnavailable,
+    /// The package manager was asked whether a recorded installation is running.
+    ///
+    /// The answer decides whether a restart takes the operation over or settles
+    /// its record, and the three ways it can be "no" are not the same thing.
+    ResumeProbed,
     RegionSwitchAttempted,
     RegionRestoreAttempted,
     /// The catalogue was asked for the product under the temporary region.
@@ -82,6 +92,8 @@ impl LogEventCode {
             Self::RecoveryActionExecuted => "recovery_action_executed",
             Self::OperationStarted => "operation_started",
             Self::RecoveryRecordWritten => "recovery_record_written",
+            Self::RegionListUnavailable => "region_list_unavailable",
+            Self::ResumeProbed => "resume_probed",
             Self::RegionSwitchAttempted => "region_switch_attempted",
             Self::RegionRestoreAttempted => "region_restore_attempted",
             Self::ProductResolveAttempted => "product_resolve_attempted",

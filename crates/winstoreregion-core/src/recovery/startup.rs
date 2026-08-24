@@ -73,6 +73,18 @@ pub enum StartupRecoveryOutcome {
         current_region: GeoId,
         disposition: PendingRecoveryDisposition,
     },
+    /// The original region is active, but the operation that recorded it has no
+    /// outcome yet.
+    ///
+    /// The region alone cannot tell these apart from a finished operation, and
+    /// reading them as one was how a restart lost a running installation: the
+    /// record was cleaned, nothing reconnected, and no history entry was ever
+    /// written. The caller must first try to take the operation over, and only
+    /// then decide what its record deserves.
+    OperationWithoutOutcome {
+        pending: PendingRestore,
+        current_region: GeoId,
+    },
 }
 
 /// A storage or Windows-read failure while inspecting startup recovery.
@@ -281,8 +293,8 @@ where
 /// Inspect recovery before admitting a new region-changing operation.
 ///
 /// A valid record is removed only after a fresh read-back confirms the original
-/// region. Any other current region preserves the record and requires an
-/// explicit user decision.
+/// region *and* its own milestone says the operation is over. Any other current
+/// region preserves the record and requires an explicit user decision.
 ///
 /// # Errors
 ///
@@ -305,6 +317,15 @@ where
         .map_err(StartupRecoveryError::Region)?;
     let disposition = classify_pending_recovery(&pending, current_region);
     if disposition == PendingRecoveryDisposition::OriginalRegionAlreadyActive {
+        // The region is the only thing the classification looks at, and it is
+        // not enough: a record whose operation is still running keeps the safe
+        // region and its duty to report an outcome at the same time.
+        if pending.state().outcome_is_still_open() {
+            return Ok(StartupRecoveryOutcome::OperationWithoutOutcome {
+                pending,
+                current_region,
+            });
+        }
         store
             .clear_verified(&pending)
             .map_err(StartupRecoveryError::Store)?;
@@ -439,6 +460,34 @@ mod tests {
             })
         );
         assert_eq!(store.load(), Ok(Some(pending)));
+    }
+
+    #[test]
+    fn a_running_installation_survives_a_restart_that_finds_the_safe_region() {
+        // The region was put back early, so it matches the original one while
+        // the installation is still going. Clearing the record here is what
+        // used to lose the operation: nothing reconnected to it afterwards.
+        let pending =
+            pending_restore_for_test().with_state(DurableOperationState::RegionRestoredEarly);
+        let mut store = MemoryRecoveryStore {
+            pending: Some(pending.clone()),
+        };
+        let reader = SequenceReader::from_geo_ids([pending.original_region()]);
+
+        let outcome = inspect_startup_recovery(&mut store, &reader);
+
+        assert_eq!(
+            outcome,
+            Ok(StartupRecoveryOutcome::OperationWithoutOutcome {
+                pending: pending.clone(),
+                current_region: pending.original_region(),
+            })
+        );
+        assert_eq!(store.load(), Ok(Some(pending)));
+        assert!(
+            !startup_recovery_admits_new_operation(&outcome),
+            "an operation without an outcome must keep the next one blocked"
+        );
     }
 
     #[test]

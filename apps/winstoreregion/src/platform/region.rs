@@ -1,14 +1,15 @@
 //! Reading Windows Home Location and its display data.
 
-use windows::Win32::Foundation::LPARAM;
+use crate::platform::diagnostic_log::record;
+use windows::Win32::Foundation::{ERROR_INVALID_PARAMETER, LPARAM};
 use windows::Win32::Globalization::{
     EnumSystemGeoNames, GEO_FRIENDLYNAME, GEO_ID, GEO_ISO2, GEOCLASS_NATION, GetGeoInfoEx,
     GetGeoInfoW, GetUserGeoID, SYSGEOTYPE, SetUserGeoID,
 };
 use windows::core::{BOOL, HSTRING, PCWSTR};
 use winstoreregion_core::{
-    GeoId, IsoAlpha2, Region, RegionField, RegionReadError, RegionReader, RegionWriteError,
-    RegionWriter,
+    GeoId, IsoAlpha2, LogEvent, LogEventCode, LogLevel, Region, RegionField, RegionReadError,
+    RegionReader, RegionWriteError, RegionWriter,
 };
 
 /// Read-only Win32 adapter for the current Windows Home Location.
@@ -33,7 +34,7 @@ impl Win32RegionReader {
     pub(crate) fn available_national_regions() -> Vec<Region> {
         let mut names: Vec<String> = Vec::new();
         let context = LPARAM((&raw mut names) as isize);
-        let _ = unsafe {
+        let listed = unsafe {
             EnumSystemGeoNames(GEOCLASS_NATION.0 as u32, Some(collect_geo_name), context)
         };
 
@@ -48,6 +49,15 @@ impl Win32RegionReader {
                 .then_with(|| left.geo_id.value().cmp(&right.geo_id.value()))
         });
         regions.dedup_by(|left, right| left.geo_id == right.geo_id);
+        // An empty list is the whole of what the user would see, with nothing
+        // to explain it. The window says so on screen; this is where the reason
+        // is kept for anyone reading the log afterwards.
+        if listed.is_err() || regions.is_empty() {
+            record(
+                &LogEvent::new(LogLevel::Warning, LogEventCode::RegionListUnavailable)
+                    .with_token("outcome", if listed.is_err() { "refused" } else { "empty" }),
+            );
+        }
         regions
     }
 }
@@ -84,10 +94,25 @@ impl RegionWriter for Win32RegionWriter {
     }
 }
 
+/// The code Windows returns for a `GeoId` it will not accept.
+///
+/// Computed from the Win32 error rather than written out: the decimal form of
+/// an HRESULT says nothing to a reader, and the two halves of the rule — which
+/// error, and how `windows-rs` reports it — are visible here instead of in a
+/// comment beside a number.
+const REFUSED_TARGET: i32 = hresult_from_win32(ERROR_INVALID_PARAMETER.0);
+
+/// The HRESULT form of one Win32 error code, as `windows-rs` reports it.
+const fn hresult_from_win32(code: u32) -> i32 {
+    #[allow(clippy::cast_possible_wrap)]
+    {
+        (0x8007_0000 | (code & 0xFFFF)) as i32
+    }
+}
+
 /// Classify a failed write, separating a refused target from any other failure.
 fn region_write_error(native_code: i32) -> RegionWriteError {
-    // HRESULT_FROM_WIN32(ERROR_INVALID_PARAMETER): the target was not accepted.
-    if native_code == -2_147_024_809 {
+    if native_code == REFUSED_TARGET {
         RegionWriteError::Rejected
     } else {
         RegionWriteError::PlatformFailure(native_code)
@@ -181,15 +206,15 @@ mod tests {
     fn a_refused_target_is_told_apart_from_any_other_write_failure() {
         // Measured on the designated test VM: an unacceptable GeoId fails with
         // ERROR_INVALID_PARAMETER and leaves the region untouched. windows-rs
-        // reports it as HRESULT_FROM_WIN32(0x57).
-        const HRESULT_FROM_WIN32_INVALID_PARAMETER: i32 = -2_147_024_809;
+        // reports it as HRESULT_FROM_WIN32(0x57), which is the value pinned
+        // here — the measurement, not the arithmetic, is what this test keeps.
         assert_eq!(
-            HRESULT_FROM_WIN32_INVALID_PARAMETER,
+            REFUSED_TARGET,
             i32::from_ne_bytes(0x8007_0057_u32.to_ne_bytes()),
             "the constant must stay the HRESULT form of ERROR_INVALID_PARAMETER"
         );
         assert_eq!(
-            region_write_error(HRESULT_FROM_WIN32_INVALID_PARAMETER),
+            region_write_error(REFUSED_TARGET),
             RegionWriteError::Rejected
         );
         assert_eq!(

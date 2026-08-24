@@ -149,6 +149,23 @@ operation_restoring_region = "The installation finished. Restoring the original 
 operation_done = "Done: the application is installed and the region is the original one."
 operation_completion_uncertain = "Completion could not be confirmed. The decision is yours."
 operation_started = "The operation has started. Waiting for its first report."
+
+# Windows would not say which regions exist. The list on screen is empty and
+# says nothing by itself, so the window says it instead of leaving a blank.
+window_no_regions_listed = "Windows named no regions, so there is nothing to choose a temporary region from. Nothing can be installed until it does."
+
+# Asked when the observation deadline passed while the temporary region is
+# still in force. The three answers are the three the core protocol accepts,
+# and pressing the second one is what acknowledges its warning. {state} is
+# where the operation stands.
+operation_ask_timeout_resolution = """
+The installation has not reported completion: {state}.
+
+Windows is still using the temporary region. Windows owns the installation, and it cannot be stopped from this window.
+
+Yes — the installation is finished, restore the original region.
+No — restore the original region now, even if the installation is still running; it may be interrupted.
+Cancel — keep waiting; the window attaches to the installation again."""
 # Appended to whatever the operation is saying, with the leading space kept.
 operation_region_already_back = " The original region is already back."
 installing_phase_running = "Installing"
@@ -304,6 +321,11 @@ diagnostic_store_input_not_understood = "The link or Product ID was not recognis
 diagnostic_store_page_launch_rejected = "Windows could not open the Microsoft Store page."
 diagnostic_store_refused_without_reason = "Microsoft Store refused without giving a reason."
 diagnostic_temporary_region_not_applied = "The source did not accept the temporary region: it returned to the original one before the installation had begun. Try again."
+
+# The region was confirmed and the catalogue answered under it a moment
+# earlier; at the install request the product was no longer there. Nothing
+# here blames the region, because the region is the one fact that was proved.
+diagnostic_product_no_longer_offered = "The source no longer offers this application: it answered about it under the temporary region and then had nothing to install. It may have been withdrawn from sale. Try again, or choose another region."
 diagnostic_unsupported_market = "The catalogue does not accept the selected region."
 diagnostic_win_get_missing = "The Windows component that installs Store applications was not found."
 
@@ -431,11 +453,26 @@ recovery_subject_installer_file = "Installer file: {value}"
 # the record was left behind. Nothing was restored now, and the text says so.
 recovery_verified_record_cleaned = "The previous operation had already restored the original region. The verified recovery record for {id} was cleared."
 
+# The same record after its installation turned out not to be running any
+# more. Nothing is claimed about whether it succeeded: the history gets an
+# unconfirmed entry and the record goes.
+recovery_outcome_unknown_recorded = "The installation from the previous run is no longer running, and its completion is not confirmed. The history now has an entry for it, and the recovery record for {id} was cleared."
+
+# The same record, but the application the previous run was installing is on
+# the machine now. The record was written before that installation began, so
+# its arrival is that installation finishing and the history may say so.
+recovery_outcome_installed_recorded = "The installation from the previous run finished: the application is on this machine. The history now has an entry for it, and the recovery record for {id} was cleared."
+
 # Why a decision is being asked for. Each names what is true of the region
 # right now, and none of them blames the user for it.
 recovery_situation_temporary_region_active = "Windows is still using the temporary region."
 recovery_situation_external_region_conflict = "The current region was changed outside this operation."
 recovery_situation_original_region_active = "The original region is already active."
+
+# A record whose operation never reported an outcome. The region being back
+# is exactly what makes this easy to mistake for a finished operation, so
+# the line names what is actually unknown.
+recovery_situation_outcome_unknown = "The installation from the previous run never reported how it ended."
 
 # The full startup notice. The record stores no display name, so the notice
 # must not claim one: every line below is something that was actually written

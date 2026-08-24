@@ -6,7 +6,7 @@
 //! every change to the window. Nothing is inferred: the region is always read
 //! back, and completion needs the package identity core asked for.
 
-use crate::gui::ids::WM_APP_INSTALL_PROGRESS;
+use crate::gui::ids::{WM_APP_INSTALL_PROGRESS, post_boxed};
 use crate::gui::install_trace::{OperationTrace, operation_never_started};
 use crate::platform::packaged::WindowsPackagedObserver;
 use crate::platform::region::{Win32RegionReader, Win32RegionWriter};
@@ -14,11 +14,9 @@ use crate::platform::storage::{Win32JournalStore, Win32RecoveryStore};
 use crate::platform::winget::backend::{WinGetComBackend, stated_failure};
 use crate::platform::winget::resolver::WinGetComResolver;
 use crate::platform::{WindowsRuntimeGuard, observation_timestamp_now};
-use std::ffi::c_void;
 use std::thread;
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
-use windows::Win32::Foundation::{HWND, LPARAM, WPARAM};
-use windows::Win32::UI::WindowsAndMessaging::PostMessageW;
+use windows::Win32::Foundation::HWND;
 use winstoreregion_core::{
     Diagnostic, DiagnosticCode, DurableOperationState, ExpectedPackagedIdentity, GeoId,
     InstallBackend, InstallHandle, InstallKind, InstallObservation, InstallPhase, InstallProgress,
@@ -41,6 +39,15 @@ const POLL_INTERVAL: Duration = Duration::from_millis(250);
 /// Backend identity written into the recovery record.
 const BACKEND_NAME: &str = "winget-com-msstore";
 
+/// How many times putting the original region back is attempted.
+///
+/// Restoring the region is the whole promise of this application, so one
+/// refused write or one read-back that disagreed is not accepted as the answer.
+const RESTORE_ATTEMPTS: u32 = 3;
+
+/// Pause between two restoration attempts.
+const RESTORE_RETRY_PAUSE: Duration = Duration::from_millis(300);
+
 /// What the window learns about a running or finished installation.
 pub(super) struct InstallationUpdate {
     /// Where the operation stands now.
@@ -55,6 +62,12 @@ pub(super) struct InstallationUpdate {
     pub(super) failure: Option<Diagnostic>,
     /// The product as the catalogue described it under the temporary region.
     pub(super) resolved: Option<ResolvedProduct>,
+    /// The deadline elapsed and only the user can say how this ends.
+    ///
+    /// The thread cannot wait for that answer: it would hold the recovery guard
+    /// for as long as the dialog is open. It reports the question instead and
+    /// ends, leaving the published record for whoever answers.
+    pub(super) awaiting_user_decision: bool,
 }
 
 impl InstallationUpdate {
@@ -67,6 +80,7 @@ impl InstallationUpdate {
             region_restored_early,
             failure: None,
             resolved: None,
+            awaiting_user_decision: false,
         }
     }
 }
@@ -95,36 +109,112 @@ pub(super) fn start_installation(window: HWND, request: InstallationRequest) {
     });
 }
 
-/// Take over an installation that outlived the process which started it.
+/// What the package manager answered about an installation a record names.
 ///
-/// Returns whether one was found. A COM-driven install keeps running after its
-/// client dies, so a restart must ask before treating the record as an
-/// abandoned operation. `false` means nothing is in flight, which is not the
-/// same as failure: the install may equally have finished meanwhile.
+/// A plain yes/no hid three different situations behind one `false`, and the
+/// log could not tell them apart afterwards: a record nothing can be rebuilt
+/// from, a package manager that would not answer, and a straight "that
+/// installation is not running".
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(super) enum ResumeProbe {
+    /// The installation is still in flight and can be taken over.
+    InFlight,
+    /// The package manager answered, and this installation is not among its own.
+    NotInFlight,
+    /// The package manager could not be asked at all.
+    BackendUnavailable,
+    /// The record does not describe an installation this application can resume.
+    RecordNotUsable,
+}
+
+impl ResumeProbe {
+    /// A stable name for the diagnostic log.
+    pub(super) const fn as_token(self) -> &'static str {
+        match self {
+            Self::InFlight => "in_flight",
+            Self::NotInFlight => "not_in_flight",
+            Self::BackendUnavailable => "backend_unavailable",
+            Self::RecordNotUsable => "record_not_usable",
+        }
+    }
+}
+
+/// What a restart could learn about the installation a record names.
+pub(super) struct ResumeAnswer {
+    /// What the package manager said about the installation itself.
+    pub(super) probe: ResumeProbe,
+    /// Whether the package identity the record names is installed now.
+    ///
+    /// Only meaningful once the installation is no longer running, and only
+    /// when the record names an identity at all.
+    pub(super) package_present: bool,
+}
+
+/// Ask whether the installation a record names is still going.
 ///
-/// The connection is made twice on purpose. COM objects belong to the apartment
-/// that created them, so the answer given here cannot be handed to the thread
-/// that will follow the install; that thread connects again for itself.
-pub(super) fn resume_installation(window: HWND, pending: &PendingRestore) -> bool {
+/// A COM-driven install keeps running after the client that asked for it dies,
+/// so a restart must ask before treating a record as an abandoned operation.
+/// `false` means nothing is in flight, which is not the same as failure: the
+/// install may equally have finished meanwhile.
+///
+/// This activates an out-of-process package manager and asks it over the
+/// network, so it belongs on a worker thread. The answer cannot be handed to
+/// the thread that will follow the install either: COM objects belong to the
+/// apartment that created them, and that thread connects again for itself.
+pub(super) fn probe_resumable_install(pending: &PendingRestore) -> ResumeAnswer {
+    let answer = |probe| ResumeAnswer {
+        probe,
+        package_present: false,
+    };
     let Some(request) = resumed_request(pending) else {
-        return false;
+        return answer(ResumeProbe::RecordNotUsable);
     };
     let install_request = InstallRequest::for_resumed_install(
         request.resolve.product_id.clone(),
         request.resolve.market.clone(),
     );
-    {
-        let Ok(_runtime) = WindowsRuntimeGuard::initialize() else {
-            return false;
-        };
-        let Ok(backend) = WinGetComBackend::connect() else {
-            return false;
-        };
-        if !matches!(backend.resume(&install_request), Ok(Some(_))) {
-            return false;
-        }
+    let Ok(_runtime) = WindowsRuntimeGuard::initialize() else {
+        return answer(ResumeProbe::BackendUnavailable);
+    };
+    let Ok(backend) = WinGetComBackend::connect() else {
+        return answer(ResumeProbe::BackendUnavailable);
+    };
+    let probe = match backend.resume(&install_request) {
+        Ok(Some(_)) => ResumeProbe::InFlight,
+        Ok(None) => ResumeProbe::NotInFlight,
+        Err(_) => ResumeProbe::BackendUnavailable,
+    };
+    ResumeAnswer {
+        probe,
+        // Asked under the same runtime, and only once there is nothing left to
+        // take over: while an installation runs, its package may appear at any
+        // moment and the answer would say nothing.
+        package_present: probe == ResumeProbe::NotInFlight && recorded_package_present(pending),
     }
+}
 
+/// Whether the package identity a record names is installed right now.
+///
+/// This is evidence about the recorded operation, not a general observation.
+/// The record is written before the installation starts, and an operation
+/// refuses to start at all when the package is already there — so an identity
+/// present now appeared while that operation was running.
+fn recorded_package_present(pending: &PendingRestore) -> bool {
+    let Some(expected) = pending_identity(pending) else {
+        return false;
+    };
+    WindowsPackagedObserver::snapshot().is_ok_and(|installed| installed.contains(&expected))
+}
+
+/// Take over an installation that outlived the process which started it.
+///
+/// Returns whether a thread was started for it. Only the record has to be
+/// usable here: whether the installation is still in flight was answered by
+/// [`installation_is_resumable`], and the thread asks again for itself.
+pub(super) fn follow_resumed_installation(window: HWND, pending: &PendingRestore) -> bool {
+    let Some(request) = resumed_request(pending) else {
+        return false;
+    };
     let window_handle = window.0 as usize;
     let pending = pending.clone();
     thread::spawn(move || {
@@ -143,25 +233,56 @@ fn follow_resumed_install(
     post: &dyn Fn(InstallationUpdate),
 ) {
     let Ok(_runtime) = WindowsRuntimeGuard::initialize() else {
+        resumed_install_not_followed(pending, post, DiagnosticCode::BackendUnavailable);
         return;
     };
-    let (Ok(backend), Ok(store)) = (
-        WinGetComBackend::connect(),
-        Win32RecoveryStore::for_current_user(),
-    ) else {
+    let Ok(backend) = WinGetComBackend::connect() else {
+        resumed_install_not_followed(pending, post, DiagnosticCode::BackendUnavailable);
+        return;
+    };
+    let Ok(store) = Win32RecoveryStore::for_current_user() else {
+        resumed_install_not_followed(pending, post, DiagnosticCode::RecoveryRecordUnreadable);
         return;
     };
     let install_request = InstallRequest::for_resumed_install(
         request.resolve.product_id.clone(),
         request.resolve.market.clone(),
     );
+    // The window was told an installation was resumed after a synchronous probe
+    // found one. It can be gone by the time this thread asks again, and then
+    // this run has no evidence of any kind about how it ended.
     let Ok(Some(handle)) = backend.resume(&install_request) else {
+        resumed_install_not_followed(pending, post, DiagnosticCode::CompletionUncertain);
         return;
     };
     let already_restored = pending.state() == DurableOperationState::RegionRestoredEarly;
     let guard = PendingRestoreGuard::new(store, pending.clone());
     let mut operation = Operation::resumed(request, post, pending, already_restored);
     operation.observe(&backend, &handle, guard);
+}
+
+/// Report a taken-over installation this run cannot follow after all.
+///
+/// The record is left exactly as it was found: nothing here learnt how the
+/// installation ended. The window is told, because it has already announced a
+/// resumed installation and would otherwise show it running forever. The user
+/// is asked only while the temporary region is still in force — that is the
+/// part still worth deciding in this session.
+fn resumed_install_not_followed(
+    pending: &PendingRestore,
+    post: &dyn Fn(InstallationUpdate),
+    code: DiagnosticCode,
+) {
+    let region_restored_early = pending.state() == DurableOperationState::RegionRestoredEarly;
+    post(InstallationUpdate {
+        state: InstallationOperationState::CompletionUncertain,
+        phase: None,
+        progress: None,
+        region_restored_early,
+        failure: Some(Diagnostic::new(code)),
+        resolved: None,
+        awaiting_user_decision: !region_restored_early,
+    });
 }
 
 /// Rebuild the operation input from a recovery record.
@@ -180,20 +301,8 @@ fn resumed_request(pending: &PendingRestore) -> Option<InstallationRequest> {
 }
 
 /// Post one update to the window, discarding it if the window has gone.
-#[allow(unsafe_code)]
 fn post_update(window_handle: usize, update: InstallationUpdate) {
-    let raw = Box::into_raw(Box::new(update));
-    let posted = unsafe {
-        PostMessageW(
-            Some(HWND(window_handle as *mut c_void)),
-            WM_APP_INSTALL_PROGRESS,
-            WPARAM(raw as usize),
-            LPARAM(0),
-        )
-    };
-    if posted.is_err() {
-        unsafe { drop(Box::from_raw(raw)) };
-    }
+    post_boxed(window_handle, WM_APP_INSTALL_PROGRESS, update);
 }
 
 /// Execute the operation, reporting every state change through `post`.
@@ -234,6 +343,7 @@ fn failure(diagnostic: Diagnostic) -> InstallationUpdate {
         region_restored_early: false,
         failure: Some(diagnostic),
         resolved: None,
+        awaiting_user_decision: false,
     }
 }
 
@@ -418,14 +528,18 @@ impl<'a> Operation<'a> {
             }
         };
         let mut ids = SingleOperationId(self.identity.clone());
-        let Ok(pending) = PendingRestore::prepared(
-            ids.next_operation_id(),
-            now_utc(),
-            original,
-            self.request.temporary_region,
-            self.request.resolve.product_id.as_str(),
-            BACKEND_NAME,
-        ) else {
+        let prepared = now_utc().and_then(|started_at| {
+            PendingRestore::prepared(
+                ids.next_operation_id(),
+                started_at,
+                original,
+                self.request.temporary_region,
+                self.request.resolve.product_id.as_str(),
+                BACKEND_NAME,
+            )
+            .ok()
+        });
+        let Some(pending) = prepared else {
             self.fail(Diagnostic::new(DiagnosticCode::RecoveryRecordUnreadable));
             return None;
         };
@@ -450,6 +564,20 @@ impl<'a> Operation<'a> {
             Err(error) => {
                 self.trace
                     .region_switch_failed(self.request.temporary_region, &error);
+                // A read-back that never answered is the one failure here where
+                // the write has probably already landed. Every other one either
+                // precedes the writer or follows a read-back that found the
+                // original region, so only this one owes a rollback.
+                if matches!(error, RegionSwitchError::ReadBack(_)) {
+                    self.advance(InstallationOperationEvent::FailWithTemporaryRegion);
+                    self.advance(InstallationOperationEvent::BeginRestoringRegion);
+                    if self.restore(&mut guard, false) {
+                        self.advance(InstallationOperationEvent::OriginalRegionRestored);
+                        clear_record(guard);
+                    } else {
+                        self.advance(InstallationOperationEvent::RestoreFailed);
+                    }
+                }
                 self.fail(switch_diagnostic(&error));
                 return None;
             }
@@ -520,7 +648,11 @@ impl<'a> Operation<'a> {
                 .pending()
                 .with_install_classification(resolved.install_classification)
                 .with_package_family_name(expected.family_name().clone());
-            let _ = guard.replace_record(updated);
+            // A refused write is not fatal — the installation can still run and
+            // report its own outcome — but it decides how a restart will read
+            // this operation, so it is never lost silently.
+            self.trace
+                .completion_identity_recorded(guard.replace_record(updated).is_ok());
         }
         // Taken before the request so a package that was already there cannot
         // be mistaken for the one this operation installed.
@@ -633,6 +765,15 @@ impl<'a> Operation<'a> {
                         clear_record(guard);
                         let result = self.journal_result();
                         self.write_journal_entry(result);
+                    } else {
+                        // Every attempt to write the original region failed.
+                        // The record stays, because the next start is the only
+                        // thing that can still put the region right, and the
+                        // user is told now instead of watching a step that will
+                        // never finish.
+                        self.advance(InstallationOperationEvent::RestoreFailed);
+                        self.write_journal_entry(JournalResult::RecoveryRequired);
+                        self.fail(Diagnostic::new(DiagnosticCode::RestoreFailed));
                     }
                     return;
                 }
@@ -651,6 +792,24 @@ impl<'a> Operation<'a> {
                         self.advance(InstallationOperationEvent::ObservationTimedOut);
                     }
                     self.write_journal_entry(JournalResult::CompletionUncertain);
+                    // Asking is the whole point of this step, and the window is
+                    // the only part of the application that can ask. Ending
+                    // without saying so is what left the window showing an
+                    // operation nobody could finish.
+                    let region_is_temporary = !self.facts.region_restored_early;
+                    (self.post)(InstallationUpdate {
+                        awaiting_user_decision: region_is_temporary,
+                        // With the region already back there is nothing left to
+                        // decide in this session: the record survives for the
+                        // next start, and the window is told the operation is
+                        // over instead of being left showing it running.
+                        failure: (!region_is_temporary)
+                            .then(|| Diagnostic::new(DiagnosticCode::CompletionUncertain)),
+                        ..InstallationUpdate::state(
+                            self.machine.state(),
+                            self.facts.region_restored_early,
+                        )
+                    });
                     return;
                 }
                 OperationStep::KeepObserving | OperationStep::Wait => thread::sleep(POLL_INTERVAL),
@@ -736,7 +895,7 @@ impl<'a> Operation<'a> {
                 self.identity.clone(),
                 JournalSubject::Product(subject),
                 self.request.temporary_region,
-                now_utc(),
+                now_utc()?,
                 BACKEND_NAME,
                 result,
             )
@@ -769,7 +928,7 @@ impl<'a> Operation<'a> {
             self.identity.clone(),
             JournalSubject::Product(subject),
             region,
-            now_utc(),
+            now_utc()?,
             BACKEND_NAME,
             result,
         )
@@ -857,6 +1016,47 @@ pub(super) fn append_journal_record(record: JournalRecord) -> bool {
     store.replace(&records).is_ok()
 }
 
+/// Write the history entry an installation left without an outcome never wrote.
+///
+/// The record names the product, the region it was installed under and the
+/// method used. The result is `Installed` only when the identity the record was
+/// waiting for is present now — proof this operation finished — and otherwise
+/// says the completion was never confirmed, which is the whole of what a record
+/// without evidence supports.
+pub(super) fn record_operation_without_outcome(pending: &PendingRestore, package_present: bool) {
+    let Ok(product_id) = StoreProductId::parse(pending.product_id()) else {
+        return;
+    };
+    let Ok(subject) = JournalProduct::new(
+        product_id.clone(),
+        pending.package_family_name().cloned(),
+        pending.install_classification().kind(),
+        product_id.as_str().to_owned(),
+        None,
+        None,
+    ) else {
+        return;
+    };
+    let Some(written_at) = now_utc() else {
+        return;
+    };
+    let Ok(record) = JournalRecord::new(
+        pending.operation_id().clone(),
+        JournalSubject::Product(subject),
+        pending.temporary_region(),
+        written_at,
+        pending.backend(),
+        if package_present {
+            JournalResult::Installed
+        } else {
+            JournalResult::CompletionUncertain
+        },
+    ) else {
+        return;
+    };
+    let _ = append_journal_record(record);
+}
+
 /// Name the cause of a region switch that never completed.
 fn switch_diagnostic(error: &RegionSwitchError<RecoveryStoreError>) -> Diagnostic {
     match error {
@@ -877,10 +1077,7 @@ fn restore_region(guard: &mut PendingRestoreGuard<Win32RecoveryStore>, early: bo
     let reader = Win32RegionReader;
     let writer = Win32RegionWriter;
     let original = guard.pending().original_region();
-    if RegionWriter::set_region(&writer, original).is_err() {
-        return false;
-    }
-    if reader_original_region(&reader) != Some(original) {
+    if !write_original_region(&reader, &writer, original) {
         return false;
     }
     let milestone = if early {
@@ -889,6 +1086,30 @@ fn restore_region(guard: &mut PendingRestoreGuard<Win32RecoveryStore>, early: bo
         DurableOperationState::Restored
     };
     guard.update_state(milestone).is_ok()
+}
+
+/// Write the original region until a read-back agrees, or give up saying so.
+///
+/// The attempts are repeated rather than reported once: a region write is
+/// refused for reasons that pass, and the alternative to trying again is
+/// leaving the machine on a region the user never chose.
+fn write_original_region(
+    reader: &Win32RegionReader,
+    writer: &Win32RegionWriter,
+    original: GeoId,
+) -> bool {
+    for attempt in 0..RESTORE_ATTEMPTS {
+        if attempt > 0 {
+            thread::sleep(RESTORE_RETRY_PAUSE);
+        }
+        if RegionWriter::set_region(writer, original).is_err() {
+            continue;
+        }
+        if reader_original_region(reader) == Some(original) {
+            return true;
+        }
+    }
+    false
 }
 
 /// Clear the recovery record once the operation has an outcome.
@@ -933,15 +1154,18 @@ fn reader_original_region(reader: &Win32RegionReader) -> Option<GeoId> {
     reader.current_region().ok().map(|region| region.geo_id)
 }
 
-/// Current UTC instant, or the epoch when the clock is unavailable.
+/// Current UTC instant, or nothing when the clock cannot be read.
 ///
 /// Shared with the handoff path, so one operation cannot stamp its history
-/// differently from the other.
-pub(super) fn now_utc() -> UtcTimestamp {
-    let seconds = SystemTime::now()
+/// differently from the other. A clock that cannot answer yields nothing
+/// rather than a substitute: the value goes into a durable record and a history
+/// entry, and a stamp of 1970 reads as fact to everything that opens them
+/// later.
+pub(super) fn now_utc() -> Option<UtcTimestamp> {
+    SystemTime::now()
         .duration_since(UNIX_EPOCH)
-        .map_or(0, |elapsed| elapsed.as_secs());
-    UtcTimestamp::from_unix_seconds(seconds)
+        .ok()
+        .map(|elapsed| UtcTimestamp::from_unix_seconds(elapsed.as_secs()))
 }
 
 /// The single identifier of one guarded operation.

@@ -53,6 +53,26 @@ impl OperationTrace {
         ));
     }
 
+    /// Record whether the record kept the identity a resumed run proves with.
+    ///
+    /// Without the package family name and the classification, a restart cannot
+    /// tell a finished installation from an unfinished one, so a refused write
+    /// here decides how the next start will read this operation.
+    pub(super) fn completion_identity_recorded(&self, saved: bool) {
+        record(
+            &LogEvent::new(
+                if saved {
+                    LogLevel::Info
+                } else {
+                    LogLevel::Warning
+                },
+                LogEventCode::RecoveryRecordWritten,
+            )
+            .for_operation(self.operation_id.clone())
+            .with_token("identity", if saved { "saved" } else { "not_saved" }),
+        );
+    }
+
     /// Record a region switch that reached its mandatory read-back.
     pub(super) fn region_switched(
         &self,

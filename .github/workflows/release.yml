@@ -7,9 +7,6 @@ on:
   push:
     tags: ['v*']
 
-permissions:
-  contents: write
-
 env:
   CARGO_TERM_COLOR: always
   CARGO_TARGET_DIR: target
@@ -26,7 +23,7 @@ jobs:
           - aarch64-pc-windows-msvc
           - i686-pc-windows-msvc
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       # A tag that disagrees with the manifest would publish a version nobody
       # can find in the source. Checked before anything is built.
@@ -62,7 +59,7 @@ jobs:
           Set-Content -Path "release/$name.sha256" -Value ($hash + ' *' + $name) -Encoding ascii
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value ('- **' + $name + '** `' + $hash + '`')
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: release-${{ matrix.target }}
           path: release/*
@@ -72,10 +69,14 @@ jobs:
     name: Publish the release
     needs: build
     runs-on: windows-latest
+    # Only this job writes anything. The build job compiles a public repository
+    # and needs no more than the read every workflow gets by default.
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - uses: actions/download-artifact@v8
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           path: downloaded
 

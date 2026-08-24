@@ -133,6 +133,14 @@ pub enum DiagnosticCode {
     /// [`DiagnosticCode::ProductUnavailableInRegion`]: the product does exist in
     /// the chosen region, and repeating the operation can succeed.
     TemporaryRegionNotApplied,
+    /// The source had nothing under this identifier when the install was asked for.
+    ///
+    /// Deliberately separate from [`DiagnosticCode::TemporaryRegionNotApplied`]:
+    /// the region was confirmed by read-back and the catalogue answered under
+    /// it moments earlier, so blaming the region would be a false statement
+    /// about the one fact this operation proved. A product withdrawn between
+    /// the resolve and the request looks exactly like this.
+    ProductNoLongerOffered,
     /// The same product is already being installed.
     ///
     /// Measured as `0x80070652`. The install in flight may belong to another
@@ -181,6 +189,7 @@ impl DiagnosticCode {
             Self::ProductAlreadyInstalled => "product_already_installed",
             Self::OperationSequenceViolated => "operation_sequence_violated",
             Self::TemporaryRegionNotApplied => "temporary_region_not_applied",
+            Self::ProductNoLongerOffered => "product_no_longer_offered",
             Self::ProductAlreadyInstalling => "product_already_installing",
             Self::InstallKindNotSupported => "install_kind_not_supported",
             Self::ProductNotOnThisDevice => "product_not_on_this_device",
@@ -255,6 +264,12 @@ impl DiagnosticCode {
             Self::TemporaryRegionNotApplied | Self::ProductAlreadyInstalling => {
                 &[DiagnosticAction::Retry]
             }
+            // Nothing about the input or the region was wrong, so the two
+            // things left are to ask again and to ask somewhere else.
+            Self::ProductNoLongerOffered => &[
+                DiagnosticAction::Retry,
+                DiagnosticAction::ChooseAnotherRegion,
+            ],
 
             Self::RegionUnchanged | Self::RegionChangeRejected => &[
                 DiagnosticAction::ChooseAnotherRegion,
@@ -558,6 +573,11 @@ impl From<InstallBackendError> for Diagnostic {
             InstallBackendError::TemporaryRegionNotApplied => (
                 DiagnosticCode::TemporaryRegionNotApplied,
                 "InstallBackendError::TemporaryRegionNotApplied",
+                None,
+            ),
+            InstallBackendError::PackageNotOffered => (
+                DiagnosticCode::ProductNoLongerOffered,
+                "InstallBackendError::PackageNotOffered",
                 None,
             ),
             InstallBackendError::AlreadyInstalling => (

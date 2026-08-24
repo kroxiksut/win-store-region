@@ -314,8 +314,12 @@ unsafe fn begin_updates_scan(window: HWND, chrome: &WindowChrome, state: &mut Ap
     state.selected_update_index = None;
     // The remembered answer is being replaced, so its age no longer applies.
     state.updates_taken = None;
+    // The previous scan cannot be called back — its workers are already asking
+    // the network — so this number is what tells its late reports from these.
+    state.updates_scan_generation = state.updates_scan_generation.wrapping_add(1);
+    let generation = state.updates_scan_generation;
     unsafe { render(window, chrome, state) };
-    start_updates_scan(window, market);
+    start_updates_scan(window, market, generation);
 }
 
 /// Carry the chosen application to the tab that can act on it.
