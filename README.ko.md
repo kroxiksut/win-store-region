@@ -12,7 +12,9 @@ Windows 지역을 일시적으로 변경하여 설치를 진행하고, Microsoft
 
 약 2 MB 크기의 휴대용 `WinStoreRegion.exe`로, x64, ARM64, 32비트 x86 세 가지 아키텍처로 배포됩니다. 관리자 권한이 필요하지 않으며 요청하지도 않습니다. x64 빌드만 실제로 실행되었습니다. [실제로 검증된 내용](#실제로-검증된-내용)을 참조하십시오.
 
-[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · **한국어** · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [변경 내역](CHANGELOG.md)
+[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · **한국어** · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
+
+[변경 내역](CHANGELOG.md)
 
 > **본 문서는 기계 번역이며 한국어 모국어 사용자가 검수하지 않았습니다.** 본 프로젝트는 어떤 번역도 검토하지 않으므로, 이 번역은 영문 원본보다 오류가 있을 가능성이 높습니다. 오류를 발견하면 issue를 열거나 pull request를 제출해 주십시오. [English](README.md)가 권위 있는 버전입니다.
 

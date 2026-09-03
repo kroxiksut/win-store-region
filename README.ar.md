@@ -12,7 +12,9 @@
 
 ملف تنفيذي واحد محمول `WinStoreRegion.exe`، نحو ٢ ميغابايت، يُنشر لمعماريات x64 وARM64 وx86 ‏٣٢‑بت. لا يحتاج صلاحيات المدير ولا يطلبها. ولم تُشغَّل فعليًّا إلا نسخة x64 — انظر [ما جرى التحقّق منه فعلًا](#ما-جرى-التحقّق-منه-فعلًا).
 
-**العربية** · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [سجل التغييرات](CHANGELOG.md)
+**العربية** · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
+
+[سجل التغييرات](CHANGELOG.md)
 
 > **هذا المستند مسوَّدة آلية لم يقرأها ناطق بالعربية.** المشروع لا يراجع الترجمات، وهذه لم يكن لها مترجم، فاحتمال الخطأ فيها أعلى من النص الإنجليزي الأصلي. من وجد خللًا فليفتح issue أو pull request. والمرجع عند الاختلاف هو [English](README.md).
 

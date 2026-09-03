@@ -16,7 +16,9 @@ One portable `WinStoreRegion.exe`, about 2 MB, published for x64, ARM64 and
 32-bit x86. It neither needs nor requests administrator rights. Only the x64
 build has ever been run — see [what is verified](#what-has-actually-been-verified).
 
-[العربية](README.ar.md) · **English** · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [Changelog](CHANGELOG.md)
+[العربية](README.ar.md) · **English** · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
+
+[Changelog](CHANGELOG.md)
 
 ![The Installation tab in English](assets/screenshots/installation-en.png)
 

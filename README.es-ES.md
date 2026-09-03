@@ -18,7 +18,9 @@ para x64, ARM64 y x86 de 32 bits. No requiere ni solicita derechos de
 administrador. Solo la compilación x64 se ha ejecutado —véase [qué se ha
 verificado realmente](#qué-se-ha-verificado-realmente).
 
-[العربية](README.ar.md) · [English](README.md) · **Español** · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [Cambios](CHANGELOG.md)
+[العربية](README.ar.md) · [English](README.md) · **Español** · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
+
+[Cambios](CHANGELOG.md)
 
 > **Este documento es una traducción automática que ningún hispanohablante ha revisado.** El idioma utilizado es español europeo. El proyecto no revisa traducciones; por lo tanto, es más probable que contenga errores que el [inglés](README.md), que es la versión de autoridad. Si encuentra algún error, le agradeceremos que abra un problema (_issue_) o una solicitud de extracción (_pull request_).
 

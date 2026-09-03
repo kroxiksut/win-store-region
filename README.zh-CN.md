@@ -12,7 +12,9 @@
 
 一个便携式 `WinStoreRegion.exe`，约 2 MB，发布 x64、ARM64 与 32 位 x86 三种版本。它既不需要也不申请管理员权限。只有 x64 版本被实际运行过——参见[实际验证过的内容](#实际验证过的内容)。
 
-[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · **简体中文** · [繁體中文](README.zh-TW.md) · [更新日志](CHANGELOG.md)
+[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · **简体中文** · [繁體中文](README.zh-TW.md)
+
+[更新日志](CHANGELOG.md)
 
 > **本文档由机器翻译，未经中文母语者校对。**本项目不审校任何翻译，而这一份连译者都没有，因此它比英文原文更可能出错。发现问题请提交 issue 或 pull request。以 [English](README.md) 为准。
 

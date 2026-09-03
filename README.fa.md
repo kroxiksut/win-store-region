@@ -12,7 +12,9 @@
 
 یک `WinStoreRegion.exe` قابل حمل، حدود ۲ مگابایت، منتشرشده برای x64 و ARM64 و x86 ۳۲‑بیتی. نه به دسترسی مدیر نیاز دارد و نه آن را می‌خواهد. تنها ساخت x64 واقعاً اجرا شده است — [آنچه واقعاً راستی‌آزمایی شده](#آنچه-واقعاً-راستی‌آزمایی-شده) را ببینید.
 
-[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · **فارسی** · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [تاریخچهٔ تغییرات](CHANGELOG.md)
+[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · **فارسی** · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
+
+[تاریخچهٔ تغییرات](CHANGELOG.md)
 
 > **این سند ترجمهٔ ماشینی است و هیچ فارسی‌زبانی آن را بازخوانی نکرده است.** این پروژه هیچ ترجمه‌ای را بازخوانی نمی‌کند و این یکی حتی مترجم هم نداشته، پس احتمال خطایش از متن انگلیسی بیشتر است. اگر ایرادی دیدید issue یا pull request باز کنید. مرجع، نسخهٔ [English](README.md) است.
 

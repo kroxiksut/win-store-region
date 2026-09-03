@@ -12,7 +12,9 @@ Windows bölgesini tek bir kurulum süresince değiştiren, kurulumu Microsoft S
 
 Yaklaşık 2 MB'lık taşınabilir `WinStoreRegion.exe`, x64, ARM64 ve 32-bit x86 için yayımlanır. Yönetici haklarına ihtiyaç duymaz ve talep etmez. Yalnızca x64 derlemesi çalıştırılmıştır — [aslında doğrulanan](#aslında-doğrulanan-nedir)'i inceleyin.
 
-[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · **Türkçe** · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [Değişiklikler](CHANGELOG.md)
+[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · **Türkçe** · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
+
+[Değişiklikler](CHANGELOG.md)
 
 > Bu belge makine tarafından çevirilen bir metindir ve hiçbir Türkçe konuşan kişi tarafından gözden geçirilmemiştir. Bu proje çevirileri incelemez; bu nedenle İngilizceden yanlış olma olasılığı daha yüksektir. Bir hata bulursanız, lütfen bir konu açın veya çekme isteği gönderin. [İngilizce](README.md) sürümü yetkilidir.
 

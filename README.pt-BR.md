@@ -16,7 +16,9 @@ Um único arquivo portável `WinStoreRegion.exe`, cerca de 2 MB, publicado para 
 ARM64 e x86 de 32 bits. Não requer nem solicita direitos de administrador. Apenas
 a compilação x64 foi executada — veja [o que foi realmente verificado](#o-que-foi-realmente-verificado).
 
-[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · **Português** · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [Alterações](CHANGELOG.md)
+[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · **Português** · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
+
+[Alterações](CHANGELOG.md)
 
 > **Aviso de tradução:** Este documento é uma tradução automática que nenhum
 > falante de português verificou. O texto original e autorizado está em

@@ -12,7 +12,9 @@ Windows リージョンを 1 回のインストール期間だけ切り替え、
 
 約 2 MB の portable な `WinStoreRegion.exe` で、x64、ARM64、32 ビット x86 向けに公開されています。管理者権を必要としたり要求したりしません。x64 ビルドだけが実際に実行されています。詳細は[実際に検証されたもの](#実際に検証されたもの)を参照してください。
 
-[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · **日本語** · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [変更履歴](CHANGELOG.md)
+[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · **日本語** · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
+
+[変更履歴](CHANGELOG.md)
 
 > **本ドキュメントは機械翻訳であり、日本語の母語話者による校正を受けていません。** 本プロジェクトはいかなる翻訳も審査しないため、本文書は英語版よりもさらに誤りの可能性が高くあります。誤りを見つけた場合は、issue または pull request を開いてください。最終的な根拠は [English](README.md) です。
 

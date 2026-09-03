@@ -12,7 +12,9 @@
 
 一個可攜的 `WinStoreRegion.exe`，約 2 MB，發行 x64、ARM64 與 32 位元 x86 三種版本。它既不需要也不索取系統管理員權限。只有 x64 版本真的被執行過 —— 參見[實際驗證過的內容](#實際驗證過的內容)。
 
-[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · **繁體中文** · [變更記錄](CHANGELOG.md)
+[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · **繁體中文**
+
+[變更記錄](CHANGELOG.md)
 
 > **本文件由機器翻譯，未經正體中文母語者校對。**本專案不審校任何翻譯，而這一份連譯者都沒有，因此它比英文原文更可能出錯。發現問題請提交 issue 或 pull request。以 [English](README.md) 為準。
 

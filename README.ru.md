@@ -16,7 +16,9 @@
 ARM64 и 32-битного x86. Прав администратора не требует и не запрашивает.
 Запускалась только сборка x64 — см. [что проверено](#что-проверено-на-самом-деле).
 
-[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · **Русский** · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [Изменения](CHANGELOG.md)
+[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · **Русский** · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
+
+[Изменения](CHANGELOG.md)
 
 Основной язык документации — английский.
 

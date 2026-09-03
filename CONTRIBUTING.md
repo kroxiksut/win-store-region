@@ -159,7 +159,7 @@ end, and no other file has to be renumbered for it.
 
 A language is also a link, and this is the part that is easy to half-finish.
 Every `README` carries two things that name all of them: the badge listing the
-interface languages, and the line linking to the other documents. A new language
+interface languages, and the line linking to the other READMEs. A new language
 belongs in **both, in every one of those files**, in the same order the chooser
 uses — otherwise the eleventh document is the only one that does not know the
 language exists, and its readers are the only people who cannot find their own.
