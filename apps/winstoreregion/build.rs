@@ -46,14 +46,14 @@ mod languages {
     struct LanguageFile {
         /// Rust identifier for this language's variant.
         variant: String,
-        /// BCP 47 tag, kept for the record and for future use.
+        /// BCP 47 tag, and the key the chooser is sorted by.
         code: String,
         /// What the language chooser shows.
         name: String,
+        /// Which way this language reads: `ltr` or `rtl`.
+        direction: String,
         /// Who translated this language, as they wish to be credited.
         authors: Vec<String>,
-        /// Position in the chooser, and therefore the variant's index.
-        order: i64,
         strings: BTreeMap<String, Value>,
         /// Where it came from, so a complaint can name the file.
         file: String,
@@ -67,7 +67,12 @@ mod languages {
             "no language files found in {}",
             directory.display()
         );
-        languages.sort_by_key(|language| language.order);
+        // Sorted by language tag, which is the one name a language has that is
+        // standard, stable and the same in every script. Nobody assigns the
+        // order and nobody can get it wrong: a file added later takes its place
+        // among the others rather than at the end, and the tag it is sorted by
+        // is the one the chooser already shows beside each name.
+        languages.sort_by(|left, right| left.code.cmp(&right.code));
         check_agreement(&languages);
 
         let reference = &languages[0];
@@ -144,10 +149,37 @@ mod languages {
             strings.insert(key.clone(), value);
         }
 
+        // The chooser is sorted by `code`. A file still carrying the field that
+        // used to decide the order would be obeyed by nobody while going on
+        // looking as though it were, so it is refused with the reason.
+        assert!(
+            document.get("order").is_none(),
+            "{file}: `order` is no longer used; the chooser is sorted by `code`, so remove the field"
+        );
+
+        // Absent means `ltr`, because that is what all but a handful of
+        // languages are and a translator into one of them should not have to
+        // say so. A misspelled value is refused rather than read as `ltr`: a
+        // silent fallback would lay the whole interface out backwards for the
+        // one language that actually needed the field.
+        let direction = document
+            .get("direction")
+            .map_or("ltr", |value| {
+                value
+                    .as_str()
+                    .unwrap_or_else(|| panic!("{file}: `direction` must be a string"))
+            })
+            .to_owned();
+        assert!(
+            direction == "ltr" || direction == "rtl",
+            "{file}: `direction` must be `ltr` or `rtl`, got `{direction}`"
+        );
+
         LanguageFile {
             variant,
             code: field("code"),
             name: field("name"),
+            direction,
             authors: document
                 .get("authors")
                 .and_then(toml::Value::as_array)
@@ -162,10 +194,6 @@ mod languages {
                         .collect()
                 })
                 .unwrap_or_default(),
-            order: document
-                .get("order")
-                .and_then(toml::Value::as_integer)
-                .unwrap_or_else(|| panic!("{file}: missing integer field `order`")),
             strings,
             file,
         }
@@ -218,11 +246,14 @@ mod languages {
                 }
             }
         }
-        let mut orders: Vec<i64> = languages.iter().map(|language| language.order).collect();
-        orders.dedup();
+        let mut codes: Vec<&str> = languages
+            .iter()
+            .map(|language| language.code.as_str())
+            .collect();
+        codes.dedup();
         assert!(
-            orders.len() == languages.len(),
-            "two language files share the same `order`"
+            codes.len() == languages.len(),
+            "two language files share the same `code`"
         );
     }
 
@@ -286,7 +317,13 @@ mod languages {
 
     fn write_enum(generated: &mut String, languages: &[LanguageFile]) {
         generated.push_str(
-            "/// Interface languages, in the order the chooser lists them.\n\
+            "/// Which way a language reads, and therefore which way the window is laid out.\n\
+             #[derive(Clone, Copy, Debug, Eq, PartialEq)]\n\
+             pub(super) enum TextDirection {\n    \
+                 LeftToRight,\n    \
+                 RightToLeft,\n\
+             }\n\n\
+             /// Interface languages, in the order the chooser lists them.\n\
              #[derive(Clone, Copy, Debug, Eq, PartialEq)]\n\
              pub(super) enum Language {\n",
         );
@@ -323,6 +360,27 @@ mod languages {
                 language.variant
             );
         }
+        generated.push_str("        }\n    }\n\n");
+
+        // Every language but a handful reads the same way, so the arms of this
+        // table are meant to repeat: the lint that objects to that is right
+        // about code written by hand and wrong about a generated table.
+        generated.push_str(
+            "    #[allow(clippy::match_same_arms)]\n    \
+             pub(super) const fn direction(self) -> TextDirection {\n        match self {\n",
+        );
+        for language in languages {
+            let _ = writeln!(
+                generated,
+                "            Self::{} => TextDirection::{},",
+                language.variant,
+                if language.direction == "rtl" {
+                    "RightToLeft"
+                } else {
+                    "LeftToRight"
+                }
+            );
+        }
         generated.push_str("        }\n    }\n}\n\n");
 
         generated.push_str(
@@ -334,6 +392,24 @@ mod languages {
             let _ = write!(generated, "{:?}, ", language.name);
         }
         generated.push_str("];\n\n");
+
+        // The key the order is derived from, so a test can hold the generator
+        // to it. Test-only: the interface shows the name, which already carries
+        // the tag, and a second copy of it on screen would say nothing new.
+        generated.push_str(
+            "/// Language tags, in the order of the variants; the chooser is sorted by these.
+             #[cfg(test)]
+             pub(super) const LANGUAGE_TAGS: [&str; ",
+        );
+        let _ = write!(generated, "{}] = [", languages.len());
+        for language in languages {
+            let _ = write!(generated, "{:?}, ", language.code);
+        }
+        generated.push_str(
+            "];
+
+",
+        );
 
         // Credits are generated from the language files themselves, so a
         // language and the people who provided it cannot drift apart.

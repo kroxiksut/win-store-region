@@ -5,7 +5,7 @@
 ![Platform](https://img.shields.io/badge/platform-Windows%20x64%20%7C%20ARM64%20%7C%20x86-0078d4)
 ![Rust](https://img.shields.io/badge/rust-1.85%2B%20edition%202024-b7410e)
 [![CI](https://github.com/kroxiksut/win-store-region/actions/workflows/ci.yml/badge.svg)](https://github.com/kroxiksut/win-store-region/actions/workflows/ci.yml)
-![UI](https://img.shields.io/badge/UI-EN%20%7C%20RU%20%7C%20ZH-lightgrey)
+![UI](https://img.shields.io/badge/UI-AR%20%7C%20EN%20%7C%20ES--ES%20%7C%20FA%20%7C%20JA%20%7C%20KO%20%7C%20PT--BR%20%7C%20RU%20%7C%20TR%20%7C%20ZH--CN%20%7C%20ZH--TW-lightgrey)
 ![Admin rights](https://img.shields.io/badge/admin%20rights-not%20required-success)
 
 A Windows utility that switches the Windows region for the length of one
@@ -16,7 +16,7 @@ One portable `WinStoreRegion.exe`, about 2 MB, published for x64, ARM64 and
 32-bit x86. It neither needs nor requests administrator rights. Only the x64
 build has ever been run — see [what is verified](#what-has-actually-been-verified).
 
-**English** · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [Changelog](CHANGELOG.md)
+[العربية](README.ar.md) · **English** · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [Changelog](CHANGELOG.md)
 
 ![The Installation tab in English](assets/screenshots/installation-en.png)
 
@@ -394,9 +394,13 @@ puts the technical block of the current error on the clipboard.
   interface, not in the model. It has not reproduced since, and the build it
   happened on predates several fixes; the cause is not yet known and is not
   guessed at here.
-- Interface languages are English, Russian and Simplified Chinese. The
-  Chinese text is a machine-made draft that no Chinese reader has checked; the
-  file says so at the top.
+- Eleven interface languages: Arabic, English, Spanish, Persian, Japanese,
+  Korean, Portuguese, Russian, Turkish, and Chinese in both scripts. English
+  and Russian are the maintainer's own; the other nine are machine-made drafts
+  that no native reader has checked, and each file says so at the top. Arabic
+  and Persian turn the whole window around, because that is how they read. Each
+  of them has this document translated as well, and every one of those links to
+  all the others.
 - One instance of the program runs at a time.
 
 ## Translations
@@ -405,6 +409,12 @@ A language is a file. `lang/ru.toml`, `lang/en.toml`, and whatever you add:
 copy one, translate the values, open a pull request. There is no Rust to write —
 the build reads that directory and generates the language list, the chooser and
 the tables, so `lang/zh.toml` is all it takes to offer Chinese.
+
+A language that reads right to left says so in one field, `direction = "rtl"`,
+and the window turns itself around for it: the panels, the captions, the
+buttons, the table columns and the scrollbars all change sides. Arabic came
+first and Persian followed for the price of one file and no code at all, which
+is the whole claim being made here; Hebrew would cost the same.
 
 **A new language is approved without a linguistic review**, because nobody here
 can read it. What is checked is structure, and the build does it: a missing key,

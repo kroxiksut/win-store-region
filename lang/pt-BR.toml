@@ -1,0 +1,614 @@
+# Texto de interface em português brasileiro para WinStoreRegion.
+#
+# Um arquivo, um idioma. A compilação lê este diretório e transforma os arquivos
+# em tabelas Rust: uma chave ausente e uma chave desconhecida quebram a compilação
+# igualmente, de modo que uma tradução incompleta não pode ser lançada
+# desapercebida.
+#
+# Muitas cadeias de caracteres aqui são deliberadamente cuidadosas: dizem que uma
+# conclusão não foi comprovada, que uma resposta veio de um único mercado, que um
+# conjunto está incompleto. Essas ressalvas são o produto, não preenchimento. Uma
+# tradução deve preservá-las mesmo quando uma frase mais ousada tivesse melhor
+# leitura.
+#
+# Este arquivo é um rascunho criado por máquina que nenhum falante de português
+# revisou. É escrito especificamente em português brasileiro. O projeto não faz
+# revisão de traduções. Se encontrar um erro, abra uma questão ou um pedido de
+# solicitação. Qualquer pessoa disposta a se responsabilizar por este arquivo pode
+# adicionar seu nome a `authors`.
+
+
+variant = "PortugueseBrazil"
+code = "pt-BR"
+name = "Português (pt-BR)"
+direction = "ltr"
+authors = []
+
+[strings]
+title = "WinStoreRegion"
+subtitle = "Alteração de região temporária segura"
+language = "Idioma"
+current_region = "Região atual (será preservada)"
+input = "URL da Microsoft Store ou ID do produto"
+source_title = "Aplicativo para instalar"
+source_hint = "Escolha um link/ID de produto ou arquivo de instalador. O rascunho inativo é preservado."
+source_link = "Link ou ID do produto"
+source_file = "Arquivo de instalador (.exe)"
+paste = "Colar"
+choose_file = "Escolher arquivo"
+clear_file = "Limpar"
+clear_input = "Limpar"
+download_installer = "Baixar o instalador da Store"
+downloading_installer = "Baixando o instalador…"
+no_file = "Nenhum arquivo selecionado"
+drop_overlay = "Solte o .exe aqui"
+app_card = "O cartão do aplicativo aparecerá quando uma região temporária for escolhida e o catálogo da Store responder."
+temporary_region = "Região de instalação temporária (lista Windows)"
+find_region = "Encontrar uma região onde é oferecida"
+check_remaining = "Regiões restantes"
+show_all_regions = "Mostrar todas as regiões"
+availability_idle = "As regiões não foram verificadas."
+availability_incomplete = "O conjunto está incompleto."
+availability_none = "Não oferecido em nenhuma região verificada."
+availability_offline = "A fonte não respondeu."
+status = "A instalação ainda não está disponível: nenhum aplicativo foi nomeado e nem todas as verificações que a tornam segura passaram."
+install = "Instalar"
+restore = "Instalação concluída — restaurar região"
+open_store_page = "Abrir página da Store"
+details = "Detalhes técnicos"
+journal_placeholder = "O diário de operações estará disponível após a implementação do diário local. Instalação e recuperação não são executadas nesta aba."
+journal_loading = "Carregando o diário de operações local…"
+journal_empty = "O diário está vazio. Apenas resultados de operação confirmados ou que exigem recuperação aparecerão aqui."
+journal_open_store = "Abrir página da Store"
+journal_repeat = "Repetir instalação"
+journal_delete = "Excluir entrada"
+journal_copy_id = "Copiar ID do produto"
+journal_clear = "Limpar o diário"
+journal_columns = ["Hora (UTC)", "Aplicativo", "Identificador", "Resultado"]
+updates_idle = "Pressione Verificar para ver os aplicativos da Microsoft Store instalados e quais deles a Store não oferece na região atual."
+updates_scanning = "Verificando os aplicativos instalados…"
+updates_refresh = "Verificar"
+updates_open = "Abrir na Instalação"
+updates_none = "Nenhum aplicativo da Microsoft Store foi encontrado que a Store não ofereça na região atual."
+updates_columns = ["Aplicativo", "ID do produto", "Instalado", "No catálogo da Store"]
+updates_unavailable = "Windows não informou quais aplicativos estão instalados, por isso não foi possível construir a lista."
+updates_choose_entry = "Escolha um aplicativo da lista."
+# Uma resposta lembrada é útil e não deve ser confundida com uma nova, então
+# ela própria declara sua idade. {button} é a legenda do botão que verifica
+# novamente.
+updates_scan_age = """
+Da verificação de {taken} (UTC). Pressione “{button}” para perguntar novamente.
+
+"""
+# Tudo que se sabe sobre uma entrada. Nunca afirma que uma atualização existe:
+# um produto da Store não pode ser atualizado daqui e dois números de versão nem
+# sempre são comparáveis. A única afirmação feita é a comprovável — que a Store
+# não oferece este produto nesta região. {button} é a legenda do botão que
+# carrega a entrada para a aba Instalação.
+updates_entry_details = """
+{name}
+ID do produto: {id}
+Família de pacote: {family}
+Versão instalada: {installed}
+Versão no catálogo da Store: {offered}
+
+A Microsoft Store não oferece este aplicativo na região atual, portanto não o atualizará aqui também. “{button}” carrega o ID do produto para a aba Instalação e inicia a busca por regiões onde o aplicativo é oferecido.
+
+Isto não afirma que uma atualização foi lançada: as duas versões acima podem ser numeradas por esquemas diferentes, caso em que a ordem entre elas não significa nada."""
+updates_version_not_named = "o catálogo não nomeou uma versão"
+
+# O cartão do aplicativo. A última linha não é decoração: o que um catálogo
+# oferece não é o mesmo que o que uma instalação encontrará, e o cartão diz
+# qual dos dois está mostrando.
+card_publisher_not_provided = "editor não fornecido"
+card_product_id = "ID do produto: {id}"
+card_store_catalogue = "Catálogo da Store: {market}"
+card_version = "Versão: {version}"
+# Quanto a download é grande, conforme relatado pelo catálogo. Os nomes das
+# unidades são os binários; um idioma que os escreve de forma diferente os
+# muda aqui, e o separador decimal viaja com a frase.
+card_size_bytes = "Tamanho: {size} bytes"
+card_size = "Tamanho: {whole},{tenths} {unit}"
+card_size_kibibytes = "KiB"
+card_size_mebibytes = "MiB"
+card_offered_installable = "Oferecido na região selecionada. Isto é o que o catálogo diz, não uma verificação de instalação: o aplicativo será procurado novamente sob a região temporária."
+card_offered_not_installable = "Oferecido na região selecionada, mas esta versão não instala aplicativos entregues dessa forma."
+
+# O que se sabe sobre a região selecionada. Cada um diz até onde o conhecimento
+# vai: uma região respondeu não é o mesmo que todas as regiões verificadas.
+region_checking_selected = "Verificando a região selecionada…"
+region_offered_here = "Oferecido na região selecionada. As outras regiões não foram verificadas."
+region_not_offered_here = "Não oferecido na região selecionada."
+region_no_answer_here = "A fonte não respondeu sobre a região selecionada. As outras não foram verificadas."
+# "Não verificado" é lido como "ainda não", e ao lado de um botão que nunca se
+# habilitará é o que faz a janela parecer quebrada. Um arquivo não nomeia um
+# aplicativo, então esta verificação não é adiada — não há nada para perguntar.
+region_nothing_to_check = "Nada para verificar para um arquivo: é necessário um ID de produto."
+region_checked_progress = "Verificado {done} de {total}…"
+region_found = "Regiões encontradas: {count}."
+
+card_syntax_accepted = "ID do produto {id} aceito. Escolha uma região temporária e o cartão do aplicativo pode ser solicitado."
+card_retrieving = "Recuperando o cartão do aplicativo da Store…"
+# O catálogo responde sob a região atualmente em vigor, não sob a temporária,
+# então um aplicativo faltando aqui não diz nada sobre a região que o usuário
+# escolheu. Nomear a região que foi consultada evita que o cartão seja lido como
+# um veredicto sobre essa escolha.
+card_unavailable_in_region = """
+O cartão do aplicativo está indisponível: o aplicativo não é visível na região Windows atual ({region}).
+A região temporária ainda não foi aplicada e isto não bloqueia a instalação."""
+card_unavailable = """
+O cartão do aplicativo está indisponível: o aplicativo não é visível na região Windows atual.
+A região temporária ainda não foi aplicada e isto não bloqueia a instalação."""
+
+# A última linha do cartão: se uma instalação poderia começar. Três coisas
+# devem se manter, e o texto as nomeia nos termos do usuário em vez dos do
+# programa — restaurar a região, nenhuma operação inacabada deixada para trás,
+# e algo capaz de executar a instalação.
+card_install_ready = "Pronto para instalar."
+card_install_not_ready = "Ainda não pronto para instalar: a restauração da região, a ausência de uma operação anterior inacabada e o próprio instalador não estão todos confirmados."
+
+# Onde a operação protegida se encontra, uma frase por vez. Nada aqui diz
+# "instalado" antes de a instalação informar, e nada diz que a região voltou
+# antes de ser relida.
+operation_switching_region = "Alternando a região e confirmando-a por releitura."
+operation_looking_up = "A região temporária está confirmada. Procurando o aplicativo nela."
+operation_found = "Encontrado {name}. Iniciando a instalação."
+operation_restoring_region = "A instalação foi concluída. Restaurando a região original."
+operation_done = "Concluído: o aplicativo está instalado e a região é a original."
+operation_completion_uncertain = "A conclusão não pôde ser confirmada. A decisão é sua."
+operation_started = "A operação foi iniciada. Aguardando seu primeiro relatório."
+
+# Windows não diria quais regiões existem. A lista na tela está vazia e por si
+# só não diz nada, então a janela diz em vez de deixar em branco.
+window_no_regions_listed = "Windows não nomeou nenhuma região, então não há nada para escolher uma região temporária. Nada pode ser instalado até que o faça."
+
+# Perguntado quando o prazo de observação passou enquanto a região temporária
+# ainda está em vigor. As três respostas são as três que o protocolo central
+# aceita, e pressionar a segunda é o que reconhece seu aviso. {state} é onde
+# a operação se encontra.
+operation_ask_timeout_resolution = """
+A instalação não relatou conclusão: {state}.
+
+Windows ainda está usando a região temporária. Windows é o proprietário da instalação e ela não pode ser interrompida desta janela.
+
+Sim — a instalação está concluída, restaure a região original.
+Não — restaure a região original agora, mesmo se a instalação ainda estiver em execução; ela pode ser interrompida.
+Cancelar — continuar aguardando; a janela se anexa à instalação novamente."""
+# Anexado ao que a operação está dizendo, mantendo o espaço inicial.
+operation_region_already_back = " A região original já está de volta."
+installing_phase_running = "Instalando"
+installing_phase_finishing = "Finalizando a instalação"
+installing_without_progress = "{phase}."
+installing_with_progress = "{phase}: {percent}%."
+
+# Entregando um arquivo de instalador da Store. Nada aqui relata progresso ou
+# conclusão, porque a operação não tem nenhum: a Store é proprietária desse
+# trabalho e não diz a esta janela nada sobre isso. {button} é a legenda do
+# botão de restauração.
+handoff_switching_region = "Alternando a região e confirmando-a por releitura. O arquivo ainda não foi iniciado."
+handoff_handed_off = "A região foi alternada para {region} e confirmada. A instalação foi entregue ao instalador da Microsoft Store: conclua-a na Store. Nenhum progresso é mostrado aqui e este aplicativo não confirma que nada foi instalado. Quando terminar, pressione “{button}”."
+handoff_restoring_region = "Restaurando a região original e confirmando-a por releitura."
+handoff_restored = "Concluído: a região original voltou e está confirmada, e o registro de recuperação foi removido. O que a Microsoft Store instalou não é algo que este aplicativo verifique."
+# Quando parou: a causa primeiro, depois o único fato que decide o que fazer
+# a seguir — se Windows ainda mantém a região temporária.
+handoff_did_not_happen = "O instalador não foi iniciado."
+handoff_region_may_be_temporary = "Windows pode ainda manter a região temporária: pressione “{button}”."
+handoff_region_original = "Windows ainda mantém a região original."
+handoff_declined = "O lançamento foi cancelado. A região não foi alterada, o arquivo não foi iniciado e nada foi modificado."
+
+resolution_card_confirmed = "O cartão do aplicativo está confirmado. A instalação ainda está aguardando suas verificações de segurança: restauração da região, ausência de uma operação anterior inacabada e o instalador."
+resolution_catalogue_not_searchable = "O catálogo da Store não pode ser pesquisado neste perfil Windows. A região não foi alterada e a instalação está indisponível."
+resolution_checked_in_region = "Verificado na região Windows atual: {region}."
+resolution_checked_in_current_region = "Verificado na região Windows atual."
+resolution_still_possible = "A região temporária ainda não foi aplicada e isto não bloqueia a instalação: o aplicativo será procurado novamente sob ela."
+
+# O próprio instalador da Microsoft, solicitado por ID do produto. O texto diz
+# o que o botão fará agora, porque seu significado mudou sob o usuário: o mesmo
+# botão entrega um arquivo à Store em vez de instalar diretamente. {button} é a
+# legenda desse botão, {restore} o que restaura a região.
+installer_download_ready = "O instalador da Microsoft Store foi baixado e selecionado como a fonte. Pressione “{button}”: a assinatura é verificada, a região é alternada e o instalador é iniciado. Ele não relata conclusão — você conclui a instalação em sua própria janela, e apenas então coloca a região de volta com “{restore}”."
+# Por que não chegou. Cada um nomeia o que foi e o que não foi estabelecido;
+# nenhum deles diz que o aplicativo não existe.
+installer_download_network = "A Microsoft não pôde ser alcançada para o instalador: a rede está indisponível."
+installer_download_refused = "A Microsoft não retornou um instalador para este aplicativo."
+installer_download_refused_with_status = "A Microsoft não retornou um instalador para este aplicativo (HTTP {status})."
+installer_download_too_large = "A resposta da Microsoft era maior do que este aplicativo pode gravar."
+installer_download_not_writable = "O instalador chegou, mas não pôde ser gravado na pasta de dados."
+
+# O que a fonte de aplicativo digitada significa para o comando que a segue. Um
+# status dizendo "indisponível" ao lado de um botão habilitado é pior do que
+# nenhum status, então cada um desses nomeia a única condição ainda ausente. As
+# legendas dos {button} são preenchidas nos próprios botões.
+source_choose_region = "ID do produto {id} aceito. Escolha uma região temporária ou pressione “{button}”."
+# O sinalizador de recuperação também começa como falso, antes de a recuperação
+# ter sido inspecionada, então isto não deve afirmar que uma operação inacabada
+# existe.
+source_recovery_pending = "ID do produto {id} aceito. A instalação fica disponível assim que a verificação de uma operação anterior inacabada for executada; se houver uma, ela deve ser resolvida primeiro."
+source_prerequisites_unmet = "Os pré-requisitos de instalação não foram atendidos."
+# Respondido pelo catálogo antes de nada ser tocado, então um aplicativo que
+# não pode ser entregue aqui é recusado enquanto a região é ainda a do usuário.
+source_other_device_only = "ID do produto {id}: a Microsoft Store não entregará este aplicativo a este dispositivo — é direcionado a outro tipo de dispositivo. Nenhuma alteração de região muda isso, portanto a instalação está indisponível."
+source_newer_windows_required = "ID do produto {id}: este aplicativo precisa do Windows {version} ou mais recente, e esta máquina é mais antiga. Nenhuma alteração de região muda isso, portanto a instalação está indisponível."
+source_ready = "ID do produto {id} aceito, região temporária: {region}. A instalação pode começar: o aplicativo será procurado sob essa região."
+source_syntax_accepted = "ID do produto {id} tem sintaxe válida. A instalação permanece indisponível até o catálogo da Store responder sobre isso."
+
+# O que o arquivo selecionado significa para o comando que o segue. Mesma ordem
+# que acima: nomear a única condição ainda ausente em vez de uma frase geral que
+# deixa o usuário adivinhando qual delas se aplica.
+file_choose = "Escolha um arquivo de instalador da Microsoft Store (.exe). Ele nunca é modificado e a Store em si continua a instalação. O rascunho de link é preservado."
+file_recovery_pending = "O arquivo passou nas verificações, mas não pode ser entregue até que a verificação de uma operação anterior inacabada seja executada; se houver uma, ela deve ser resolvida primeiro."
+file_store_not_confirmed = "O arquivo passou nas verificações, mas a Microsoft Store não está confirmada nesta máquina, e é ela que conclui a instalação. A região não foi alterada."
+file_choose_region = "O arquivo é assinado pela Microsoft Store e não foi executado. Escolha uma região temporária: o arquivo será iniciado sob ela."
+# Um arquivo de instalador não nomeia um aplicativo, então a busca de região
+# não tem nada para perguntar. Dizer isso é melhor do que deixar um botão morto
+# para quebra-cabeça.
+file_region_is_your_choice = "A região para um arquivo é sua escolha: o instalador não nomeia o aplicativo. Para encontrar um, cole um link, pressione “{button}” e mude para o arquivo — o arquivo escolhido é mantido."
+file_ready = """
+O arquivo {name} é assinado pela Microsoft Store e não foi executado. Região temporária: {region}. A instalação pode ser entregue: a região é alternada com releitura, o próprio instalador é iniciado e você conclui o trabalho na Microsoft Store.
+
+{unchecked}"""
+
+# Por que um arquivo selecionado não será executado. O motivo é um fragmento
+# inserido na frase abaixo, e nenhum deles chama o arquivo malicioso: cada um
+# diz apenas o que não pôde ser estabelecido.
+file_refusal_signature_not_trusted = "Windows não confirmou a assinatura do arquivo"
+file_refusal_signer_unavailable = "Windows não forneceu um certificado de editor"
+file_refusal_not_store_signed = "o arquivo não é assinado pela Microsoft Store"
+file_refusal_changed_while_checked = "o arquivo foi alterado enquanto era verificado"
+file_refusal_identity_incomplete = "o nome e SHA-256 do arquivo não puderam ser estabelecidos"
+file_refused = "Este arquivo não será iniciado: {reason}. A região não foi alterada. Escolha um instalador assinado pela Microsoft Store ou cole um link ou ID do produto da Microsoft Store."
+
+file_inspecting = "Inspecionando o .exe selecionado somente para leitura: seu SHA-256 e sua assinatura. O arquivo não é executado."
+file_changed_during_inspection = "O arquivo foi alterado ou substituído durante a inspeção. O resultado foi descartado; a instalação permanece indisponível."
+file_unreadable = "O arquivo selecionado não pôde ser lido com segurança. O resultado foi descartado; a instalação permanece indisponível."
+
+# Por que um arquivo não foi aceito. Nada foi alterado em nenhum desses casos e
+# a frase diz isso em vez de deixar para ser assumido.
+file_error_empty_path = "o caminho do arquivo está vazio"
+file_error_unsupported_extension = "apenas arquivos .exe são suportados"
+file_error_not_a_file = "o caminho não aponta para um arquivo existente"
+file_error_link_or_device_path = "atalhos e caminhos de sistema especiais não são suportados"
+file_error_multiple_files = "solte exatamente um arquivo"
+file_not_selected = "O arquivo não foi selecionado: {detail}. A fonte atual e os dois rascunhos não foram alterados."
+
+# Uma região conforme aparece na lista e na caixa de região atual. O nome vem
+# primeiro porque uma caixa de lista pesquisa pelo texto com o qual uma entrada
+# começa: com o código do país na frente, digitar o nome não encontrou nada, o
+# que é o que tornou uma lista de duzentas regiões inutilizável sem um mouse. O
+# número é o que o próprio Windows mantém e está aqui para que um usuário possa
+# verificar esta janela contra Windows em vez de aceitar sua palavra.
+region_choice = "{name} · {code} (código de região {geo_id})"
+region_choice_without_code = "{name} (código de região {geo_id})"
+
+region_choose_from_list = "Selecione uma região temporária da lista Windows. A região não foi alterada e nenhum aplicativo foi procurado."
+region_not_confirmed = "Windows não pôde confirmar a região selecionada. A região não foi alterada e nenhum aplicativo foi procurado."
+menu_file = "Arquivo"
+menu_paste = "Colar link/ID"
+menu_exit = "Sair"
+menu_help = "Ajuda"
+menu_about = "Sobre"
+menu_open_diagnostic_log = "Abrir log de diagnóstico"
+menu_copy_details = "Copiar detalhes"
+menu_recheck = "Verificar pré-requisitos novamente"
+menu_get_app_installer = "Obter App Installer"
+menu_region_documentation = "Microsoft: alterar seu país ou região"
+menu_github = "GitHub do projeto"
+tabs = ["Instalação", "Diário", "Atualizações"]
+region_unavailable = "A região Windows atual não pôde ser lida."
+
+# Causas de falha, uma por código de diagnóstico.
+diagnostic_backend_failed = "O instalador relatou uma falha."
+diagnostic_backend_reported_unknown_failure = "A instalação não ocorreu: a Microsoft Store relatou um erro cujo código não é conhecido aqui. O código está nos detalhes."
+diagnostic_backend_unavailable = "Nenhum caminho de instalação suportado está disponível para este aplicativo."
+diagnostic_clipboard_unavailable = "A área de transferência está indisponível."
+diagnostic_completion_uncertain = "A conclusão da instalação não está confirmada."
+diagnostic_install_kind_not_supported = "Este aplicativo é entregue de uma forma que esta versão não instala. Pode ser aberto na Microsoft Store."
+diagnostic_installer_file_not_a_store_stub = "Este não é um instalador da Microsoft Store."
+diagnostic_installer_file_not_admitted = "Este arquivo não será iniciado: sua assinatura ou assinante não passaram na verificação."
+diagnostic_installer_file_not_supported = "Um arquivo `.exe` existente é necessário."
+diagnostic_installer_file_unreadable = "O arquivo selecionado não pôde ser lido."
+diagnostic_installer_launch_rejected = "Windows não iniciou o instalador verificado."
+diagnostic_journal_unavailable = "O diário de operações está indisponível."
+diagnostic_microsoft_account_required = "A entrada de Microsoft Account é necessária."
+diagnostic_microsoft_store_unavailable = "A Microsoft Store está indisponível."
+diagnostic_ms_store_source_terms_not_accepted = "Os termos da fonte da Microsoft Store não foram aceitos. Nada foi instalado e nenhuma download resolve isso."
+diagnostic_ms_store_source_unavailable = "O catálogo da Microsoft Store está indisponível como fonte de instalação."
+diagnostic_network_unavailable = "Não há conexão de rede."
+diagnostic_operation_sequence_violated = "A operação foi interrompida por causa de uma falha de sequenciamento interno. Nada foi instalado."
+diagnostic_product_already_installed = "O aplicativo já está instalado neste computador. A região foi restaurada e nada foi instalado."
+diagnostic_product_already_installing = "Este aplicativo já está sendo instalado. Aguarde o término da instalação atual."
+diagnostic_product_not_found = "Nenhum aplicativo foi encontrado para este ID de produto."
+diagnostic_product_not_on_this_device = "A Microsoft Store não entregará este aplicativo a este dispositivo: é direcionado a outro tipo de dispositivo ou para um Windows mais recente. A região não é o obstáculo e alterá-la não ajudará."
+diagnostic_product_unavailable_in_region = "O aplicativo não é oferecido na região selecionada."
+diagnostic_recovery_record_unreadable = "Os dados de recuperação não puderam ser lidos com segurança."
+diagnostic_region_change_rejected = "Windows rejeitou a alteração de região."
+diagnostic_region_conflict = "A região atual não corresponde nem à original nem à temporária."
+diagnostic_region_unavailable = "Windows não relata a região atual."
+diagnostic_region_unchanged = "A região não foi alterada."
+diagnostic_resolver_answer_mismatch = "O catálogo respondeu sobre um aplicativo diferente, então o resultado foi rejeitado."
+diagnostic_resolver_unavailable = "O catálogo da Microsoft Store não pôde ser alcançado."
+diagnostic_restore_failed = "A restauração da região original não foi confirmada."
+diagnostic_store_input_not_understood = "O link ou ID do produto não foi reconhecido."
+diagnostic_store_page_launch_rejected = "Windows não pôde abrir a página da Microsoft Store."
+diagnostic_store_refused_without_reason = "A Microsoft Store recusou sem fornecer um motivo."
+diagnostic_temporary_region_not_applied = "A fonte não aceitou a região temporária: ela retornou à original antes da instalação começar. Tente novamente."
+
+# A região foi confirmada e o catálogo respondeu sob ela um momento antes; no
+# pedido de instalação o produto já não estava lá. Nada aqui culpa a região,
+# porque a região é o único fato que foi provado.
+diagnostic_product_no_longer_offered = "A fonte não oferece mais este aplicativo: respondeu sobre ele sob a região temporária e depois não havia nada para instalar. Pode ter sido retirado do mercado. Tente novamente ou escolha outra região."
+diagnostic_unsupported_market = "O catálogo não aceita a região selecionada."
+diagnostic_win_get_missing = "O componente Windows que instala aplicativos da Store não foi encontrado."
+
+# Detalhes técnicos, mostrados apenas em uma área de detalhes e destinados a
+# serem copiados.
+diagnostic_details_heading = "Detalhes técnicos"
+
+# Pré-requisitos de instalação. Para cada um a interface distingue "verificamos
+# e está ausente" de "a própria verificação não foi bem-sucedida": o segundo não
+# é prova de ausência e a formulação não deve transformá-lo em uma.
+prerequisite_heading = "A instalação está indisponível: os pré-requisitos não foram atendidos."
+prerequisite_app_installer_missing = "App Installer não está instalado. Windows instala aplicativos da Store com ele e pode ser instalado de sua página da Microsoft Store."
+prerequisite_app_installer_unknown = "Se o App Installer está presente não pôde ser determinado. A instalação permanece indisponível até que a verificação seja bem-sucedida."
+prerequisite_microsoft_store_missing = "A Microsoft Store está ausente. Nenhuma download independente existe para ela: o Windows deve ser reparado."
+prerequisite_microsoft_store_unknown = "Se a Microsoft Store está presente não pôde ser determinado. A instalação permanece indisponível até que a verificação seja bem-sucedida."
+prerequisite_com_metadata_missing = "O diretório do aplicativo não é gravável, portanto o arquivo de metadados do qual a instalação depende não pôde ser colocado ao lado dele. Mova o aplicativo para um diretório em que você possa gravar."
+prerequisite_com_metadata_unknown = "O arquivo de metadados ao lado do aplicativo não pôde ser preparado. A instalação permanece indisponível até que a verificação seja bem-sucedida."
+
+# A aba Diário.
+journal_journal_details = "O arquivo foi preservado sem modificações."
+
+# O que uma entrada de diário diz sobre si mesma. Os dois assuntos carregam
+# blocos diferentes porque sabem coisas diferentes: uma entrada feita para um
+# arquivo de instalador não tem nome de aplicativo, editor, versão ou identidade
+# de pacote e diz isso uma vez em vez de preencher seis campos com "desconhecido".
+# Os rótulos são traduzidos; os valores ao lado deles são o que foi gravado na
+# época.
+journal_details_product = """
+Aplicativo: {name}
+ID do produto: {id}
+Tipo: {kind}
+Editor: {publisher}
+Versão: {version}
+Família de pacote: {family}"""
+journal_details_file = """
+Arquivo: {name}
+SHA-256: {sha256}
+O aplicativo não é nomeado: um instalador da Microsoft Store não carrega um ID de produto."""
+journal_details_common = """
+Data: {date}
+Código de região: {geo_id}
+Operação: {operation}
+Método: {backend}
+Resultado: {result}"""
+# Dito no lugar de um valor que nunca foi estabelecido. Nenhum desses afirma
+# que o valor está ausente — apenas que esta entrada não o carrega.
+journal_details_kind_unknown = "Desconhecido"
+journal_details_publisher_not_provided = "não fornecido"
+journal_details_version_not_confirmed = "não confirmada"
+journal_details_family_not_confirmed = "não confirmada"
+
+# Resultados do diário.
+journal_result_installed = "Instalado e restaurado"
+journal_result_handed_off_to_installer = "Entregue ao instalador da Microsoft Store — conclusão não foi verificada"
+journal_result_completion_uncertain = "A conclusão está não confirmada — verificação/recuperação necessária"
+journal_result_recovery_required = "Recuperação ou uma decisão manual é necessária"
+journal_result_failed = "Falhou"
+
+# Diálogos.
+dialog_filter_executables = "Arquivos executáveis (*.exe)"
+dialog_filter_all_files = "Todos os arquivos (*.*)"
+dialog_show_stub_details = "Assinante: não disponível"
+
+# A confirmação de entrega. Tudo de que a resposta depende está em uma tela:
+# qual arquivo, quem o assinou, seu resumo, qual região será mantida e o que
+# este aplicativo saberá e não saberá depois. O último parágrafo é o que não
+# deve ser suavizado — a Store executa a instalação e este aplicativo não sabe
+# se foi bem-sucedida. {button} é preenchido com a legenda do botão que restaura
+# a região, portanto os dois não podem divergir.
+dialog_confirm_handoff = """
+Iniciar o instalador da Microsoft Store?
+
+Arquivo: {file}
+Editor: {publisher}
+SHA-256: {sha256}
+Região temporária: {region}
+
+A região Windows é alterada temporariamente e confirmada por releitura, e apenas então o arquivo é iniciado. O próprio arquivo nunca é modificado.
+
+A Microsoft Store assume a instalação a partir daí: nenhum progresso é mostrado aqui e este aplicativo não confirma que nada foi instalado. Quando a Store terminar, use “{button}”.
+
+Sim — altere a região e inicie o arquivo. Não — não mude nada."""
+
+# A inspeção de arquivo do instalador, mostrada mediante solicitação. Isso é
+# evidência em vez de conselho: os rótulos nomeiam o que foi lido do arquivo e
+# os valores são reproduzidos conforme Windows os relatou.
+dialog_stub_details = """
+SHA-256: {sha256}
+Tamanho: {size} bytes
+Assinatura: {signature}
+Verificação de instalador da Store: {status}
+ID do produto: {product_id}
+
+{signer}
+
+{warnings}"""
+dialog_stub_signer = """
+Assunto do assinante: {subject}
+Emissor: {issuer}
+Serial: {serial}
+Impressão digital do certificado SHA-256: {thumbprint}
+Válido: {valid_from} — {valid_to}
+Permitido assinar código: {eku}"""
+dialog_stub_product_id_not_extracted = "não extraído"
+dialog_stub_eku_yes = "sim"
+dialog_stub_eku_no = "não"
+# O que uma inspeção pode notar sem chamar o arquivo de ruim. Cada um diz o
+# que foi e o que não foi estabelecido e nenhum deles é um veredicto sobre o
+# arquivo.
+dialog_stub_warning_native_verification_code = "o código de verificação Windows foi retido localmente"
+dialog_stub_warning_product_id_not_available = "ID do produto não foi extraído"
+dialog_stub_warning_signer_data_unavailable = "Windows não forneceu um certificado de assinante"
+
+# Recuperação.
+recovery_ask_pending_recovery = """
+{situation}
+
+Sim — restaure a região original: ela é relida antes da gravação e confirmada depois.
+Não — mantenha a região atual; o registro de recuperação é preservado e uma nova instalação fica bloqueada."""
+recovery_recovery_execution_status = "O registro de recuperação é preservado."
+
+# Um registro de entrega não tem ID de produto para mostrar. Ele nomeia o
+# arquivo que foi dado à Microsoft Store e o resumo de seus bytes, e chamar isso
+# de ID de produto seria errado — o usuário não poderia agir sobre isso.
+recovery_subject_installer_file = "Arquivo de instalador: {value}"
+
+# Encontrado na inicialização: a execução anterior já havia restaurado a região,
+# e apenas o registro ficou para trás. Nada foi restaurado agora, e o texto diz
+# isso.
+recovery_verified_record_cleaned = "A operação anterior já havia restaurado a região original. O registro de recuperação verificado para {id} foi limpo."
+
+# O mesmo registro depois que sua instalação deixou de estar em execução.
+# Nada é afirmado sobre se foi bem-sucedida: o histórico recebe uma entrada
+# não confirmada e o registro é removido.
+recovery_outcome_unknown_recorded = "A instalação da execução anterior não está mais em execução e sua conclusão não está confirmada. O histórico agora tem uma entrada para isso e o registro de recuperação para {id} foi limpo."
+
+# O mesmo registro, mas o aplicativo que a execução anterior estava instalando
+# agora está na máquina. O registro foi gravado antes dessa instalação começar,
+# então sua chegada é essa instalação terminando e o histórico pode dizer isso.
+recovery_outcome_installed_recorded = "A instalação da execução anterior terminou: o aplicativo está nesta máquina. O histórico agora tem uma entrada para isso e o registro de recuperação para {id} foi limpo."
+
+# Por que uma decisão está sendo solicitada. Cada um nomeia o que é verdade
+# sobre a região neste momento e nenhum deles culpa o usuário.
+recovery_situation_temporary_region_active = "Windows ainda está usando a região temporária."
+recovery_situation_external_region_conflict = "A região atual foi alterada fora desta operação."
+recovery_situation_original_region_active = "A região original já está ativa."
+
+# Um registro cuja operação nunca relatou um resultado. A região estar de volta
+# é exatamente o que torna fácil confundi-lo com uma operação terminada, então
+# a linha nomeia o que é realmente desconhecido.
+recovery_situation_outcome_unknown = "A instalação da execução anterior nunca relatou como terminou."
+
+# O aviso completo de inicialização. O registro não armazena um nome de
+# exibição, portanto o aviso não deve inventar um: cada linha abaixo é algo que
+# foi realmente escrito quando a operação começou.
+recovery_required = """
+Recuperação é necessária
+
+{situation}
+
+{subject}
+Iniciado: {started}
+Método: {backend}
+Código de região original: {original}
+Código de região temporária: {temporary}
+Código de região atual: {current}
+Último estado: {state}
+
+Uma nova instalação fica bloqueada até que esta janela receba uma decisão explícita."""
+recovery_startup_blocked = "Uma nova instalação está bloqueada."
+
+# O que uma ação de recuperação realizou. "Restaurado" é afirmado apenas onde
+# a região foi relida após a gravação; os outros dizem o que foi deixado em paz.
+recovery_restored = "A região original foi restaurada e confirmada por releitura. O registro de recuperação foi removido."
+recovery_verified_record_cleared = "A região original já estava ativa. O registro de recuperação verificado foi removido."
+recovery_pending_record_retained = "A região atual foi deixada inalterada. O registro de recuperação é preservado e uma nova instalação está bloqueada."
+recovery_restore_conflict = "A região mudou entre a verificação e a gravação (agora é código de região {geo_id}). Nada foi alterado e o registro é preservado."
+
+
+# A janela e seus diálogos.
+window_request_window_close = "O fechamento foi cancelado. A janela permanece aberta."
+
+# Onde uma operação chegou, nomeada como um fragmento para que possa ser
+# inserida em uma frase. Cada um diz apenas o que foi estabelecido: "confirmado"
+# aparece onde algo foi relido e em nenhum outro lugar.
+window_state_region_switched = "a região temporária está confirmada"
+window_state_refreshing_store_context = "o contexto da Store está sendo atualizado"
+window_state_starting_install = "a instalação está começando"
+window_state_install_requested = "o pedido de instalação foi aceito"
+window_state_install_observed = "a observação da instalação está pendente"
+window_state_installing = "a instalação está em execução"
+window_state_completion_uncertain = "a conclusão da instalação não está confirmada"
+window_state_installed = "a instalação está confirmada mas a região não está restaurada"
+window_state_restoring_region = "a região está sendo restaurada"
+window_state_restored = "a restauração está aguardando verificação final"
+window_state_failed_with_temporary_region = "a operação falhou e a região temporária permanece ativa"
+window_state_restore_conflict = "um conflito de região atual foi detectado"
+window_state_restore_failed = "a restauração de região não foi confirmada"
+# Dito por um estado que nenhuma linha acima nomeia, portanto um estado adicionado
+# depois ainda é relatado em vez de mostrado como nada.
+window_state_requires_recovery = "a operação requer recuperação"
+
+# Fechamento enquanto uma instalação ainda está em execução. O último parágrafo
+# é o que importa: este aplicativo nunca cancela uma instalação e o diálogo diz
+# onde o usuário pode. {state} é um dos fragmentos acima.
+window_close_with_running_operation = """
+A operação ainda está ativa: {state}.
+
+Restaurar a região no início pode interromper a instalação. Os dados de recuperação devem permanecer até que a restauração seja verificada.
+
+Sim — feche após recuperação de região segura.
+Não — feche enquanto preserva a região temporária e dados de recuperação para o próximo lançamento.
+Cancelar — continue trabalhando.
+
+A instalação em si é interrompida ou removida na Microsoft Store ou nas Configurações do Windows em Aplicativos: Windows é o proprietário da instalação, este aplicativo não."""
+
+# Fechamento enquanto uma entrega ainda mantém a região temporária. Não há
+# nada para cancelar e nada para aguardar: a Store é proprietária da instalação
+# e esta janela é proprietária apenas da região. {button} é a legenda do botão
+# que a restaura.
+window_close_with_pending_handoff = """
+Windows ainda mantém a região temporária e a Microsoft Store está finalizando a instalação.
+
+Sim — feche: o registro de recuperação é preservado e o próximo início oferece a região de volta.
+Não — fique aqui e use "{button}"."""
+
+window_installation_resumed = "Uma instalação de uma execução anterior ainda está em andamento. Observação retomada."
+window_journal_entry_deleted = "A entrada de diário local foi excluída. Instalação e região não foram alteradas."
+# {cause} é a frase nomeando o que deu errado.
+window_journal_entry_not_deleted = "{cause} Nada foi alterado."
+
+# Comandos de janela.
+command_begin_handoff = "não fornecido"
+command_dispatch_command = "A página da Store foi aberta do diário. Isto não é um pedido de instalação; a região não foi alterada."
+command_dispatch_command_2 = "Windows não pôde abrir a página da Store do diário. A região não foi alterada."
+command_dispatch_command_3 = "O ID do produto do diário foi copiado para o rascunho de instalação. A instalação não foi iniciada; a região não foi alterada."
+command_dispatch_command_4 = "O ID do produto foi copiado para a área de transferência. Instalação e região não foram alteradas."
+command_dispatch_command_5 = "Excluir todas as entradas do diário local? Todo o histórico de operações é limpo. Aplicativos instalados, a região Windows e o registro de recuperação não mudarão."
+command_dispatch_command_6 = "Excluir apenas esta entrada de diário local? Instalação, região e registro de recuperação não mudarão."
+command_dispatch_command_7 = "A página do aplicativo foi aberta na Microsoft Store. Isto não é um pedido de instalação; a região não foi alterada."
+command_dispatch_command_8 = "Windows não pôde abrir a página do aplicativo na Microsoft Store. A região não foi alterada."
+command_dispatch_ui_event = "O menu do aplicativo não pôde ser atualizado."
+command_begin_resolution_if_ready = "Windows não disse qual catálogo da Store atende a região temporária selecionada, portanto nada foi procurado."
+command_begin_resolution_if_ready_2 = "Recuperando o cartão do aplicativo da fonte estruturada da Store…"
+# {id} é o ID do produto para o qual o instalador foi solicitado. A segunda
+# frase é o ponto: o arquivo que a Microsoft retorna é verificado exatamente
+# como um que o usuário escolheu manualmente e nenhuma exceção é feita por onde
+# veio.
+command_installer_download_requested = "Perguntando à Microsoft pelo instalador da Store para {id}. Ele é assinado pela Microsoft e será verificado exatamente como um arquivo escolhido manualmente."
+# {cause} é a frase nomeando o que deu errado com a área de transferência.
+command_clipboard_copy_failed = "{cause} Nada foi alterado."
+# O que um item de menu responde. Cada par diz o que aconteceu e, igualmente
+# importante, o que não aconteceu: um item de menu nunca instala nada e nunca
+# altera a região, e a resposta diz isso em vez de deixar para ser assumido.
+menu_documentation_opened = "A página de documentação da Microsoft foi aberta. Isto não é uma instalação; a região não foi alterada."
+menu_documentation_not_opened = "Windows não pôde abrir a página de documentação. Nada foi alterado."
+menu_app_installer_page_opened = "A página do App Installer foi aberta. Isto não é uma instalação; a região não foi alterada."
+menu_app_installer_page_not_opened = "Windows não pôde abrir a página do App Installer. Nada foi alterado."
+# O endereço é nomeado quando o lançamento falhou, portanto um usuário cujo
+# navegador não funcionou ainda sabe onde ir. {address} é o repositório do
+# projeto.
+menu_project_page_opened = "A página do projeto foi aberta no navegador."
+menu_project_page_not_opened = "Windows não abriu a página do projeto. O endereço é {address}"
+menu_log_directory_opened = "O diretório de log de diagnóstico foi aberto."
+menu_log_directory_not_opened = "O diretório de log não pôde ser aberto. Nenhum registro foi alterado."
+menu_details_copied = "Os detalhes foram copiados para a área de transferência."
+menu_details_not_copied = "A área de transferência está indisponível. Nada foi alterado."
+menu_prerequisites_all_met = "Todos os pré-requisitos de instalação são atendidos. A região não foi alterada."
+
+# O diálogo Sobre. O nome e versão são adicionados pelo aplicativo, portanto este
+# parágrafo não carrega um número de versão que possa ficar desatualizado.
+about_description = "Este utilitário muda temporariamente o Local Inicial do Windows para uso com mecanismos padrão da Microsoft Store. Apenas uma configuração Windows é alterada: nem a Microsoft Store nem o Windows são modificados e a Store executa a instalação ela mesma. Não é um produto Microsoft."
+about_translations = "Traduções:"
+about_author = "Autor"
+about_license = "Licença"

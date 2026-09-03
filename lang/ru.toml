@@ -13,7 +13,8 @@
 variant = "Russian"
 code = "ru-RU"
 name = "Русский (ru-RU)"
-order = 0
+# В какую сторону читается язык. Необязательное поле; без него — "ltr".
+direction = "ltr"
 # Кто перевёл этот язык. Показывается в «О программе» и в README.
 authors = ["kroxiksut"]
 

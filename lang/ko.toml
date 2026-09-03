@@ -1,0 +1,451 @@
+# WinStoreRegion 의 한국어 인터페이스 텍스트입니다.
+#
+# 한 파일은 한 언어만 담습니다. 이 디렉토리의 파일들을 빌드가 Rust 테이블로 변환합니다.
+# 누락된 키나 알려지지 않은 키는 빌드를 깨뜨리므로 불완전한 번역은 눈에 띄게 배포될
+# 수 없습니다.
+#
+# 여기의 많은 문자열은 의도적으로 신중합니다. 완료가 증명되지 않았다고 말하고,
+# 답변이 한 시장에서만 나왔다고 말하고, 집합이 불완전하다고 말합니다.
+# 이 예비들은 제품이고 채움이 아닙니다. 번역은 더 대담한 문장이 더 잘 읽힐지라도
+# 이들을 보존해야 합니다.
+#
+# 이 파일은 한국어 모국어 사용자가 검수하지 않은 기계 생성 초안입니다.
+# 이 프로젝트는 번역을 검토하지 않습니다.
+# 오류를 발견하면 이슈를 열거나 풀 리퀘스트를 제출하십시오.
+# 이름을 기여자로 등록하고자 하는 사람은 authors 목록에 자신을 추가하십시오.
+
+variant = "Korean"
+code = "ko-KR"
+name = "한국어 (ko-KR)"
+direction = "ltr"
+authors = []
+
+[strings]
+title = "WinStoreRegion"
+subtitle = "안전한 임시 지역 변경"
+language = "언어"
+current_region = "현재 지역 (유지됨)"
+input = "Microsoft Store URL 또는 제품 ID"
+source_title = "설치할 애플리케이션"
+source_hint = "링크/제품 ID 또는 설치 프로그램 파일을 선택하세요. 비활성 초안은 유지됩니다."
+source_link = "링크 또는 제품 ID"
+source_file = "설치 프로그램 파일 (.exe)"
+paste = "붙여넣기"
+choose_file = "파일 선택"
+clear_file = "지우기"
+clear_input = "지우기"
+download_installer = "Store 설치 프로그램 다운로드"
+downloading_installer = "설치 프로그램을 다운로드 중입니다…"
+no_file = "선택된 파일 없음"
+drop_overlay = ".exe 파일을 여기에 놓으세요"
+app_card = "임시 지역을 선택하고 Store 카탈로그가 응답하면 애플리케이션 카드가 나타납니다."
+temporary_region = "임시 설치 지역 (Windows 목록)"
+find_region = "설치 가능한 지역 찾기"
+check_remaining = "나머지 지역"
+show_all_regions = "모든 지역 표시"
+availability_idle = "지역을 확인하지 않았습니다."
+availability_incomplete = "집합이 불완전합니다."
+availability_none = "확인된 지역 중 어디서도 제공되지 않습니다."
+availability_offline = "원본이 응답하지 않았습니다."
+status = "설치를 사용할 수 없습니다. 애플리케이션이 지정되지 않았거나 안전을 위한 모든 확인이 완료되지 않았습니다."
+install = "설치"
+restore = "설치 완료 — 지역 복원"
+open_store_page = "Store 페이지 열기"
+details = "기술 세부 정보"
+journal_placeholder = "작업 일지는 로컬 일지 구현 후 사용 가능합니다. 이 탭에서는 설치 및 복구가 실행되지 않습니다."
+journal_loading = "로컬 작업 일지를 로드 중입니다…"
+journal_empty = "일지가 비어 있습니다. 확인되었거나 복구가 필요한 작업 결과만 여기에 표시됩니다."
+journal_open_store = "Store 페이지 열기"
+journal_repeat = "설치 반복"
+journal_delete = "항목 삭제"
+journal_copy_id = "제품 ID 복사"
+journal_clear = "일지 지우기"
+journal_columns = ["시간 (UTC)", "애플리케이션", "식별자", "결과"]
+updates_idle = "확인을 눌러 설치된 Microsoft Store 애플리케이션과 현재 지역에서 Store가 제공하지 않는 것들을 확인하세요."
+updates_scanning = "설치된 애플리케이션을 확인 중입니다…"
+updates_refresh = "확인"
+updates_open = "설치에서 열기"
+updates_none = "현재 지역에서 Store가 제공하지 않는 Microsoft Store 애플리케이션을 찾을 수 없습니다."
+updates_columns = ["애플리케이션", "제품 ID", "설치됨", "Store 카탈로그에서"]
+updates_unavailable = "Windows가 설치된 애플리케이션을 보고하지 않았으므로 목록을 작성할 수 없습니다."
+updates_choose_entry = "목록에서 애플리케이션을 선택하세요."
+updates_scan_age = """
+{taken} (UTC)에서 확인한 결과입니다. 「{button}」을 눌러 다시 확인하세요.
+
+"""
+updates_entry_details = """
+{name}
+제품 ID: {id}
+패키지 계열: {family}
+설치된 버전: {installed}
+Store 카탈로그의 버전: {offered}
+
+Microsoft Store는 현재 지역에서 이 애플리케이션을 제공하지 않으므로 여기서도 업데이트하지 않습니다. 「{button}」은 제품 ID를 설치 탭으로 이동하고 애플리케이션을 제공하는 지역 검색을 시작합니다.
+
+업데이트가 출시되었다는 주장은 하지 않습니다. 위의 두 버전은 다른 체계로 번호가 매겨질 수 있으며, 이 경우 그 사이의 순서는 아무 의미가 없습니다."""
+updates_version_not_named = "카탈로그가 버전을 명시하지 않음"
+
+card_publisher_not_provided = "게시자 미제공"
+card_product_id = "제품 ID: {id}"
+card_store_catalogue = "Store 카탈로그: {market}"
+card_version = "버전: {version}"
+card_size_bytes = "크기: {size} 바이트"
+card_size = "크기: {whole}.{tenths} {unit}"
+card_size_kibibytes = "KiB"
+card_size_mebibytes = "MiB"
+card_offered_installable = "선택한 지역에서 제공됩니다. 이것은 카탈로그가 말하는 것이지 설치 확인이 아닙니다. 애플리케이션은 임시 지역에서 다시 조회됩니다."
+card_offered_not_installable = "선택한 지역에서 제공되지만 이 버전은 이러한 방식으로 배포되는 애플리케이션을 설치하지 않습니다."
+
+region_checking_selected = "선택한 지역을 확인 중입니다…"
+region_offered_here = "선택한 지역에서 제공됩니다. 다른 지역은 확인하지 않았습니다."
+region_not_offered_here = "선택한 지역에서 제공되지 않습니다."
+region_no_answer_here = "원본이 선택한 지역에 대해 응답하지 않았습니다. 다른 지역은 확인하지 않았습니다."
+region_nothing_to_check = "파일의 경우 확인할 것이 없습니다. 제품 ID가 필요합니다."
+region_checked_progress = "{total}개 중 {done}개를 확인했습니다…"
+region_found = "발견된 지역: {count}개"
+
+card_syntax_accepted = "제품 ID {id}이(가) 허용됩니다. 임시 지역을 선택하면 애플리케이션 카드를 요청할 수 있습니다."
+card_retrieving = "Store에서 애플리케이션 카드를 검색 중입니다…"
+card_unavailable_in_region = """
+애플리케이션 카드를 사용할 수 없습니다. 애플리케이션이 현재 Windows 지역에 표시되지 않습니다 ({region}).
+임시 지역은 아직 적용되지 않았으며, 이것이 설치를 차단하지 않습니다."""
+card_unavailable = """
+애플리케이션 카드를 사용할 수 없습니다. 애플리케이션이 현재 Windows 지역에 표시되지 않습니다.
+임시 지역은 아직 적용되지 않았으며, 이것이 설치를 차단하지 않습니다."""
+
+card_install_ready = "설치 준비 완료"
+card_install_not_ready = "아직 설치 준비가 되지 않았습니다. 지역 복원, 미완료된 이전 작업, 설치 프로그램 자체가 모두 확인되지 않았습니다."
+
+operation_switching_region = "지역을 변경하고 읽기를 통해 확인하는 중입니다."
+operation_looking_up = "임시 지역이 확인되었습니다. 지역에서 애플리케이션을 조회 중입니다."
+operation_found = "발견됨: {name}. 설치를 시작하는 중입니다."
+operation_restoring_region = "설치가 완료되었습니다. 원본 지역을 복원 중입니다."
+operation_done = "완료됨. 애플리케이션이 설치되었고 지역은 원본입니다."
+operation_completion_uncertain = "완료를 확인할 수 없습니다. 결정은 사용자에게 맡겨집니다."
+operation_started = "작업이 시작되었습니다. 첫 번째 보고를 기다리는 중입니다."
+
+window_no_regions_listed = "Windows가 지역을 명시하지 않아 임시 지역을 선택할 것이 없습니다. 그때까지 아무것도 설치할 수 없습니다."
+
+operation_ask_timeout_resolution = """
+설치가 완료를 보고하지 않았습니다. {state}.
+
+Windows는 여전히 임시 지역을 사용하고 있습니다. Windows가 설치를 관리하므로 이 창에서 중지할 수 없습니다.
+
+예 — 설치가 완료되었으므로 원본 지역을 복원하세요.
+아니요 — 설치가 여전히 실행 중이더라도 지금 원본 지역을 복원하세요. 설치가 중단될 수 있습니다.
+취소 — 계속 기다리세요. 창이 설치에 다시 연결됩니다."""
+operation_region_already_back = " 원본 지역이 이미 복원되었습니다."
+installing_phase_running = "설치 중"
+installing_phase_finishing = "설치 완료 중"
+installing_without_progress = "{phase}."
+installing_with_progress = "{phase}: {percent}%."
+
+handoff_switching_region = "지역을 변경하고 읽기를 통해 확인하는 중입니다. 파일은 아직 시작되지 않았습니다."
+handoff_handed_off = "지역이 {region}(으)로 전환되고 확인되었습니다. 설치가 Microsoft Store 설치 프로그램에 전달되었습니다. Store에서 완료하세요. 진행률이 표시되지 않으며 이 애플리케이션은 설치 확인을 하지 않습니다. 완료 후 「{button}」을 누르세요."
+handoff_restoring_region = "원본 지역을 복원하고 읽기를 통해 확인 중입니다."
+handoff_restored = "완료됨. 원본 지역이 복원되고 확인되었으며, 복구 기록은 제거되었습니다. Microsoft Store가 설치한 것은 이 애플리케이션이 확인하지 않습니다."
+handoff_did_not_happen = "설치 프로그램이 시작되지 않았습니다."
+handoff_region_may_be_temporary = "Windows가 임시 지역을 유지할 수 있습니다. 「{button}」을 누르세요."
+handoff_region_original = "Windows는 원본 지역을 유지합니다."
+handoff_declined = "시작이 취소되었습니다. 지역이 변경되지 않았고, 파일이 시작되지 않았으며, 아무것도 수정되지 않았습니다."
+
+resolution_card_confirmed = "애플리케이션 카드가 확인되었습니다. 설치는 여전히 안전 확인을 기다리고 있습니다. 지역 복원, 미완료된 이전 작업, 설치 프로그램을 확인해야 합니다."
+resolution_catalogue_not_searchable = "이 Windows 프로필에서는 Store 카탈로그를 검색할 수 없습니다. 지역이 변경되지 않았으며 설치를 사용할 수 없습니다."
+resolution_checked_in_region = "현재 Windows 지역에서 확인됨: {region}."
+resolution_checked_in_current_region = "현재 Windows 지역에서 확인됨."
+resolution_still_possible = "임시 지역이 아직 적용되지 않았으며, 이것이 설치를 차단하지 않습니다. 애플리케이션이 이 지역에서 다시 조회됩니다."
+
+installer_download_ready = "Microsoft Store 설치 프로그램을 다운로드하여 원본으로 선택했습니다. 「{button}」을 누르세요. 서명이 확인되고, 지역이 전환되며, 설치 프로그램이 시작됩니다. 완료를 보고하지 않습니다. 설치를 자신의 창에서 완료한 후에만 「{restore}」로 지역을 복원하세요."
+installer_download_network = "설치 프로그램을 받기 위해 Microsoft에 연결할 수 없습니다. 네트워크를 사용할 수 없습니다."
+installer_download_refused = "Microsoft가 이 애플리케이션의 설치 프로그램을 반환하지 않았습니다."
+installer_download_refused_with_status = "Microsoft가 이 애플리케이션의 설치 프로그램을 반환하지 않았습니다 (HTTP {status})."
+installer_download_too_large = "Microsoft의 답변이 이 애플리케이션이 쓸 수 있는 것보다 큽니다."
+installer_download_not_writable = "설치 프로그램이 도착했지만 데이터 폴더에 쓸 수 없습니다."
+
+source_choose_region = "제품 ID {id}이(가) 허용됩니다. 임시 지역을 선택하거나 「{button}」을 누르세요."
+source_recovery_pending = "제품 ID {id}이(가) 허용됩니다. 미완료된 이전 작업에 대한 확인이 실행되면 설치를 사용할 수 있습니다. 있다면 먼저 정리해야 합니다."
+source_prerequisites_unmet = "설치 필수 조건을 충족하지 않습니다."
+source_other_device_only = "제품 ID {id}. Microsoft Store는 이 애플리케이션을 이 기기에 배포하지 않습니다. 다른 기기 유형을 대상으로 합니다. 지역 변경이 도움이 되지 않으므로 설치를 사용할 수 없습니다."
+source_newer_windows_required = "제품 ID {id}. 이 애플리케이션은 Windows {version} 이상이 필요하지만 이 컴퓨터는 이전 버전입니다. 지역 변경이 도움이 되지 않으므로 설치를 사용할 수 없습니다."
+source_ready = "제품 ID {id}이(가) 허용됨. 임시 지역: {region}. 설치를 시작할 수 있습니다. 애플리케이션이 그 지역에서 조회됩니다."
+source_syntax_accepted = "제품 ID {id}의 형식이 유효합니다. Store 카탈로그가 응답할 때까지 설치를 사용할 수 없습니다."
+
+file_choose = "Microsoft Store 설치 프로그램 파일 (.exe)을 선택하세요. 수정되지 않으며 Store가 설치를 계속합니다. 링크 초안은 유지됩니다."
+file_recovery_pending = "파일이 확인되었지만 미완료된 이전 작업에 대한 확인이 실행될 때까지 전달할 수 없습니다. 있다면 먼저 정리해야 합니다."
+file_store_not_confirmed = "파일이 확인되었지만 이 컴퓨터에서 Microsoft Store가 확인되지 않았으며, Store가 설치를 완료합니다. 지역이 변경되지 않았습니다."
+file_choose_region = "파일이 Microsoft Store에서 서명했으며 실행되지 않았습니다. 임시 지역을 선택하세요. 파일이 그 지역에서 시작됩니다."
+file_region_is_your_choice = "파일의 지역은 사용자가 선택합니다. 설치 프로그램이 애플리케이션을 명시하지 않습니다. 찾으려면 링크를 붙여넣고, 「{button}」을 누르고, 파일로 돌아가세요. 선택한 파일이 유지됩니다."
+file_ready = """
+{name} 파일은 Microsoft Store에서 서명했으며 실행되지 않았습니다. 임시 지역: {region}. 설치를 전달할 수 있습니다. 지역이 읽기를 통해 전환되고, 설치 프로그램 자체가 시작되며, Microsoft Store에서 작업을 완료합니다.
+
+{unchecked}"""
+
+file_refusal_signature_not_trusted = "Windows가 파일 서명을 확인하지 않음"
+file_refusal_signer_unavailable = "Windows가 게시자 인증서를 제공하지 않음"
+file_refusal_not_store_signed = "파일이 Microsoft Store에서 서명하지 않음"
+file_refusal_changed_while_checked = "파일이 확인되는 동안 변경됨"
+file_refusal_identity_incomplete = "파일 이름과 SHA-256을 확인할 수 없음"
+file_refused = "이 파일은 시작되지 않습니다. {reason}. 지역이 변경되지 않았습니다. Microsoft Store에서 서명한 설치 프로그램을 선택하거나 Microsoft Store 링크 또는 제품 ID를 붙여넣으세요."
+
+file_inspecting = "선택한 .exe를 읽기 전용으로 검사 중입니다. SHA-256과 서명입니다. 파일은 실행되지 않습니다."
+file_changed_during_inspection = "파일이 검사 중에 변경되거나 대체되었습니다. 결과가 삭제되었습니다. 설치를 사용할 수 없습니다."
+file_unreadable = "선택한 파일을 안전하게 읽을 수 없습니다. 결과가 삭제되었습니다. 설치를 사용할 수 없습니다."
+
+file_error_empty_path = "파일 경로가 비어 있음"
+file_error_unsupported_extension = ".exe 파일만 지원됨"
+file_error_not_a_file = "경로가 기존 파일을 가리키지 않음"
+file_error_link_or_device_path = "바로 가기 및 특수 시스템 경로는 지원되지 않음"
+file_error_multiple_files = "정확히 하나의 파일을 놓으세요"
+file_not_selected = "파일이 선택되지 않았습니다. {detail}. 현재 원본과 두 초안은 변경되지 않았습니다."
+
+region_choice = "{name} · {code} (지역 코드 {geo_id})"
+region_choice_without_code = "{name} (지역 코드 {geo_id})"
+
+region_choose_from_list = "Windows 목록에서 임시 지역을 선택하세요. 지역이 변경되지 않았고 애플리케이션이 조회되지 않았습니다."
+region_not_confirmed = "Windows가 선택한 지역을 확인할 수 없습니다. 지역이 변경되지 않았고 애플리케이션이 조회되지 않았습니다."
+menu_file = "파일"
+menu_paste = "링크/ID 붙여넣기"
+menu_exit = "종료"
+menu_help = "도움말"
+menu_about = "정보"
+menu_open_diagnostic_log = "진단 로그 열기"
+menu_copy_details = "세부 정보 복사"
+menu_recheck = "필수 조건 재확인"
+menu_get_app_installer = "App Installer 설치"
+menu_region_documentation = "Microsoft: 국가 또는 지역 변경"
+menu_github = "프로젝트 GitHub"
+tabs = ["설치", "일지", "업데이트"]
+region_unavailable = "현재 Windows 지역을 읽을 수 없습니다."
+
+diagnostic_backend_failed = "설치 프로그램이 오류로 종료되었습니다."
+diagnostic_backend_reported_unknown_failure = "설치가 실행되지 않았습니다. Microsoft Store가 코드를 모르는 오류를 보고했습니다. 코드는 세부 정보에 있습니다."
+diagnostic_backend_unavailable = "이 애플리케이션에 사용할 수 있는 설치 방법이 없습니다."
+diagnostic_clipboard_unavailable = "클립보드를 사용할 수 없습니다."
+diagnostic_completion_uncertain = "설치 완료가 확인되지 않았습니다."
+diagnostic_install_kind_not_supported = "이 애플리케이션은 이 버전이 설치하지 않는 방식으로 배포됩니다. Microsoft Store에서 열 수 있습니다."
+diagnostic_installer_file_not_a_store_stub = "이것은 Microsoft Store 설치 프로그램이 아닙니다."
+diagnostic_installer_file_not_admitted = "이 파일은 시작되지 않습니다. 서명 또는 서명자가 확인을 통과하지 못했습니다."
+diagnostic_installer_file_not_supported = "하나의 기존 `.exe` 파일이 필요합니다."
+diagnostic_installer_file_unreadable = "선택한 파일을 읽을 수 없습니다."
+diagnostic_installer_launch_rejected = "Windows가 확인된 설치 프로그램을 시작하지 않았습니다."
+diagnostic_journal_unavailable = "작업 일지를 사용할 수 없습니다."
+diagnostic_microsoft_account_required = "Microsoft 계정 로그인이 필요합니다."
+diagnostic_microsoft_store_unavailable = "Microsoft Store를 사용할 수 없습니다."
+diagnostic_ms_store_source_terms_not_accepted = "Microsoft Store 원본 약관을 수락하지 않았습니다. 아무것도 설치되지 않았으며, 다운로드가 도움이 되지 않습니다."
+diagnostic_ms_store_source_unavailable = "Microsoft Store 카탈로그를 설치 원본으로 사용할 수 없습니다."
+diagnostic_network_unavailable = "네트워크 연결이 없습니다."
+diagnostic_operation_sequence_violated = "내부 시퀀싱 오류로 인해 작업이 중지되었습니다. 아무것도 설치되지 않았습니다."
+diagnostic_product_already_installed = "애플리케이션이 이미 이 컴퓨터에 설치되었습니다. 지역이 복원되었고 아무것도 설치되지 않았습니다."
+diagnostic_product_already_installing = "이 애플리케이션을 이미 설치 중입니다. 현재 설치가 완료될 때까지 기다리세요."
+diagnostic_product_not_found = "이 제품 ID로 된 애플리케이션을 찾을 수 없습니다."
+diagnostic_product_not_on_this_device = "Microsoft Store는 이 애플리케이션을 이 기기에 배포하지 않습니다. 다른 기기 유형 또는 최신 Windows를 대상으로 합니다. 지역은 장애가 아니며, 지역 변경이 도움이 되지 않습니다."
+diagnostic_product_unavailable_in_region = "선택한 지역에서 애플리케이션을 사용할 수 없습니다."
+diagnostic_recovery_record_unreadable = "복구 데이터를 안전하게 읽을 수 없습니다."
+diagnostic_region_change_rejected = "Windows가 지역 변경을 거부했습니다."
+diagnostic_region_conflict = "현재 지역이 원본이나 임시 지역과 일치하지 않습니다."
+diagnostic_region_unavailable = "Windows가 현재 지역을 보고하지 않습니다."
+diagnostic_region_unchanged = "지역이 변경되지 않았습니다."
+diagnostic_resolver_answer_mismatch = "카탈로그가 다른 애플리케이션에 대해 응답했으므로 결과가 거부되었습니다."
+diagnostic_resolver_unavailable = "Microsoft Store 카탈로그에 연결할 수 없습니다."
+diagnostic_restore_failed = "원본 지역 복원이 확인되지 않았습니다."
+diagnostic_store_input_not_understood = "링크 또는 제품 ID를 인식하지 못했습니다."
+diagnostic_store_page_launch_rejected = "Windows가 Microsoft Store 페이지를 열 수 없습니다."
+diagnostic_store_refused_without_reason = "Microsoft Store가 이유 없이 거부했습니다."
+diagnostic_temporary_region_not_applied = "원본이 임시 지역을 허용하지 않았습니다. 설치가 시작되기 전에 원본으로 돌아갔습니다. 다시 시도하세요."
+
+diagnostic_product_no_longer_offered = "원본이 더 이상 이 애플리케이션을 제공하지 않습니다. 임시 지역에서 응답했지만 설치할 것이 없었습니다. 판매에서 철수했을 수 있습니다. 다시 시도하거나 다른 지역을 선택하세요."
+diagnostic_unsupported_market = "카탈로그가 선택한 지역을 허용하지 않습니다."
+diagnostic_win_get_missing = "Store 애플리케이션을 설치하는 Windows 구성 요소를 찾을 수 없습니다."
+
+diagnostic_details_heading = "기술 세부 정보"
+
+prerequisite_heading = "설치를 사용할 수 없습니다. 필수 조건을 충족하지 않습니다."
+prerequisite_app_installer_missing = "App Installer가 설치되지 않았습니다. Windows가 이를 통해 Store 애플리케이션을 설치하며, Microsoft Store 페이지에서 설치할 수 있습니다."
+prerequisite_app_installer_unknown = "App Installer 유무를 확인할 수 없습니다. 확인이 완료될 때까지 설치를 사용할 수 없습니다."
+prerequisite_microsoft_store_missing = "Microsoft Store가 없습니다. 독립 실행형 다운로드는 없습니다. Windows를 복구해야 합니다."
+prerequisite_microsoft_store_unknown = "Microsoft Store 유무를 확인할 수 없습니다. 확인이 완료될 때까지 설치를 사용할 수 없습니다."
+prerequisite_com_metadata_missing = "애플리케이션의 디렉토리를 쓸 수 없으므로 옆에 필요한 메타데이터 파일을 배치할 수 없습니다. 쓸 수 있는 디렉토리로 애플리케이션을 이동하세요."
+prerequisite_com_metadata_unknown = "애플리케이션 옆에 메타데이터 파일을 준비할 수 없습니다. 확인이 완료될 때까지 설치를 사용할 수 없습니다."
+
+journal_journal_details = "파일이 변경 없이 유지되었습니다."
+
+journal_details_product = """
+애플리케이션: {name}
+제품 ID: {id}
+유형: {kind}
+게시자: {publisher}
+버전: {version}
+패키지 계열: {family}"""
+journal_details_file = """
+파일: {name}
+SHA-256: {sha256}
+애플리케이션이 명시되지 않음: Microsoft Store 설치 프로그램에는 제품 ID가 없습니다."""
+journal_details_common = """
+날짜: {date}
+지역 코드: {geo_id}
+작업: {operation}
+방법: {backend}
+결과: {result}"""
+journal_details_kind_unknown = "알 수 없음"
+journal_details_publisher_not_provided = "미제공"
+journal_details_version_not_confirmed = "확인되지 않음"
+journal_details_family_not_confirmed = "확인되지 않음"
+
+journal_result_installed = "설치 및 복원됨"
+journal_result_handed_off_to_installer = "Microsoft Store 설치 프로그램에 전달됨 — 완료 확인 안 됨"
+journal_result_completion_uncertain = "완료가 확인되지 않음 — 검증/복구 필요"
+journal_result_recovery_required = "복구 또는 수동 결정 필요"
+journal_result_failed = "실패"
+
+dialog_filter_executables = "실행 파일 (*.exe)"
+dialog_filter_all_files = "모든 파일 (*.*)"
+dialog_show_stub_details = "서명자: 사용 불가"
+
+dialog_confirm_handoff = """
+Microsoft Store 설치 프로그램을 시작하시겠습니까?
+
+파일: {file}
+게시자: {publisher}
+SHA-256: {sha256}
+임시 지역: {region}
+
+Windows 지역이 임시로 변경되고 읽기를 통해 확인되며, 이후 파일이 시작됩니다. 파일 자체는 수정되지 않습니다.
+
+Microsoft Store가 설치를 진행합니다. 진행률이 표시되지 않으며, 이 애플리케이션은 설치 확인을 하지 않습니다. Store 완료 후 「{button}」을 사용하세요.
+
+예 — 지역을 전환하고 파일을 시작하세요. 아니요 — 아무것도 변경하지 마세요."""
+
+dialog_stub_details = """
+SHA-256: {sha256}
+크기: {size} 바이트
+서명: {signature}
+Store 설치 프로그램 확인: {status}
+제품 ID: {product_id}
+
+{signer}
+
+{warnings}"""
+dialog_stub_signer = """
+서명 대상: {subject}
+서명자: {issuer}
+일련 번호: {serial}
+SHA-256 인증서 지문: {thumbprint}
+유효 기간: {valid_from} — {valid_to}
+코드 서명 허용: {eku}"""
+dialog_stub_product_id_not_extracted = "추출되지 않음"
+dialog_stub_eku_yes = "예"
+dialog_stub_eku_no = "아니요"
+dialog_stub_warning_native_verification_code = "Windows 검증 코드가 로컬로 유지됨"
+dialog_stub_warning_product_id_not_available = "제품 ID가 추출되지 않음"
+dialog_stub_warning_signer_data_unavailable = "Windows가 서명자 인증서를 제공하지 않음"
+
+recovery_ask_pending_recovery = """
+{situation}
+
+예 — 원본 지역을 복원하세요. 쓰기 전에 다시 읽고 쓰기 후 확인됩니다.
+아니요 — 현재 지역을 유지하세요. 복구 기록이 유지되고 새 설치가 차단됩니다."""
+recovery_recovery_execution_status = "복구 기록이 유지되었습니다."
+
+recovery_subject_installer_file = "설치 프로그램 파일: {value}"
+
+recovery_verified_record_cleaned = "이전 작업이 이미 원본 지역을 복원했습니다. {id}의 확인된 복구 기록이 지워졌습니다."
+
+recovery_outcome_unknown_recorded = "이전 실행의 설치가 더 이상 실행되지 않습니다. 완료가 확인되지 않습니다. 이력에 항목이 추가되었고 {id}의 복구 기록이 지워졌습니다."
+
+recovery_outcome_installed_recorded = "이전 실행의 설치가 완료되었습니다. 애플리케이션이 이 컴퓨터에 있습니다. 이력에 항목이 추가되었고 {id}의 복구 기록이 지워졌습니다."
+
+recovery_situation_temporary_region_active = "Windows가 여전히 임시 지역을 사용하고 있습니다."
+recovery_situation_external_region_conflict = "현재 지역이 이 작업 외부에서 변경되었습니다."
+recovery_situation_original_region_active = "원본 지역이 이미 활성 상태입니다."
+
+recovery_situation_outcome_unknown = "이전 실행의 설치가 종료 방법을 보고하지 않았습니다."
+
+recovery_required = """
+복구 필요
+
+{situation}
+
+{subject}
+시작됨: {started}
+방법: {backend}
+원본 지역 코드: {original}
+임시 지역 코드: {temporary}
+현재 지역 코드: {current}
+마지막 상태: {state}
+
+이 창에서 명시적 결정이 내려질 때까지 새 설치가 차단됩니다."""
+recovery_startup_blocked = "새 설치가 차단되었습니다."
+
+recovery_restored = "원본 지역이 복원되고 읽기를 통해 확인되었습니다. 복구 기록이 제거되었습니다."
+recovery_verified_record_cleared = "원본 지역이 이미 활성 상태입니다. 확인된 복구 기록이 제거되었습니다."
+recovery_pending_record_retained = "현재 지역이 변경되지 않았습니다. 복구 기록이 유지되고 새 설치가 차단됩니다."
+recovery_restore_conflict = "확인과 쓰기 사이에 지역이 변경되었습니다 (현재 지역 코드 {geo_id}). 아무것도 변경되지 않았으며 기록이 유지됩니다."
+
+window_request_window_close = "닫기가 취소되었습니다. 창이 열려 있습니다."
+
+window_state_region_switched = "임시 지역이 확인됨"
+window_state_refreshing_store_context = "Store 컨텍스트를 새로 고치는 중"
+window_state_starting_install = "설치 시작 중"
+window_state_install_requested = "설치 요청 수락됨"
+window_state_install_observed = "설치 관찰 보류 중"
+window_state_installing = "설치 실행 중"
+window_state_completion_uncertain = "설치 완료가 확인되지 않음"
+window_state_installed = "설치가 확인되었으나 지역이 복원되지 않음"
+window_state_restoring_region = "지역 복원 중"
+window_state_restored = "복원이 최종 검증 보류 중"
+window_state_failed_with_temporary_region = "작업이 실패했고 임시 지역이 활성 상태"
+window_state_restore_conflict = "현재 지역 충돌 감지됨"
+window_state_restore_failed = "지역 복원이 확인되지 않음"
+window_state_requires_recovery = "작업이 복구 필요"
+
+window_close_with_running_operation = """
+작업이 여전히 활성 상태입니다. {state}.
+
+조기 지역 복원이 설치를 중단할 수 있습니다. 복구 데이터는 확인된 복원까지 유지되어야 합니다.
+
+예 — 안전한 지역 복구 후 닫으세요.
+아니요 — 임시 지역 및 복구 데이터를 유지하고 다음 시작을 위해 닫으세요.
+취소 — 계속 작업하세요.
+
+설치는 Microsoft Store 또는 Windows 설정 (앱)에서 중지할 수 있습니다. Windows가 설치를 관리하며 이 애플리케이션은 그렇지 않습니다."""
+
+window_close_with_pending_handoff = """
+Windows가 여전히 임시 지역을 유지하고 Microsoft Store가 설치를 완료하고 있습니다.
+
+예 — 닫으세요. 복구 기록이 유지되고 다음 시작에서 지역 복원이 제공됩니다.
+아니요 — 여기에 머물러 「{button}」을 사용하세요."""
+
+window_installation_resumed = "이전 실행의 설치가 여전히 실행 중입니다. 관찰을 계속하고 있습니다."
+window_journal_entry_deleted = "로컬 일지 항목이 삭제되었습니다. 설치 및 지역이 변경되지 않았습니다."
+window_journal_entry_not_deleted = "{cause} 아무것도 변경되지 않았습니다."
+
+command_begin_handoff = "미제공"
+command_dispatch_command = "일지에서 Store 페이지가 열렸습니다. 이것은 설치 요청이 아닙니다. 지역이 변경되지 않았습니다."
+command_dispatch_command_2 = "Windows가 일지에서 Store 페이지를 열 수 없습니다. 지역이 변경되지 않았습니다."
+command_dispatch_command_3 = "일지의 제품 ID가 설치 초안으로 이동되었습니다. 설치가 시작되지 않았으며 지역이 변경되지 않았습니다."
+command_dispatch_command_4 = "제품 ID가 클립보드로 복사되었습니다. 설치 및 지역이 변경되지 않았습니다."
+command_dispatch_command_5 = "로컬 일지의 모든 항목을 삭제하시겠습니까? 전체 작업 이력이 지워집니다. 설치된 애플리케이션, Windows 지역, 복구 기록은 변경되지 않습니다."
+command_dispatch_command_6 = "이 로컬 일지 항목만 삭제하시겠습니까? 설치, 지역, 복구 기록은 변경되지 않습니다."
+command_dispatch_command_7 = "애플리케이션 페이지가 Microsoft Store에서 열렸습니다. 이것은 설치 요청이 아닙니다. 지역이 변경되지 않았습니다."
+command_dispatch_command_8 = "Windows가 Microsoft Store에서 애플리케이션 페이지를 열 수 없습니다. 지역이 변경되지 않았습니다."
+command_dispatch_ui_event = "애플리케이션 메뉴를 업데이트할 수 없습니다."
+command_begin_resolution_if_ready = "Windows가 선택한 임시 지역을 제공하는 Store 카탈로그를 말하지 않았으므로 조회가 시작되지 않았습니다."
+command_begin_resolution_if_ready_2 = "구조화된 Store 원본에서 애플리케이션 카드를 검색 중입니다…"
+command_installer_download_requested = "{id}에 대해 Microsoft에 Store 설치 프로그램을 요청 중입니다. Microsoft가 서명했으며 손으로 선택한 파일과 동일하게 확인됩니다."
+command_clipboard_copy_failed = "{cause} 아무것도 변경되지 않았습니다."
+menu_documentation_opened = "Microsoft 설명서 페이지가 열렸습니다. 이것은 설치가 아닙니다. 지역이 변경되지 않았습니다."
+menu_documentation_not_opened = "Windows가 설명서 페이지를 열 수 없습니다. 아무것도 변경되지 않았습니다."
+menu_app_installer_page_opened = "App Installer 페이지가 열렸습니다. 이것은 설치가 아닙니다. 지역이 변경되지 않았습니다."
+menu_app_installer_page_not_opened = "Windows가 App Installer 페이지를 열 수 없습니다. 아무것도 변경되지 않았습니다."
+menu_project_page_opened = "프로젝트 페이지가 브라우저에서 열렸습니다."
+menu_project_page_not_opened = "Windows가 프로젝트 페이지를 열 수 없습니다. 주소는 {address}"
+menu_log_directory_opened = "진단 로그 디렉토리가 열렸습니다."
+menu_log_directory_not_opened = "로그 디렉토리를 열 수 없습니다. 기록이 변경되지 않았습니다."
+menu_details_copied = "세부 정보가 클립보드로 복사되었습니다."
+menu_details_not_copied = "클립보드를 사용할 수 없습니다. 아무것도 변경되지 않았습니다."
+menu_prerequisites_all_met = "모든 설치 필수 조건을 충족합니다. 지역이 변경되지 않았습니다."
+
+about_description = "이 유틸리티는 표준 Microsoft Store 메커니즘을 사용하기 위해 Windows Home Location을 임시로 변경합니다. Windows 설정만 변경됩니다. Microsoft Store 또는 Windows는 수정되지 않으며 Store가 설치를 수행합니다. Microsoft 제품이 아닙니다."
+about_translations = "번역:"
+about_author = "작성자"
+about_license = "라이선스"

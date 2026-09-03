@@ -2,6 +2,7 @@
 
 use crate::gui::diagnostic::prerequisite_status;
 use crate::gui::dialogs::copy_text_to_clipboard;
+use crate::gui::direction::message_box_direction;
 use crate::gui::ids::{
     ID_MENU_ABOUT, ID_MENU_COPY_DETAILS, ID_MENU_EXIT, ID_MENU_GET_APP_INSTALLER, ID_MENU_GITHUB,
     ID_MENU_OPEN_DIAGNOSTIC_LOG, ID_MENU_PASTE, ID_MENU_RECHECK_PREREQUISITES,
@@ -115,11 +116,18 @@ pub(super) unsafe fn replace_window_menu(
 }
 
 #[allow(unsafe_code)]
-unsafe fn show_information(message: &str) {
+unsafe fn show_information(language: Language, message: &str) {
     let title = HSTRING::from(APPLICATION_NAME);
     let message = HSTRING::from(message);
     let _modal = ModalScope::enter();
-    let _ = unsafe { MessageBoxW(None, &message, &title, MB_OK | MB_ICONINFORMATION) };
+    let _ = unsafe {
+        MessageBoxW(
+            None,
+            &message,
+            &title,
+            MB_OK | MB_ICONINFORMATION | message_box_direction(language),
+        )
+    };
 }
 
 /// How the vendor documentation is introduced, in English in every language.
@@ -225,7 +233,7 @@ pub(super) unsafe fn dispatch_menu_action(
 {MICROSOFT_REGION_DOCUMENTATION}{}",
                 translation_credits(state.language)
             );
-            unsafe { show_information(&message) };
+            unsafe { show_information(state.language, &message) };
         }
         MenuAction::OpenDiagnosticLog => {
             let strings = state.language.strings();
@@ -234,7 +242,7 @@ pub(super) unsafe fn dispatch_menu_action(
             } else {
                 strings.menu_log_directory_not_opened
             };
-            unsafe { show_information(message) };
+            unsafe { show_information(state.language, message) };
         }
         MenuAction::RecheckPrerequisites => {
             state.prerequisites = check_prerequisites();
@@ -255,7 +263,7 @@ pub(super) unsafe fn dispatch_menu_action(
             } else {
                 strings.menu_app_installer_page_not_opened
             };
-            unsafe { show_information(message) };
+            unsafe { show_information(state.language, message) };
         }
         MenuAction::CopyDiagnosticDetails => {
             // The status already carries the technical block, so copying it is
@@ -267,15 +275,17 @@ pub(super) unsafe fn dispatch_menu_action(
             } else {
                 strings.menu_details_not_copied
             };
-            unsafe { show_information(message) };
+            unsafe { show_information(state.language, message) };
         }
         MenuAction::OpenRegionDocumentation => {
             let opened = open_region_documentation();
-            unsafe { show_information(documentation_status(opened, state.language)) };
+            unsafe {
+                show_information(state.language, documentation_status(opened, state.language));
+            };
         }
         MenuAction::OpenProjectGithub => {
             let opened = open_project_repository();
-            unsafe { show_information(&repository_status(opened, state.language)) };
+            unsafe { show_information(state.language, &repository_status(opened, state.language)) };
         }
     }
     unsafe { render(window, chrome, state) };

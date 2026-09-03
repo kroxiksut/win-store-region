@@ -2,7 +2,7 @@
 
 use crate::gui::handoff::HandoffStage;
 use crate::gui::render::source_status;
-use crate::gui::strings::Language;
+use crate::gui::strings::{Language, TextDirection};
 use crate::platform::installer_download::{DownloadedInstaller, InstallerDownloadError};
 use crate::platform::region::Win32RegionReader;
 use crate::platform::storage::JournalStoreError;
@@ -851,6 +851,13 @@ pub(super) struct WindowChrome {
     /// they were written in is what lets a language change reach them, and
     /// keeps every other render from rewriting four headings for nothing.
     pub(super) heading_language: Cell<Option<Language>>,
+    /// Which way the window is currently laid out.
+    ///
+    /// Not the language: three languages read left to right and switching
+    /// between them must not turn the window around and repaint every child.
+    /// What matters here is the direction, and it changes on the one language
+    /// change that crosses between the two.
+    pub(super) layout_direction: Cell<Option<TextDirection>>,
     pub(super) controls: Option<Controls>,
 }
 

@@ -5,6 +5,7 @@ use crate::gui::dialogs::{
     choose_installer_file, confirm_installer_handoff, copy_text_to_clipboard, read_window_text,
     show_stub_details,
 };
+use crate::gui::direction::message_box_direction;
 use crate::gui::handoff::{HandoffRequest, HandoffStage, start_handoff, start_region_restore};
 use crate::gui::ids::{
     ID_CHECK_REMAINING, ID_CLEAR_FILE, ID_DETAILS, ID_DIALOG_CANCEL, ID_DIALOG_OK, ID_FIND_REGION,
@@ -678,8 +679,14 @@ pub(super) unsafe fn dispatch_command(
         let message = HSTRING::from(message);
         let confirmed = {
             let _modal = ModalScope::enter();
-            let answer =
-                unsafe { MessageBoxW(Some(window), &message, &title, MB_YESNO | MB_ICONWARNING) };
+            let answer = unsafe {
+                MessageBoxW(
+                    Some(window),
+                    &message,
+                    &title,
+                    MB_YESNO | MB_ICONWARNING | message_box_direction(state.language),
+                )
+            };
             answer == IDYES
         };
         if confirmed {
@@ -699,8 +706,14 @@ pub(super) unsafe fn dispatch_command(
         let message = HSTRING::from(message);
         let confirmed = {
             let _modal = ModalScope::enter();
-            let answer =
-                unsafe { MessageBoxW(Some(window), &message, &title, MB_YESNO | MB_ICONWARNING) };
+            let answer = unsafe {
+                MessageBoxW(
+                    Some(window),
+                    &message,
+                    &title,
+                    MB_YESNO | MB_ICONWARNING | message_box_direction(state.language),
+                )
+            };
             answer == IDYES
         };
         if confirmed {
@@ -716,6 +729,12 @@ pub(super) unsafe fn dispatch_command(
             return;
         };
         let selection = unsafe { SendMessageW(controls.language, CB_GETCURSEL, None, None) }.0;
+        // A box with nothing selected answers `CB_ERR`, and reading that as an
+        // index would hand the window whichever language happens to sort first.
+        // Nothing was chosen, so nothing changes.
+        if selection < 0 {
+            return;
+        }
         UiEvent::User(UiAction::SelectLanguage(Language::from_index(selection)))
     } else if id == ID_STORE_INPUT && notification == EN_CHANGE as usize {
         let Some(controls) = chrome.controls.as_ref() else {

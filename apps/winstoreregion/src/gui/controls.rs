@@ -702,6 +702,17 @@ pub(super) fn framed_controls(controls: &Controls) -> [HWND; 9] {
     ]
 }
 
+/// The two areas that group controls without drawing anything themselves.
+///
+/// They exist to be transparent: the window outlines the boxes inside them, and
+/// a panel that painted its own background would erase those outlines. The cost
+/// of that is a place where a stale pixel can survive any repaint, because
+/// neither the panel nor anything else ever claims it. `direction.rs` is where
+/// that bill comes due.
+pub(super) fn grouping_panels(controls: &Controls) -> [HWND; 2] {
+    [controls.source_panel, controls.region_panel]
+}
+
 /// Every control that belongs to the Updates tab and nowhere else.
 pub(super) fn updates_controls(controls: &Controls) -> [HWND; 4] {
     [

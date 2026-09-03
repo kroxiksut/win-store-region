@@ -128,6 +128,14 @@ lang/en.toml
 lang/<your language>.toml
 ```
 
+The file is named by its `code`, with the region dropped where the region is
+not a choice: `ru.toml` for `ru-RU`, `fa.toml` for `fa-IR`. It is kept where the
+region *is* a choice, and someone might reasonably want the other one:
+`zh-CN.toml` and `zh-TW.toml`, `pt-BR.toml`, `es-ES.toml`. `variant` follows
+from the same question — it is a Rust identifier and no two may collide, which
+is why there is `ChineseSimplified` and `ChineseTraditional`, `PortugueseBrazil`
+and `SpanishSpain`.
+
 Copy an existing file, translate the values, set the header fields, and open a
 pull request. There is no Rust to write: the build reads this directory and
 generates the language list, the chooser entries and the tables. Add
@@ -136,12 +144,47 @@ generates the language list, the chooser entries and the tables. Add
 The header of each file:
 
 ```toml
-variant = "Chinese"        # upper-camel-case identifier, unique per language
-code = "zh-CN"             # BCP 47 tag
+variant = "ChineseSimplified"  # upper-camel-case identifier, unique per language
+code = "zh-CN"             # BCP 47 tag, and what the chooser is sorted by
 name = "中文 (zh-CN)"       # exactly what the language chooser shows
-order = 2                  # position in the chooser
+direction = "ltr"          # or "rtl"; optional, and absent means "ltr"
 authors = ["your name"]    # how you want to be credited; see below
 ```
+
+There is no field for the position in the chooser, and that is deliberate: the
+list is sorted by `code`. A tag is the one name a language has that is standard,
+stable and the same in every script, so nobody assigns the order and nobody can
+get it wrong — your file takes its place among the others rather than at the
+end, and no other file has to be renumbered for it.
+
+A language is also a link, and this is the part that is easy to half-finish.
+Every `README` carries two things that name all of them: the badge listing the
+interface languages, and the line linking to the other documents. A new language
+belongs in **both, in every one of those files**, in the same order the chooser
+uses — otherwise the eleventh document is the only one that does not know the
+language exists, and its readers are the only people who cannot find their own.
+
+Its own document is `README.<tag>.md` and its interface screenshot is
+`assets/screenshots/installation-<tag>.png`, both named by the same tag as the
+language file. So a language is five things: the `lang` file, the README, the
+screenshot, and its entry in the badge and the language line everywhere.
+
+### A language that reads right to left
+
+`direction = "rtl"` is the whole of it. The window lays itself out the other way
+round when such a language is chosen: the badge moves to the top-right corner,
+the command row starts there, checkboxes put their box on the right of their
+caption, table columns run right to left, and scrollbars move to the left edge.
+There is no second layout to maintain and nothing in Rust to add — Hebrew would
+need that field and a file, exactly like Arabic did.
+
+One thing is worth knowing while translating into such a language. A Product ID,
+a file path, a version or an address is Latin text inside a right-to-left
+sentence, and the punctuation next to it can end up on the wrong side. The fix
+belongs to the translation rather than to the code: put `‎` on both sides
+of the placeholder, as `lang/ar.toml` does throughout. It is an invisible mark
+that pins the neutral characters around a left-to-right run, and TOML understands
+the escape, so it stays visible to whoever reads the file next.
 
 ### How a translation is reviewed
 

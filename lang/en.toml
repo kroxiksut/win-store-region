@@ -13,7 +13,8 @@
 variant = "English"
 code = "en-US"
 name = "English (en-US)"
-order = 1
+# Which way the language reads. Optional; absent means "ltr".
+direction = "ltr"
 # Who translated this language. Shown in Help → About and in the README.
 authors = ["kroxiksut"]
 

@@ -1,6 +1,7 @@
 //! Modal dialogs, the file picker, and clipboard access.
 
 use crate::gui::command::validate_installer_file;
+use crate::gui::direction::message_box_direction;
 use crate::gui::state::{FileSelectionError, ModalScope};
 use crate::gui::strings::{Language, fill};
 use std::mem::size_of;
@@ -102,7 +103,7 @@ pub(super) unsafe fn confirm_installer_handoff(
             Some(window),
             &message,
             &title,
-            MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2,
+            MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2 | message_box_direction(language),
         )
     };
     answer == IDYES
@@ -178,7 +179,14 @@ pub(super) unsafe fn show_stub_details(language: Language, inspection: &StubInsp
     let title = HSTRING::from(APPLICATION_NAME);
     let message = HSTRING::from(message);
     let _modal = ModalScope::enter();
-    let _ = unsafe { MessageBoxW(None, &message, &title, MB_OK | MB_ICONINFORMATION) };
+    let _ = unsafe {
+        MessageBoxW(
+            None,
+            &message,
+            &title,
+            MB_OK | MB_ICONINFORMATION | message_box_direction(language),
+        )
+    };
 }
 
 #[allow(unsafe_code)]

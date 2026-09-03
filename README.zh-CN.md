@@ -5,18 +5,20 @@
 ![Platform](https://img.shields.io/badge/platform-Windows%20x64%20%7C%20ARM64%20%7C%20x86-0078d4)
 ![Rust](https://img.shields.io/badge/rust-1.85%2B%20edition%202024-b7410e)
 [![CI](https://github.com/kroxiksut/win-store-region/actions/workflows/ci.yml/badge.svg)](https://github.com/kroxiksut/win-store-region/actions/workflows/ci.yml)
-![UI](https://img.shields.io/badge/UI-EN%20%7C%20RU%20%7C%20ZH-lightgrey)
+![UI](https://img.shields.io/badge/UI-AR%20%7C%20EN%20%7C%20ES--ES%20%7C%20FA%20%7C%20JA%20%7C%20KO%20%7C%20PT--BR%20%7C%20RU%20%7C%20TR%20%7C%20ZH--CN%20%7C%20ZH--TW-lightgrey)
 ![Admin rights](https://img.shields.io/badge/admin%20rights-not%20required-success)
 
 一个 Windows 实用程序，在安装期间临时切换 Windows 地区，将安装移交给 Microsoft Store 本身的机制，并在看到实际结果后将地区改回。
 
 一个便携式 `WinStoreRegion.exe`，约 2 MB，发布 x64、ARM64 与 32 位 x86 三种版本。它既不需要也不申请管理员权限。只有 x64 版本被实际运行过——参见[实际验证过的内容](#实际验证过的内容)。
 
-[English](README.md) · [Русский](README.ru.md) · **简体中文** · [更新日志](CHANGELOG.md)
+[العربية](README.ar.md) · [English](README.md) · [Español](README.es-ES.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Português](README.pt-BR.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · **简体中文** · [繁體中文](README.zh-TW.md) · [更新日志](CHANGELOG.md)
 
 > **本文档由机器翻译，未经中文母语者校对。**本项目不审校任何翻译，而这一份连译者都没有，因此它比英文原文更可能出错。发现问题请提交 issue 或 pull request。以 [English](README.md) 为准。
 
-![安装选项卡（简体中文）](assets/screenshots/installation-zh.png)
+本工具由作者自荐发布于[小众软件发现频道](https://meta.appinn.net/t/topic/90878)，并在[该频道近 10 日热门排行榜 2026 年第 35 期](https://meta.appinn.net/t/topic/90962)中排在第 9 位。该榜单由论坛系统按热度自动生成。中文读者的问题与反馈也欢迎留在自荐帖里——那里比这里更可能有人用中文回答。
+
+![安装选项卡（简体中文）](assets/screenshots/installation-zh-CN.png)
 
 地区名称来自 Windows 本身，使用 Windows 称呼它们的语言——这既是该字段被标注为“Windows 列表”的原因，也是中文窗口中地区名称仍为俄文的原因。此屏幕截图是在俄文 Windows 上以 125% 缩放拍摄的。
 
@@ -237,12 +239,14 @@ Microsoft Store 不会更新它在您当前地区不提供的应用程序。更�
 - 仅安装 Store 作为 Microsoft Store 包传递的应用程序。具有自己的 Win32 安装程序的应用程序不在范围内：无法为它们证明完成，没人可以验证的安装不应被提供。
 - 更新选项卡没有单击更新按钮。Store 安装程序是否更新已安装的应用程序未被测量，一个可能什么都不做的按钮比没有按钮更糟。
 - **打开的缺陷**：在 2026.08.21 Windows 在五次快速连续的失败操作后关闭了窗口作为无响应。地区事务不受影响——它在每一次中都被恢复——所以故障在界面中，不在模型中。它此后没有重现，缺陷发生的构建早于多个修复；原因尚未已知且此处未猜测。
-- 界面语言是英文、俄文和简体中文。中文文本是由机器制作的草稿，未由中文读者检查；文件在顶部说这一点。
+- 十一种界面语言：阿拉伯文、英文、西班牙文、波斯文、日文、韩文、葡萄牙文、俄文、土耳其文，以及两种字形的中文。英文与俄文由维护者本人撰写；其余九种是由机器制作的草稿，未由母语读者检查，每个文件在顶部说这一点。阿拉伯文与波斯文会让整个窗口从右向左排布，因为它们就是这样读的。每一种都有翻译过的 README，而其中每一份都链接到其余所有。
 - 程序的一个实例一次运行。
 
 ## 翻译
 
 一个语言是一个文件。`lang/ru.toml`、`lang/en.toml` 和随便你加什么：复制一个、翻译值、打开拉取请求。没有 Rust 要写——构建读取该目录并生成语言列表、选择器和表格，所以 `lang/zh.toml` 是提供中文所需的所有。
+
+从右向左阅读的语言只需一个字段说明这一点——`direction = "rtl"`——窗口便自行翻转：面板、标签、按钮、表格列与滚动条都换到另一侧。阿拉伯文先来，波斯文随后，代价只是一个文件、一行 Rust 都没有——这里要说的就是这一点；希伯来文的代价也一样。
 
 **新语言被批准没有语言学审查**，因为这里没人能读它。什么被检查是结构，构建做它：缺失的键、未知的键、错误长度的列表或 `{占位符}` 与原始不同的字符串都失败构建。批准后，维护人员旨在发布一个发行版，携带语言。
 

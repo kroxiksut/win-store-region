@@ -1,0 +1,589 @@
+# WinStoreRegion'un Türkçe arayüz metni.
+#
+# Bir dosya, bir dil. Yapı, bu dizini okur ve dosyaları Rust tablolarına çevirir:
+# eksik anahtar ve bilinmeyen anahtar, her ikisi de yapıyı kırar. Bu nedenle
+# tamamlanmamış bir çeviri fark edilmeden yayınlanamaz.
+#
+# Buradaki birçok dize kasıtlı olarak dikkatlidir: tamamlama kanıtlanmamış olduğunu,
+# cevabın tek bir pazardan geldiğini, setin tamamlanmamış olduğunu söylerler. Bu
+# uyarılar ürünün özüdür, dolgu değil. Çeviri, daha kalın bir cümle daha iyi okunsa
+# bile bunları korumalıdır.
+
+
+variant = "Turkish"
+code = "tr-TR"
+name = "Türkçe (tr-TR)"
+# Dilin hangi yöne okunduğu. İsteğe bağlı; yoksa "ltr" olur.
+direction = "ltr"
+# Bu dili kim çevirdi. Yardım → Hakkında ve README'de gösterilir.
+authors = []
+
+[strings]
+title = "WinStoreRegion"
+subtitle = "Güvenli geçici bölge değişikliği"
+language = "Dil"
+current_region = "Geçerli bölge (korunacak)"
+input = "Microsoft Store bağlantısı veya Product ID"
+source_title = "Yüklenecek uygulama"
+source_hint = "Bir bağlantı/Product ID veya yükleyici dosyası seçin. İstemsiz taslak korunur."
+source_link = "Bağlantı veya Product ID"
+source_file = "Yükleyici dosyası (.exe)"
+paste = "Yapıştır"
+choose_file = "Dosya seç"
+clear_file = "Temizle"
+clear_input = "Temizle"
+download_installer = "Store yükleyiciyi indir"
+downloading_installer = "Yükleyici indiriliyor…"
+no_file = "Dosya seçilmedi"
+drop_overlay = ".exe dosyasını buraya bırak"
+app_card = "Uygulama kartı, geçici bir bölge seçildiğinde ve Store kataloğu yanıt verdiğinde görünecek."
+temporary_region = "Geçici yükleme bölgesi (Windows listesi)"
+find_region = "Yüklemenin sunulduğu bir bölge bul"
+check_remaining = "Kalan bölgeler"
+show_all_regions = "Tüm bölgeleri göster"
+availability_idle = "Bölgeler kontrol edilmedi."
+availability_incomplete = "Set tamamlanmamış."
+availability_none = "Kontrol edilen hiçbir bölgede sunulmaz."
+availability_offline = "Kaynak yanıt vermedi."
+status = "Yükleme henüz kullanılamaz: uygulama adı verilmedi ve onu güvenli yapan kontroller tamamlanmadı."
+install = "Yükle"
+restore = "Yükleme tamamlandı — bölgeyi geri yükle"
+open_store_page = "Store sayfasını aç"
+details = "Teknik ayrıntılar"
+journal_placeholder = "İşlem günlüğü, yerel günlük uygulanıktan sonra kullanılabilir olacak. Yükleme ve kurtarma bu sekmede çalışmaz."
+journal_loading = "Yerel işlem günlüğü yükleniyor…"
+journal_empty = "Günlük boş. Yalnızca doğrulanmış işlem sonuçları ve kurtarma gerektirenleri burada görünecek."
+journal_open_store = "Store sayfasını aç"
+journal_repeat = "Yüklemeyi tekrar et"
+journal_delete = "Girişi sil"
+journal_copy_id = "Product ID'yi kopyala"
+journal_clear = "Günlüğü temizle"
+journal_columns = ["Zaman (UTC)", "Uygulama", "Tanımlayıcı", "Sonuç"]
+updates_idle = "Yüklü Microsoft Store uygulamalarını ve bunlardan hangilerinin Store'un geçerli bölgede hizmet etmediğini görmek için Kontrol et'e basın."
+updates_scanning = "Yüklü uygulamalar kontrol ediliyor…"
+updates_refresh = "Kontrol et"
+updates_open = "Yüklemede aç"
+updates_none = "Store'un geçerli bölgede hizmet etmediği Microsoft Store uygulaması bulunamadı."
+updates_columns = ["Uygulama", "Product ID", "Yüklü", "Store kataloğunda"]
+updates_unavailable = "Windows'un yüklü uygulamalar hakkında bilgi vermemesi nedeniyle liste oluşturulamadı."
+updates_choose_entry = "Listeden bir uygulama seçin."
+# Hatırlanan bir yanıt yararlıdır ancak taze bir yanıtla karıştırılamaz, bu nedenle
+# kendi yaşını ifade eder. {button} yeniden kontrol et düğmesinin başlığıdır.
+updates_scan_age = """
+{taken} (UTC) kontrolünden. Yeniden sormak için «{button}» düğmesine basın.
+
+"""
+# Bir giriş hakkında bilinen her şey. Burada güncellemenin var olduğu asla söylenmez:
+# Store ürünü buradan hiç güncellenmez ve iki sürüm numarası her zaman karşılaştırılabilir
+# değildir. Yapılan tek iddia kanıtlanabilir olan—Store'un bu ürüne bu bölgede hizmet
+# etmediğidir. {button} girişi Yükleme sekmesine taşıyan düğmenin başlığıdır.
+updates_entry_details = """
+{name}
+Product ID: {id}
+Paket ailesi: {family}
+Yüklü sürüm: {installed}
+Store kataloğundaki sürüm: {offered}
+
+Microsoft Store, geçerli bölgede bu uygulamaya hizmet etmez, bu nedenle buradan da güncellemez. «{button}» Product ID'yi Yükleme sekmesine taşır ve uygulamanın sunulduğu bölgeleri aramaya başlar.
+
+Güncellemenin yayınlandığını bu iddia etmez: yukarıdaki iki sürüm farklı şemalarla numaralandırılabilir, bu durumda aralarındaki sıra hiçbir şey ifade etmez."""
+updates_version_not_named = "katalog sürüm adı vermedi"
+
+# Uygulama kartı. Son satır dekorasyon değildir: katalogda sunulan, yükleme
+# bulacağı ile aynı değildir ve kart ikisinden hangisini gösterdiğini söyler.
+card_publisher_not_provided = "yayımcı sağlanmadı"
+card_product_id = "Product ID: {id}"
+card_store_catalogue = "Store kataloğu: {market}"
+card_version = "Sürüm: {version}"
+# İndirme boyutu, katalog tarafından bildirilen. Birim adları ikilidir; bu adları
+# farklı şekilde yazan bir dil onları burada değiştirir ve ondalık ayırıcı
+# cümleyle birlikte ilerler.
+card_size_bytes = "Boyut: {size} bayt"
+card_size = "Boyut: {whole},{tenths} {unit}"
+card_size_kibibytes = "KiB"
+card_size_mebibytes = "MiB"
+card_offered_installable = "Seçilen bölgede sunulur. Bu, katalogda söylenendir, yükleme kontrolü değildir: uygulama geçici bölge altında yeniden aranır."
+card_offered_not_installable = "Seçilen bölgede sunulur, ancak bu sürüm bu şekilde sunulan uygulamaları yüklemez."
+
+# Seçilen bölge hakkında bilinenler. Her biri bilgi ne kadarının gittiğini söyler:
+# bir bölgenin yanıtı, tüm bölgelerin kontrol edilmesiyle aynı değildir.
+region_checking_selected = "Seçilen bölge kontrol ediliyor…"
+region_offered_here = "Seçilen bölgede sunulur. Diğer bölgeler kontrol edilmedi."
+region_not_offered_here = "Seçilen bölgede sunulmaz."
+region_no_answer_here = "Kaynak, seçilen bölge hakkında yanıt vermedi. Diğerleri kontrol edilmedi."
+# «Kontrol edilmedi», «henüz» anlamına gelir ve hiç etkinleştirilmeyecek bir düğmenin
+# yanında pencereyi bozuk gösterir. Dosya uygulama adı vermez, bu nedenle kontrol
+# ertelenmez—sorması gereken bir şey yok.
+region_nothing_to_check = "Dosya için kontrol edilecek hiçbir şey yok: Product ID gerekli."
+region_checked_progress = "{done} / {total} kontrol edildi…"
+region_found = "Bulunan bölgeler: {count}."
+
+card_syntax_accepted = "Product ID {id} kabul edildi. Geçici bir bölge seçin ve uygulama kartı istenebilir."
+card_retrieving = "Uygulama kartı Store'dan alınıyor…"
+# Katalog şu anda yürürlükte olan bölge altında yanıt verir, geçici bölge altında
+# değil, bu nedenle uygulamanın burada yokluğu, seçilen bölge hakkında hiçbir şey
+# söylemez. Adlandırılan bölge, kartın bu seçime bir karar olarak okunmasını engeller.
+card_unavailable_in_region = """
+Uygulama kartı kullanılamaz: uygulama, geçerli Windows bölgesinde ({region}) görünmez.
+Geçici bölge henüz uygulanmadı ve yüklemeyi engellemez."""
+card_unavailable = """
+Uygulama kartı kullanılamaz: uygulama, geçerli Windows bölgesinde görünmez.
+Geçici bölge henüz uygulanmadı ve yüklemeyi engellemez."""
+
+# Kartın son satırı: yükleme hiç başlayabilir mi? Üç şey tutmalı ve metin onları
+# kullanıcının koşullarında değil programın koşullarında adlandırır—bölgeyi geri
+# koymak, bitmeyen eski bir işlem yok, yüklemeyi yapan şey.
+card_install_ready = "Yüklemeye hazır."
+card_install_not_ready = "Henüz yüklemeye hazır değil: bölgeyi geri koymak, bitmeyen bir eski işlem ve yükleyicinin kendisi doğrulanmadı."
+
+# Korunan işlemin nerede durduğu, bir defasında bir cümle. Yüklemenin
+# bildirmesinden önce hiçbir yerde «yüklendi» söylenmez ve bölgenin okumaya
+# geri dönüşünden önce «geri yüklendi» söylenmez.
+operation_switching_region = "Bölge değiştiriliyor ve okumaya geri dönüş ile doğrulanıyor."
+operation_looking_up = "Geçici bölge doğrulandı. Uygulama bunda aranıyor."
+operation_found = "Bulundu: {name}. Yükleme başlatılıyor."
+operation_restoring_region = "Yükleme bitti. Orijinal bölge geri yükleniyor."
+operation_done = "Bitti: uygulama yüklendi ve bölge orijinal."
+operation_completion_uncertain = "Tamamlama doğrulanamadı. Karar sizindir."
+operation_started = "İşlem başladı. İlk raporu bekleniyor."
+
+# Windows, hangi bölgelerin var olduğunu söylemedi. Ekrandaki liste boş ve
+# kendi başına hiçbir şey söylemez, bu nedenle pencere yerine söyler.
+window_no_regions_listed = "Windows hiçbir bölge adı vermedi, geçici bir bölge seçilecek hiçbir şey yok. Böyle olduğu sürece hiçbir şey yüklenemez."
+
+# Gözlem son tarihi geçtiğinde geçici bölge hala yürürlükteyken sorulur.
+# Üç yanıt, temel protokolün kabul ettiği üç yanıttır ve ikincisine basılması
+# uyarıyı kabul eder. {state}, işlemin nerede durduğu.
+operation_ask_timeout_resolution = """
+Yükleme tamamlamayı bildirmedi: {state}.
+
+Windows hala geçici bölgeyi kullanıyor. Yükleme Windows'un sahibidir ve bu pencereden durduralamaz.
+
+Evet — yükleme bitti, orijinal bölgeyi geri yükle.
+Hayır — yükleme hala devam ediyorsa bile orijinal bölgeyi şimdi geri yükle; kesintiye uğrayabilir.
+İptal — beklemek devam et; pencere yüklemede yeniden eklenir."""
+# İşlemin söylediklerine eklenir, ön alan korunur.
+operation_region_already_back = " Orijinal bölge zaten geri yüklendi."
+installing_phase_running = "Yüklüyor"
+installing_phase_finishing = "Yükleme tamamlanıyor"
+installing_without_progress = "{phase}."
+installing_with_progress = "{phase}: %{percent}."
+
+# Store yükleyici dosyası teslimi. Burada ne ilerleme ne de tamamlama bildirilir,
+# çünkü bu işlemin hiçbiri yok: Store işi yapar ve bu pencereye hiçbir şey
+# söylemez. {button}, geri yükleme düğmesinin başlığı.
+handoff_switching_region = "Bölge değiştiriliyor ve okumaya geri dönüş ile doğrulanıyor. Dosya henüz başlatılmadı."
+handoff_handed_off = "Bölge {region} olarak değiştirildi ve doğrulandı. Yükleme Microsoft Store yükleyicisine teslim edildi: Store'da tamamlayın. Burada ilerleme gösterilmez ve bu uygulama hiçbir şeyin yüklendiğini doğrulamaz. İşin bittiğinde «{button}» düğmesine basın."
+handoff_restoring_region = "Orijinal bölge geri yükleniyor ve okumaya geri dönüş ile doğrulanıyor."
+handoff_restored = "Bitti: orijinal bölge geri yüklendi ve doğrulandı ve kurtarma kaydı gitti. Microsoft Store'un neyi yüklediği bu uygulama kontrol etmez."
+# Durduğunda: sebep ilk, sonra sonraki adımı belirleyen tek gerçek—Windows
+# hala geçici bölgeyi tutup tutmadığı.
+handoff_did_not_happen = "Yükleyici başlatılmadı."
+handoff_region_may_be_temporary = "Windows geçici bölgeyi tutabilir: «{button}» düğmesine basın."
+handoff_region_original = "Windows orijinal bölgeyi tutmaya devam ediyor."
+handoff_declined = "Başlatma iptal edildi. Bölge değiştirilmedi, dosya başlatılmadı ve hiçbir şey değiştirilmedi."
+
+resolution_card_confirmed = "Uygulama kartı doğrulandı. Yükleme hala kendi güvenlik kontrolleri için bekliyor: bölgeyi geri koymak, bitmeyen eski bir işlem ve yükleyici."
+resolution_catalogue_not_searchable = "Store kataloğu bu Windows profilinde aranmaz. Bölge değiştirilmedi; yükleme kullanılamaz."
+resolution_checked_in_region = "Geçerli Windows bölgesinde kontrol edildi: {region}."
+resolution_checked_in_current_region = "Geçerli Windows bölgesinde kontrol edildi."
+resolution_still_possible = "Geçici bölge henüz uygulanmadı ve yüklemeyi engellemez: uygulama altında yeniden aranır."
+
+# Microsoft'un kendi yükleyicisi, Product ID tarafından istenilen. Metin, düğme
+# şimdi ne yapacağını söyler, çünkü anlamı altında değişti: aynı düğme dosyayı
+# Store'a verir ve doğrudan yüklemez. {button} bu düğmenin başlığı, {restore}
+# bölgeyi geri koyan.
+installer_download_ready = "Microsoft Store yükleyicisi indirildi ve kaynak olarak seçildi. «{button}» düğmesine bas: imza kontrol edilir, bölge değiştirilir ve yükleyici başlatılır. Tamamlamayı bildirmez—pencereye doğru bitirmen gerekir ve sonra bölgeyi «{restore}» ile geri koy."
+# Neden gelmedi. Her biri ne kurulduğunu ve kurulamadığını söyler; hiçbiri uygulamanın var olmadığını söylemez.
+installer_download_network = "Yükleyici için Microsoft ulaşılamadı: ağ kullanılamaz."
+installer_download_refused = "Microsoft bu uygulama için yükleyici vermedi."
+installer_download_refused_with_status = "Microsoft bu uygulama için yükleyici vermedi (HTTP {status})."
+installer_download_too_large = "Microsoft'un yanıtı bu uygulamanın yazacağından daha büyüktü."
+installer_download_not_writable = "Yükleyici geldi, ancak veri klasörüne yazılamadı."
+
+# Yazılan uygulama kaynağının izleyen komut için ne anlama geldiği. «Kullanılamaz»
+# durumu etkinleştirilmiş düğmenin yanında durum yok olduğundan daha kötüdür, bu
+# nedenle her biri hala eksik olan tek koşulu adlandırır. {button} başlıkları
+# düğmelerden doldurulur.
+source_choose_region = "Product ID {id} kabul edildi. Geçici bir bölge seçin veya «{button}» düğmesine basın."
+# Kurtarma bayrağı da aslında başlangıçta yanlıştır, herhangi bir kontrol
+# yapılmadan önce, bu nedenle bu bitmeyen bir işlemin var olduğunu iddia edemez.
+source_recovery_pending = "Product ID {id} kabul edildi. Yükleme, bitmeyen bir eski işlem için kontrol çalıştıktan sonra kullanılabilir hale gelir; varsa, önce çözmesi gerekir."
+source_prerequisites_unmet = "Yükleme ön koşulları karşılanmadı."
+# Katalog, herhangi bir şey dokunmadan önce yanıt verir, bu nedenle buraya
+# teslim edilemeyen uygulama, bölge hala kullanıcının kendisinin iken reddedilir.
+source_other_device_only = "Product ID {id}: Microsoft Store bu uygulamayı bu cihaza vermez—başka bir cihaz türünü hedefler. Bölge değişikliği yardımcı olmaz, bu nedenle yükleme kullanılamaz."
+source_newer_windows_required = "Product ID {id}: bu uygulama Windows {version} veya daha yenisini gerektirir ve bu makine daha eskidir. Bölge değişikliği yardımcı olmaz, bu nedenle yükleme kullanılamaz."
+source_ready = "Product ID {id} kabul edildi, geçici bölge: {region}. Yükleme başlayabilir: uygulama bu bölge altında aranır."
+source_syntax_accepted = "Product ID {id} için söz dizimi geçerlidir. Yükleme, Store kataloğu hakkında yanıt verene kadar kullanılamaz."
+
+# Seçilen dosyanın izleyen komut için ne anlama geldiği. Yukarıdakiyle aynı
+# sıra: tek eksik koşulu adlandır, kapıdan hala hangi koşulun eksik olduğunu
+# tahmin etmesini bıraksa bir genel cümle değil.
+file_choose = "Microsoft Store yükleyici dosyası seç (.exe). Asla değiştirilmez ve Store yüklemeyi devam ettirir. Bağlantı taslağı korunur."
+file_recovery_pending = "Dosya kontrolleri geçti, ancak bitmeyen bir eski işlem için kontrol çalıştırılana kadar teslim edilemez; varsa, önce çözmesi gerekir."
+file_store_not_confirmed = "Dosya kontrolleri geçti, ancak bu makinede Microsoft Store doğrulanmadı ve yüklemeyi bitiren Store'dur. Bölge değiştirilmedi."
+file_choose_region = "Dosya Microsoft Store tarafından imzalandı ve çalıştırılmadı. Geçici bir bölge seç: dosya onun altında başlatılır."
+# Yükleyici dosyası uygulama adı vermez, bu nedenle bölge aramasının soracak
+# hiçbir şeyi yok. Çözmek, çıkışa rahatsız etmek daha iyidir.
+file_region_is_your_choice = "Dosya için bölge seçim yaparsınız: yükleyici uygulamayı adlandırmaz. Bulduğu bölgeyi bulmak için—bağlantı yapıştır, «{button}» düğmesine bas, sonra dosyaya geri dön; seçilen dosya korunur."
+file_ready = """
+Dosya {name} Microsoft Store tarafından imzalandı ve henüz çalıştırılmadı. Geçici bölge: {region}. Yükleme teslim edilebilir: bölge okumaya geri dönüş ile değiştirilir, sonra yükleyicinin kendisi başlatılır ve işi Microsoft Store'da bitirirsiniz.
+
+{unchecked}"""
+
+# Seçilen dosya neden çalıştırılmayacağı. Sebep, aşağıdaki cümleye bırakılan
+# bir parçadır ve hiçbiri dosyayı kötü niyetli olarak adlandırmaz: her biri
+# yalnızca kurulamayan şeyi söyler.
+file_refusal_signature_not_trusted = "Windows dosya imzasını doğrulamadı"
+file_refusal_signer_unavailable = "Windows yayımcı sertifikasını sağlamadı"
+file_refusal_not_store_signed = "dosya Microsoft Store tarafından imzalanmadı"
+file_refusal_changed_while_checked = "dosya kontrol edilirken değişti"
+file_refusal_identity_incomplete = "dosya adı ve SHA-256 kurulamadı"
+file_refused = "Bu dosya başlatılmayacak: {reason}. Bölge değiştirilmedi. Microsoft Store tarafından imzalanan yükleyici seç veya Microsoft Store bağlantısı veya Product ID yapıştır."
+
+file_inspecting = "Seçili .exe'yi salt okunur kontrol ediliyor: SHA-256 ve imza. Dosya çalıştırılmaz."
+file_changed_during_inspection = "Dosya kontrol edilirken değişti veya değiştirildi. Sonuç atıldı; yükleme kullanılamaz."
+file_unreadable = "Seçili dosya güvenli bir şekilde okunamadı. Sonuç atıldı; yükleme kullanılamaz."
+
+# Dosya hiç alınmadığı neden. Hiçbir durumda hiçbir şey değiştirilmedi ve
+# cümle bunu söyler, tahmin etmemek yerine.
+file_error_empty_path = "dosya yolu boş"
+file_error_unsupported_extension = "yalnızca .exe dosyaları desteklenir"
+file_error_not_a_file = "yol var olan dosyaya işaret etmez"
+file_error_link_or_device_path = "kısayollar ve özel sistem yolları desteklenmez"
+file_error_multiple_files = "tam olarak bir dosya bırak"
+file_not_selected = "Dosya seçilmedi: {detail}. Geçerli kaynak ve her iki taslak değiştirilmedi."
+
+# Bir bölge listedeki ve geçerli bölge kutusundaki görünümü. Ad ilk
+# gelir, çünkü liste kutusu metinin başladığı metinle arar: koddaki
+# adla başında ad araması hiçbir şey bulmadı, bu da iki yüz bölgenin
+# listesini faresiz işe yaramaz yaptı. Sayı, Windows'un kendisi tuttuğu
+# şeydir ve pencerenin söze inanmak yerine Windows'a karşı kontrol
+# edilebilmesi içindir.
+region_choice = "{name} · {code} (bölge kodu {geo_id})"
+region_choice_without_code = "{name} (bölge kodu {geo_id})"
+
+region_choose_from_list = "Windows listesinden geçici bir bölge seçin. Bölge değiştirilmedi ve uygulama aranmadı."
+region_not_confirmed = "Windows seçilen bölgeyi doğrulayamadı. Bölge değiştirilmedi ve uygulama aranmadı."
+menu_file = "Dosya"
+menu_paste = "Bağlantı/ID yapıştır"
+menu_exit = "Çık"
+menu_help = "Yardım"
+menu_about = "Hakkında"
+menu_open_diagnostic_log = "Tanılama günlüğünü aç"
+menu_copy_details = "Ayrıntıları kopyala"
+menu_recheck = "Ön koşulları yeniden kontrol et"
+menu_get_app_installer = "App Installer al"
+menu_region_documentation = "Microsoft: ülke veya bölgeni değiştir"
+menu_github = "Proje GitHub'ı"
+tabs = ["Yükleme", "Günlük", "Güncellemeler"]
+region_unavailable = "Geçerli Windows bölgesi okunamadı."
+
+# Hata nedenleri, her tanılama kodu başına bir tane.
+diagnostic_backend_failed = "Yükleyici hata bildirdi."
+diagnostic_backend_reported_unknown_failure = "Yükleme yapılmadı: Microsoft Store, kodu burada bilinmeyen bir hata bildirdi. Kod ayrıntılarda."
+diagnostic_backend_unavailable = "Bu uygulama için desteklenen yükleme yolu yok."
+diagnostic_clipboard_unavailable = "Pano kullanılamaz."
+diagnostic_completion_uncertain = "Yükleme tamamlanması doğrulanmadı."
+diagnostic_install_kind_not_supported = "Bu uygulama, bu sürümün yüklemediği bir şekilde teslim edilir. Microsoft Store'da açılabilir."
+diagnostic_installer_file_not_a_store_stub = "Bu Microsoft Store yükleyicisi değil."
+diagnostic_installer_file_not_admitted = "Bu dosya başlatılmayacak: imza veya imzalayan kontrol geçemedi."
+diagnostic_installer_file_not_supported = "Var olan bir `.exe` dosyası gerekli."
+diagnostic_installer_file_unreadable = "Seçili dosya okunamadı."
+diagnostic_installer_launch_rejected = "Windows doğrulanmış yükleyiciyi başlatmadı."
+diagnostic_journal_unavailable = "İşlem günlüğü kullanılamaz."
+diagnostic_microsoft_account_required = "Microsoft Account oturum açması gerekli."
+diagnostic_microsoft_store_unavailable = "Microsoft Store kullanılamaz."
+diagnostic_ms_store_source_terms_not_accepted = "Microsoft Store kaynak koşulları kabul edilmedi. Hiçbir şey yüklenmedi ve indirme bunu düzeltmez."
+diagnostic_ms_store_source_unavailable = "Microsoft Store kataloğu yükleme kaynağı olarak kullanılamaz."
+diagnostic_network_unavailable = "Ağ bağlantısı yok."
+diagnostic_operation_sequence_violated = "İşlem iç sıralama hatası nedeniyle durdu. Hiçbir şey yüklenmedi."
+diagnostic_product_already_installed = "Uygulama bu bilgisayarda zaten yüklü. Bölge geri yüklendi ve hiçbir şey yüklenmedi."
+diagnostic_product_already_installing = "Bu uygulama zaten yükleniyor. Geçerli yüklemenin bitmesini bekle."
+diagnostic_product_not_found = "Bu Product ID için uygulama bulunamadı."
+diagnostic_product_not_on_this_device = "Microsoft Store bu uygulamayı bu cihaza vermez: başka cihaz türünü veya daha yeni Windows'u hedefler. Bölge engel değil ve değiştirilmesi yardımcı olmaz."
+diagnostic_product_unavailable_in_region = "Uygulama seçilen bölgede sunulmaz."
+diagnostic_recovery_record_unreadable = "Kurtarma verileri güvenli bir şekilde okunamadı."
+diagnostic_region_change_rejected = "Windows bölge değişikliğini reddetti."
+diagnostic_region_conflict = "Geçerli bölge ne orijinali ne de geçiciyi eşleştirmez."
+diagnostic_region_unavailable = "Windows geçerli bölgeyi bildirmez."
+diagnostic_region_unchanged = "Bölge değişmedi."
+diagnostic_resolver_answer_mismatch = "Katalog başka bir uygulama hakkında yanıt verdi, bu nedenle sonuç reddedildi."
+diagnostic_resolver_unavailable = "Microsoft Store kataloğuna ulaşılamadı."
+diagnostic_restore_failed = "Orijinal bölgenin geri yüklenmesi doğrulanmadı."
+diagnostic_store_input_not_understood = "Bağlantı veya Product ID tanınmadı."
+diagnostic_store_page_launch_rejected = "Windows Microsoft Store sayfasını açamadı."
+diagnostic_store_refused_without_reason = "Microsoft Store sebep vermeden reddetti."
+diagnostic_temporary_region_not_applied = "Kaynak geçici bölgeyi kabul etmedi: yükleme başlamadan önce orijinale geri döndü. Yeniden deneyin."
+
+# Bölge doğrulandı ve katalog bir an önce altında yanıt verdi; yükleme
+# isteğinde ürün artık orada değildi. Bölge, doğrulanmış olan tek şey olduğu
+# için suçlanmaz.
+diagnostic_product_no_longer_offered = "Kaynak bu uygulamayı artık sunmaz: geçici bölge altında hakkında yanıt verdi ve sonra yüklenecek bir şey kalmadı. Satıştan kaldırılmış olabilir. Yeniden deneyin veya başka bir bölge seçin."
+diagnostic_unsupported_market = "Katalog seçilen bölgeyi kabul etmez."
+diagnostic_win_get_missing = "Store uygulamalarını yükleyen Windows bileşeni bulunamadı."
+
+# Teknik ayrıntılar, yalnızca ayrıntı alanında gösterilir ve kopyalanmaya uygun.
+diagnostic_details_heading = "Teknik ayrıntılar"
+
+# Yükleme ön koşulları. Her biri için, arayüz «kontrol ettik ve eksik» ile
+# «kontrol başarısız oldu» arasında ayrım yapar: ikincisi yokluğun kanıtı değildir
+# ve sözcük seçimi bunu kanıta dönüştürmeyi değil, kanıta dönüştürmeyi sağlar.
+prerequisite_heading = "Yükleme kullanılamaz: ön koşullar karşılanmadı."
+prerequisite_app_installer_missing = "App Installer yüklü değil. Windows Store uygulamalarını onunla yükler; Microsoft Store sayfasından yüklenebilir."
+prerequisite_app_installer_unknown = "App Installer'ın bulunup bulunmadığı belirlenemedi. Kontrol başarılı olana kadar yükleme kullanılamaz."
+prerequisite_microsoft_store_missing = "Microsoft Store yok. Onun için tek indirme yok: Windows onarılmalı."
+prerequisite_microsoft_store_unknown = "Microsoft Store'un mevcut olup olmadığı belirlenemedi. Kontrol başarılı olana kadar yükleme kullanılamaz."
+prerequisite_com_metadata_missing = "Uygulamanın dizini yazılabilir değil, bu nedenle yüklemede bağlı meta veri dosyası yanına yerleştirilemedi. Uygulamayı yazabileceğiniz bir dizine taşıyın."
+prerequisite_com_metadata_unknown = "Uygulamanın yanı sıra meta veri dosyası hazırlanamadı. Kontrol başarılı olana kadar yükleme kullanılamaz."
+
+# Günlük sekmesi.
+journal_journal_details = "Dosya değiştirilmeden korundu."
+
+# Bir günlük girişinin kendisi hakkında söylediği. İki konu farklı blokları taşır
+# çünkü farklı şeyleri bilirler: yükleyici dosyası için bir giriş, uygulama adı,
+# yayımcı, sürüm veya paket kimliği bilmez ve bunu bir kez söyler, altı alanı
+# «bilinmeyen» ile doldurmak yerine. Etiketler çevrilir; yanlarındaki değerler
+# o zaman kaydedilenleridir.
+journal_details_product = """
+Uygulama: {name}
+Product ID: {id}
+Tür: {kind}
+Yayımcı: {publisher}
+Sürüm: {version}
+Paket ailesi: {family}"""
+journal_details_file = """
+Dosya: {name}
+SHA-256: {sha256}
+Uygulama adlandırılmadı: Microsoft Store yükleyicisi Product ID içermez."""
+journal_details_common = """
+Tarih: {date}
+Bölge kodu: {geo_id}
+İşlem: {operation}
+Yöntem: {backend}
+Sonuç: {result}"""
+# Asla kurulamadı bir değer yerine söylenir. Hiçbiri değerin olmadığını iddia
+# etmez—yalnızca bu giriş taşımaz.
+journal_details_kind_unknown = "Bilinmeyen"
+journal_details_publisher_not_provided = "sağlanmadı"
+journal_details_version_not_confirmed = "doğrulanmadı"
+journal_details_family_not_confirmed = "doğrulanmadı"
+
+# Günlük sonuçları.
+journal_result_installed = "Yüklendi ve geri yüklendi"
+journal_result_handed_off_to_installer = "Microsoft Store yükleyicisine teslim edildi — tamamlama kontrol edilmedi"
+journal_result_completion_uncertain = "Tamamlama doğrulanmadı — doğrulama/kurtarma gerekli"
+journal_result_recovery_required = "Kurtarma veya manuel karar gerekli"
+journal_result_failed = "Başarısız"
+
+# İletişim kutuları.
+dialog_filter_executables = "Çalıştırılabilir dosyalar (*.exe)"
+dialog_filter_all_files = "Tüm dosyalar (*.*)"
+dialog_show_stub_details = "İmzalayan: kullanılamaz"
+
+# Teslim etme onayı. Cevabın bağlı olduğu her şey bir ekranda: hangi dosya,
+# kimin imzaladığı, özetiyle, hangi bölgenin tutulacağı ve bu uygulamanın
+# sonra ne bileceği ve bilemeyeceği. Son paragraf, yumuşatılmaması gereken
+# olandır—Store yüklemeyi yönetir ve bu uygulama başarılı olup olmadığını
+# bilemez. {button}, bölgeyi geri koyan düğmenin başlığı ile doldurulur,
+# böylece ikisi ayrışmaz.
+dialog_confirm_handoff = """
+Microsoft Store yükleyiciyi başlat?
+
+Dosya: {file}
+Yayımcı: {publisher}
+SHA-256: {sha256}
+Geçici bölge: {region}
+
+Windows bölgesi geçici olarak değiştirilir ve okumaya geri dönüş ile doğrulanır ve sadece sonra dosya başlatılır. Dosyanın kendisi asla değiştirilmez.
+
+Microsoft Store yüklemeyi oradan alır: burada ilerleme gösterilmez ve bu uygulama hiçbir şeyin yüklendiğini doğrulamaz. Store bittiğinde «{button}» düğmesini kullan.
+
+Evet — bölgeyi değiştir ve dosyayı başlat. Hayır — hiçbir şey değiştirme."""
+
+# Yükleyici dosyası incelemesi, istek üzerine gösterilir. Bu tavsiye değil kanıt:
+# etiketler dosyadan okunanları adlandırır ve değerler Windows'un bildirdiği
+# gibi yeniden üretilir.
+dialog_stub_details = """
+SHA-256: {sha256}
+Boyut: {size} bayt
+İmza: {signature}
+Store yükleyici kontrolü: {status}
+Product ID: {product_id}
+
+{signer}
+
+{warnings}"""
+dialog_stub_signer = """
+Konu: {subject}
+Veren: {issuer}
+Seri: {serial}
+SHA-256 sertifika parmak izi: {thumbprint}
+Geçerli: {valid_from} — {valid_to}
+Kod imzalamaya izin verildi: {eku}"""
+dialog_stub_product_id_not_extracted = "çıkarılmadı"
+dialog_stub_eku_yes = "evet"
+dialog_stub_eku_no = "hayır"
+# Bir inceleme, dosyayı kötü olarak adlandırmadan not edebilir. Her satır ne
+# kurulduğunu ve kurulamadığını söyler ve hiçbiri dosyaya bir karar değildir.
+dialog_stub_warning_native_verification_code = "Windows doğrulama kodu yerel olarak tutuldu"
+dialog_stub_warning_product_id_not_available = "Product ID çıkarılmadı"
+dialog_stub_warning_signer_data_unavailable = "Windows imzalayan sertifikasını sağlamadı"
+
+# Kurtarma.
+recovery_ask_pending_recovery = """
+{situation}
+
+Evet — orijinal bölgeyi geri yükle: yazma öncesi yeniden okunur ve sonra doğrulanır.
+Hayır — geçerli bölgeyi tut; kurtarma kaydı korunur ve yeni yükleme engellenir."""
+recovery_recovery_execution_status = "Kurtarma kaydı korunur."
+
+# Teslim kaydı, gösterilecek Product ID'ye sahip değildir. Microsoft Store'a
+# verilen dosyayı ve baytlarının özetini adlandırır ve buna Product ID demek
+# yanlış olur—kullanıcı onunla işlem yapamaz.
+recovery_subject_installer_file = "Yükleyici dosyası: {value}"
+
+# Başlangıçta bulundu: önceki çalışma zaten bölgeyi geri koymuştu ve yalnızca
+# kayıt kalmıştı. Hiçbir şey şimdi geri yüklenmedi ve metin bunu söyler.
+recovery_verified_record_cleaned = "Önceki işlem zaten orijinal bölgeyi geri yükledi. {id} için doğrulanmış kurtarma kaydı temizlendi."
+
+# Aynı kayıt, ancak önceki çalışmanın yüklediği uygulamanın artık çalışmadığı
+# ortaya çıktıktan sonra. Tamamlanması hakkında hiçbir şey iddia edilmez: tarih
+# doğrulanmamış bir giriş alır ve kayıt gider.
+recovery_outcome_unknown_recorded = "Önceki çalışmadan yükleme artık çalışmıyor ve tamamlanması doğrulanmadı. Tarih şimdi onun için bir giriş içeriyor ve {id} için kurtarma kaydı temizlendi."
+
+# Aynı kayıt, ancak önceki çalışmanın yüklediği uygulama şimdi makinedeyse.
+# Kayıt o yükleme başlamadan önce yazıldı, bu yüzden onun varış olması o
+# yüklemenin bitmesi ve tarih öyle söyleyebilir.
+recovery_outcome_installed_recorded = "Önceki çalışmadan yükleme bitti: uygulama bu makinedeyse. Tarih şimdi onun için bir giriş içeriyor ve {id} için kurtarma kaydı temizlendi."
+
+# Bir karar neden sorulduğu. Her biri bölge hakkında ne doğru olduğunu adlandırır
+# ve hiçbiri bunu kullanıcı için suçlamaz.
+recovery_situation_temporary_region_active = "Windows hala geçici bölgeyi kullanıyor."
+recovery_situation_external_region_conflict = "Geçerli bölge bu işlem dışında değiştirildi."
+recovery_situation_original_region_active = "Orijinal bölge zaten etkin."
+
+# Bir işlemi asla bir sonuç bildirmedi bir kayıt. Bölgenin geri gelmesi tam
+# olarak bunu tamamlanmış bir işleme benzetir, bu yüzden satır aslında bilineni
+# adlandırır.
+recovery_situation_outcome_unknown = "Önceki çalışmadan yükleme nasıl bittiğini bildirmedi."
+
+# Tam başlangıç bildirimi. Kayıt görüntüleme adı depolar hayır, bu yüzden
+# bildirimi onu icat yapamaz: her satır aşağıda aslında İşlem başladığında
+# yazılan şeydir.
+recovery_required = """
+Kurtarma gerekli
+
+{situation}
+
+{subject}
+Başladı: {started}
+Yöntem: {backend}
+Orijinal bölge kodu: {original}
+Geçici bölge kodu: {temporary}
+Geçerli bölge kodu: {current}
+Son durum: {state}
+
+Yeni yükleme, bu pencereye açık bir karar verilene kadar engellenir."""
+recovery_startup_blocked = "Yeni yükleme engellendi."
+
+# Bir kurtarma eylemi neyi başardığı. «Geri yüklendi», yalnızca yazma sonrası
+# bölge yeniden okunduğunda söylenir; diğerleri ne dokunulmadığını söyler.
+recovery_restored = "Orijinal bölge geri yüklendi ve okumaya geri dönüş ile doğrulandı. Kurtarma kaydı kaldırıldı."
+recovery_verified_record_cleared = "Orijinal bölge zaten etkinse. Doğrulanmış kurtarma kaydı kaldırıldı."
+recovery_pending_record_retained = "Geçerli bölge değiştirilmedi. Kurtarma kaydı korunur ve yeni yükleme engellenir."
+recovery_restore_conflict = "Bölge kontrol ile yazma arasında değişti (şu anda bölge kodu {geo_id}). Hiçbir şey değiştirilmedi ve kayıt korunur."
+
+
+# Pencere ve onun diyalogları.
+window_request_window_close = "Kapatılması iptal edildi. Pencere açık kalıyor."
+
+# İşlemin ne kadarına götürüldüğü, cümleye bırakılan bir parça olarak adlandırıldı.
+# Her biri yalnızca kurulanı söyler: «doğrulanmış» geri okuma olduğu yerde görülür
+# ve başka yerde değil.
+window_state_region_switched = "geçici bölge doğrulandı"
+window_state_refreshing_store_context = "Store bağlamı yenileniliyor"
+window_state_starting_install = "yükleme başlatılıyor"
+window_state_install_requested = "yükleme isteği kabul edildi"
+window_state_install_observed = "yükleme gözlemi bekleniyor"
+window_state_installing = "yükleme çalışıyor"
+window_state_completion_uncertain = "yükleme tamamlaması doğrulanmadı"
+window_state_installed = "yükleme doğrulandı ancak bölge geri yüklenmedi"
+window_state_restoring_region = "bölge geri yükleniyor"
+window_state_restored = "geri yükleme son doğrulamayı bekliyor"
+window_state_failed_with_temporary_region = "işlem başarısız oldu ve geçici bölge etkin kalıyor"
+window_state_restore_conflict = "geçerli bölge çatışması tespit edildi"
+window_state_restore_failed = "bölge geri yükleme doğrulanmadı"
+# Yukarıdaki hiçbir satırın adlandırmadığı bir durum için söylenir, bu nedenle
+# daha sonra eklenen bir durum hala raporlanır ve hiçbir şey olarak gösterilmez.
+window_state_requires_recovery = "işlem kurtarma gerektirir"
+
+# Yükleme hala çalışırken kapatılıyor. Son paragraf önemli: bu uygulama asla
+# yüklemeyi iptal etmez ve diyalog bunu yapabileceği yeri söyler. {state}
+# yukarıdaki parçalardan birleştirilir.
+window_close_with_running_operation = """
+İşlem hala etkin: {state}.
+
+Erken bölge geri yükleme yüklemeyi kesebilir. Kurtarma verileri, doğrulanan geri yüklemeye kadar kalmalıdır.
+
+Evet — güvenli bölge kurtarmasından sonra kapat.
+Hayır — geçici bölge ve kurtarma verileri sonraki başlatma için koruyarak kapat.
+İptal — çalışmaya devam et.
+
+Yüklemenin kendisi Microsoft Store'da veya Windows Ayarları'nda Uygulamalar altında durdurulur veya kaldırılır: yükleme Windows'un sahibidir, bu uygulama değil."""
+
+# Teslim hala geçici bölgeyi tutarken kapatılıyor. İptal edilecek hiçbir şey
+# yok ve beklenecek hiçbir şey yok: Store yüklemeyi yönetir ve bu pencere
+# yalnızca bölgeyi yönetir. {button}, bölgeyi geri koyan düğmenin başlığı.
+window_close_with_pending_handoff = """
+Windows hala geçici bölgeyi tutarken Microsoft Store yüklemeyi bitirir.
+
+Evet — kapat: kurtarma kaydı korunur ve sonraki başlatma bölgeyi geri sunmayı sunar.
+Hayır — burada kal ve «{button}» düğmesini kullan."""
+
+window_installation_resumed = "Önceki çalışmadan yükleme hala devam ediyor. Gözleme devam edildi."
+window_journal_entry_deleted = "Yerel günlük girişi silindi. Yükleme ve bölge değiştirilmedi."
+# {cause}, ne gittiğini adlandıran cümle.
+window_journal_entry_not_deleted = "{cause} Hiçbir şey değiştirilmedi."
+
+# Pencere komutları.
+command_begin_handoff = "sağlanmadı"
+command_dispatch_command = "Store sayfası günlükten açıldı. Bu bir yükleme isteği değil; bölge değiştirilmedi."
+command_dispatch_command_2 = "Windows günlükten Store sayfasını açamadı. Bölge değiştirilmedi."
+command_dispatch_command_3 = "Günlük Product ID'si yükleme taslağına taşındı. Yükleme başlatılmadı; bölge değiştirilmedi."
+command_dispatch_command_4 = "Product ID pano'ya kopyalandı. Yükleme ve bölge değiştirilmedi."
+command_dispatch_command_5 = "Yerel günlüğün her girişini sil? İşlem geçmişinin tamamı temizlenir. Yüklü uygulamalar, Windows bölgesi ve kurtarma kaydı değişmez."
+command_dispatch_command_6 = "Yalnızca bu yerel günlük girişini sil? Yükleme, bölge ve kurtarma kaydı değişmez."
+command_dispatch_command_7 = "Uygulama sayfası Microsoft Store'da açıldı. Bu bir yükleme isteği değil; bölge değiştirilmedi."
+command_dispatch_command_8 = "Windows uygulama sayfasını Microsoft Store'da açamadı. Bölge değiştirilmedi."
+command_dispatch_ui_event = "Uygulama menüsü güncellenemedi."
+command_begin_resolution_if_ready = "Windows, seçilen geçici bölgeyi hangi Store kataloğunun hizmet ettiğini söylemedi, bu nedenle arama başlatılmadı."
+command_begin_resolution_if_ready_2 = "Yapılandırılmış Store kaynağından uygulama kartı alınıyor…"
+# {id}, yükleyici istendiği Product ID.
+command_installer_download_requested = "{id} için Store yükleyicisi isteniyor Microsoft'tan. Tarafından imzalandı Microsoft ve el ile seçilen bir dosya gibi kontrol edilecektir."
+# {cause}, pano ile ne olduğunu adlandıran cümle.
+command_clipboard_copy_failed = "{cause} Hiçbir şey değiştirilmedi."
+# Bir menü öğesi ne yanıtlar. Her çift ne olduğunu söyler ve—az önemli değil—ne
+# olmadığını: bir menü öğesi asla hiçbir şey yüklemez ve bölgeyi değiştirmez
+# ve cevap bunu söyler, tahmin etmemek yerine.
+menu_documentation_opened = "Microsoft belgelendirme sayfası açıldı. Bu bir yükleme değil; bölge değiştirilmedi."
+menu_documentation_not_opened = "Windows belgelendirme sayfasını açamadı. Hiçbir şey değiştirilmedi."
+menu_app_installer_page_opened = "App Installer sayfası açıldı. Bu bir yükleme değil; bölge değiştirilmedi."
+menu_app_installer_page_not_opened = "Windows App Installer sayfasını açamadı. Hiçbir şey değiştirilmedi."
+# Başlatılması başarısız olduğunda adres adlandırılır, böylece tarayıcısı gelmedi
+# kullanıcı yine de nereye gideceğini bilir. {address}, proje deposunun adresidir.
+menu_project_page_opened = "Proje sayfası tarayıcıda açıldı."
+menu_project_page_not_opened = "Windows proje sayfasını açamadı. Adres: {address}"
+menu_log_directory_opened = "Tanılama günlüğü dizini açıldı."
+menu_log_directory_not_opened = "Günlük dizini açılamadı. Kayıt değiştirilmedi."
+menu_details_copied = "Ayrıntılar pano'ya kopyalandı."
+menu_details_not_copied = "Pano kullanılamaz. Hiçbir şey değiştirilmedi."
+menu_prerequisites_all_met = "Her yükleme ön koşulu karşılandı. Bölge değiştirilmedi."
+
+# Hakkında diyalogu. Ad ve sürüm uygulama tarafından eklenir, bu nedenle bu
+# paragraf güncellenebilir sürüm numarası taşımaz.
+about_description = "Bu yardımcı program, Windows Home Location'ı geçici olarak değiştirerek standart Microsoft Store mekanizmalarıyla kullanım için değiştirir. Yalnızca bir Windows ayarı değiştirilir: ne Microsoft Store ne de Windows değiştirilir ve Store yüklemeyi kendisi gerçekleştirir. Bir Microsoft ürünü değildir."
+about_translations = "Çeviriler:"
+about_author = "Yazar"
+about_license = "Lisans"

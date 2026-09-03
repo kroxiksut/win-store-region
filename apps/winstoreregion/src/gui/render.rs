@@ -8,6 +8,7 @@ use crate::gui::diagnostic::{
     diagnostic_details, diagnostic_message, file_selection_diagnostic, prerequisite_status,
     stub_diagnostic,
 };
+use crate::gui::direction::apply_interface_direction;
 use crate::gui::handoff::HandoffStage;
 use crate::gui::ids::WindowLong;
 use crate::gui::journal::{insert_row, journal_details, rebuild_journal_list};
@@ -378,6 +379,7 @@ pub(super) unsafe fn render(window: HWND, chrome: &WindowChrome, state: &AppStat
     unsafe { rebuild_tabs(controls.tabs, state.selected_tab, &strings) };
     unsafe { refresh_column_headings(chrome, controls, state) };
     unsafe { show_progress(controls, state) };
+    unsafe { apply_interface_direction(window, chrome, state.language) };
     unsafe { layout_controls(window, chrome) };
 }
 

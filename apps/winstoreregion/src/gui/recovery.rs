@@ -1,6 +1,7 @@
 //! Startup recovery inspection and its user-facing notice.
 
 use crate::gui::diagnostic::{diagnostic_details, diagnostic_message};
+use crate::gui::direction::message_box_direction;
 use crate::gui::state::ModalScope;
 use crate::gui::strings::{Language, fill};
 use crate::platform::region::{Win32RegionReader, Win32RegionWriter};
@@ -141,7 +142,15 @@ pub(super) unsafe fn ask_pending_recovery(
     ));
     let title = HSTRING::from(APPLICATION_NAME);
     let _modal = ModalScope::enter();
-    if unsafe { MessageBoxW(Some(window), &message, &title, MB_YESNO | MB_ICONWARNING) } == IDYES {
+    let answer = unsafe {
+        MessageBoxW(
+            Some(window),
+            &message,
+            &title,
+            MB_YESNO | MB_ICONWARNING | message_box_direction(language),
+        )
+    };
+    if answer == IDYES {
         PendingRecoveryChoice::RestoreOriginalRegion
     } else {
         PendingRecoveryChoice::KeepCurrentRegion
@@ -219,11 +228,18 @@ pub(super) fn recovery_execution_status(
 }
 
 #[allow(unsafe_code)]
-pub(super) unsafe fn show_recovery_notice(message: &str) {
+pub(super) unsafe fn show_recovery_notice(language: Language, message: &str) {
     let title = HSTRING::from(APPLICATION_NAME);
     let message = HSTRING::from(message);
     let _modal = ModalScope::enter();
-    let _ = unsafe { MessageBoxW(None, &message, &title, MB_OK | MB_ICONWARNING) };
+    let _ = unsafe {
+        MessageBoxW(
+            None,
+            &message,
+            &title,
+            MB_OK | MB_ICONWARNING | message_box_direction(language),
+        )
+    };
 }
 
 #[cfg(test)]

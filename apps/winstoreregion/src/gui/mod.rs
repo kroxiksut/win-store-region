@@ -7,6 +7,7 @@ pub(crate) mod command;
 pub(crate) mod controls;
 pub(crate) mod diagnostic;
 pub(crate) mod dialogs;
+pub(crate) mod direction;
 pub(crate) mod dragdrop;
 mod handoff;
 pub(crate) mod ids;

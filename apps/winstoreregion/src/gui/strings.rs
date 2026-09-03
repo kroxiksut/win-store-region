@@ -62,6 +62,16 @@ mod tests {
     }
 
     #[test]
+    fn the_chooser_is_sorted_by_tag_rather_than_by_who_arrived_first() {
+        // The order nobody assigns. A language added later takes its place
+        // among the others instead of at the end, and no file has to be
+        // renumbered for it to happen.
+        let mut sorted = LANGUAGE_TAGS;
+        sorted.sort_unstable();
+        assert_eq!(LANGUAGE_TAGS, sorted);
+    }
+
+    #[test]
     fn every_language_the_chooser_lists_is_one_the_window_can_select() {
         // The chooser and the variants are generated from the same files, so a
         // language can never appear in one and be missing from the other. The

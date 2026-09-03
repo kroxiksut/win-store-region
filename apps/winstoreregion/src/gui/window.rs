@@ -6,6 +6,7 @@ use crate::gui::command::{
 };
 use crate::gui::controls::{create_controls, framed_controls};
 use crate::gui::diagnostic::{diagnostic_message, journal_diagnostic, prerequisite_status};
+use crate::gui::direction::message_box_direction;
 use crate::gui::dragdrop::register_drop_target;
 use crate::gui::handoff::{HandoffUpdate, record_restored_handoff};
 use crate::gui::ids::{
@@ -122,6 +123,7 @@ pub(crate) fn run(launch: GuiLaunch) -> Result<()> {
                 listed_region_language: Cell::new(None),
                 listed_updates: RefCell::new(Vec::new()),
                 heading_language: Cell::new(None),
+                layout_direction: Cell::new(None),
                 controls: None,
             },
             AppState::new(launch),
@@ -247,10 +249,15 @@ unsafe fn control_bounds_in_client(window: HWND, control: HWND) -> Option<RECT> 
     {
         return None;
     }
+    // The two corners can come back the other way round, because a window that
+    // reads right to left has its client x axis mirrored and `ScreenToClient`
+    // mirrors with it. A rectangle whose left is greater than its right is
+    // empty, and `FrameRect` draws nothing for it: in Arabic that silently cost
+    // every panel outline in the window.
     Some(RECT {
-        left: top_left.x,
+        left: top_left.x.min(bottom_right.x),
         top: top_left.y,
-        right: bottom_right.x,
+        right: top_left.x.max(bottom_right.x),
         bottom: bottom_right.y,
     })
 }
@@ -389,7 +396,7 @@ unsafe fn show_active_operation_close_dialog(
             Some(window),
             &message,
             &title,
-            MB_YESNOCANCEL | MB_DEFBUTTON3 | MB_ICONWARNING,
+            MB_YESNOCANCEL | MB_DEFBUTTON3 | MB_ICONWARNING | message_box_direction(language),
         )
     } {
         IDYES => ActiveOperationCloseChoice::RestoreThenExit,
@@ -446,7 +453,7 @@ unsafe fn ask_timeout_resolution(
             Some(window),
             &message,
             &title,
-            MB_YESNOCANCEL | MB_DEFBUTTON3 | MB_ICONWARNING,
+            MB_YESNOCANCEL | MB_DEFBUTTON3 | MB_ICONWARNING | message_box_direction(language),
         )
     } {
         IDYES => TimeoutResolutionChoice::InstallationCompletedRestoreRegion,
@@ -543,7 +550,14 @@ unsafe fn confirm_close_with_pending_handoff(window: HWND, language: Language) -
     ));
     let title = HSTRING::from(APPLICATION_NAME);
     let _modal = ModalScope::enter();
-    let answer = unsafe { MessageBoxW(Some(window), &message, &title, MB_YESNO | MB_ICONWARNING) };
+    let answer = unsafe {
+        MessageBoxW(
+            Some(window),
+            &message,
+            &title,
+            MB_YESNO | MB_ICONWARNING | message_box_direction(language),
+        )
+    };
     answer == IDYES
 }
 
@@ -881,7 +895,7 @@ unsafe extern "system" fn window_procedure(
                         StartupRecoveryOutcome::UserDecisionRequired { pending, .. }
                         | StartupRecoveryOutcome::OperationWithoutOutcome { pending, .. },
                     ) => start_resume_probe(window, pending.clone()),
-                    _ => unsafe { show_recovery_notice(&message) },
+                    _ => unsafe { show_recovery_notice(state.language, &message) },
                 }
             }
             // The status was written before recovery was inspected, so it can

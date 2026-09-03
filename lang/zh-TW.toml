@@ -1,0 +1,567 @@
+# WinStoreRegion 的正體中文介面文字。
+#
+# 一個檔案，一種語言。建置會讀取這個目錄並將檔案轉成 Rust 表格：缺少的鍵與
+# 未知的鍵都會讓建置失敗，因此不完整的翻譯無法在無人察覺的情況下發行。
+#
+# 這裡許多字串刻意保守：它們說完成未經證實、答案只來自單一市場、集合並不完整。
+# 這些保留是產品本身，不是填充。即使更肯定的句子讀起來更順，翻譯也必須保留它們。
+#
+# 用語依台灣慣例，而非只把簡體字轉成正體：軟體而非軟件、檔案而非文件、
+# 選單而非菜單、預設而非默認、解除安裝而非卸載。只換字不換詞的檔案，讀起來
+# 仍舊不是這邊的中文。
+#
+# 出處：本檔案為機器翻譯草稿，未經正體中文母語者校對，並且是從簡體中文那份
+# 同樣未經校對的草稿改寫而來，因此它比英文原文更可能出錯。發現問題請提交
+# issue 或 pull request；若你願意具名接手這份翻譯，請把自己寫進上面的 authors。
+
+
+variant = "ChineseTraditional"
+code = "zh-TW"
+name = "繁體中文 (zh-TW)"
+# 語言的書寫方向。此欄位可省略；省略即為 "ltr"。
+direction = "ltr"
+# 誰翻譯了這個語言。會顯示在「關於」與 README 中。
+authors = []
+
+[strings]
+title = "WinStoreRegion"
+subtitle = "安全的暫時地區切換"
+language = "語言"
+current_region = "目前地區（將會保留）"
+input = "Microsoft Store 連結或 Product ID"
+source_title = "要安裝的應用程式"
+source_hint = "選擇連結／Product ID 或安裝程式檔案。未使用的草稿會保留。"
+source_link = "連結或 Product ID"
+source_file = "安裝程式檔案 (.exe)"
+paste = "貼上"
+choose_file = "選擇檔案"
+clear_file = "清除"
+clear_input = "清除"
+download_installer = "下載 Store 安裝程式"
+downloading_installer = "正在下載安裝程式…"
+no_file = "未選擇檔案"
+drop_overlay = "把 .exe 放到這裡"
+app_card = "暫時地區選好、Store 目錄也回答之後，應用程式卡片才會出現。"
+temporary_region = "暫時安裝地區（Windows 清單）"
+find_region = "尋找提供安裝的地區"
+check_remaining = "其餘地區"
+show_all_regions = "顯示所有地區"
+availability_idle = "尚未檢查地區。"
+availability_incomplete = "集合並不完整。"
+availability_none = "已檢查的地區都不提供這個應用程式。"
+availability_offline = "來源沒有回答。"
+status = "安裝尚不可用：還沒有指定應用程式，而讓它安全的檢查也尚未全部通過。"
+install = "安裝"
+restore = "安裝完成 — 復原地區"
+open_store_page = "開啟 Store 頁面"
+details = "技術細節"
+journal_placeholder = "操作記錄要等本機記錄實作之後才能使用。安裝與復原都不在這個索引標籤上執行。"
+journal_loading = "正在載入本機操作記錄…"
+journal_empty = "記錄是空的。這裡只會出現已確認、或需要復原的操作結果。"
+journal_open_store = "開啟 Store 頁面"
+journal_repeat = "重新安裝"
+journal_delete = "刪除項目"
+journal_copy_id = "複製 Product ID"
+journal_clear = "清除記錄"
+journal_columns = ["時間 (UTC)", "應用程式", "識別碼", "結果"]
+updates_idle = "按「檢查」以列出已安裝的 Microsoft Store 應用程式，以及其中哪些是 Store 在目前地區不提供服務的。"
+updates_scanning = "正在檢查已安裝的應用程式…"
+updates_refresh = "檢查"
+updates_open = "在「安裝」中開啟"
+updates_none = "沒有找到 Store 在目前地區不提供服務的 Microsoft Store 應用程式。"
+updates_columns = ["應用程式", "Product ID", "已安裝", "Store 目錄中"]
+updates_unavailable = "Windows 沒有回報安裝了哪些應用程式，因此無法建立清單。"
+updates_choose_entry = "請從清單中選擇一個應用程式。"
+# 記住的答案有用，但不能被當成新的答案，所以它自己說明了年紀。
+# {button} 是重新檢查那顆按鈕的標題。
+updates_scan_age = """
+來自 {taken} (UTC) 的檢查。按「{button}」重新查詢。
+
+"""
+# 關於一個項目所知道的一切。它從不宣稱有更新：Store 產品根本無法從這裡更新，
+# 而兩個版本號也未必可以比較。唯一提出的主張是可以證明的那一個 —— Store 在
+# 這個地區不提供這個產品。{button} 是把項目帶到「安裝」索引標籤那顆按鈕的標題。
+updates_entry_details = """
+{name}
+Product ID：{id}
+套件家族：{family}
+已安裝版本：{installed}
+Store 目錄中的版本：{offered}
+
+Microsoft Store 在目前地區不提供這個應用程式，因此也不會在這裡更新它。「{button}」會把 Product ID 帶到「安裝」索引標籤，並開始尋找有提供這個應用程式的地區。
+
+這並不表示有更新發布：上面兩個版本可能採用不同的編號方式，那樣的話它們之間的先後就沒有任何意義。"""
+updates_version_not_named = "目錄沒有指出版本"
+
+# 應用程式卡片。最後一行不是裝飾：目錄提供的東西，和安裝實際會找到的東西並不
+# 相同，而卡片會說明自己顯示的是哪一種。
+card_publisher_not_provided = "未提供發行者"
+card_product_id = "Product ID：{id}"
+card_store_catalogue = "Store 目錄：{market}"
+card_version = "版本：{version}"
+# 目錄回報的下載大小。單位名稱採用二進位制；若某個語言寫法不同，就在這裡改，
+# 小數點符號也跟著句子走。
+card_size_bytes = "大小：{size} 位元組"
+card_size = "大小：{whole}.{tenths} {unit}"
+card_size_kibibytes = "KiB"
+card_size_mebibytes = "MiB"
+card_offered_installable = "在所選地區有提供。這是目錄的說法，不是對安裝的檢查：應用程式會在暫時地區下重新查詢一次。"
+card_offered_not_installable = "在所選地區有提供，但這個版本不會安裝以那種方式交付的應用程式。"
+
+# 關於所選那一個地區已知的事。每一句都說明知識到哪裡為止：一個地區回答了，
+# 不等於每個地區都檢查過。
+region_checking_selected = "正在檢查所選地區…"
+region_offered_here = "在所選地區有提供。其餘地區未檢查。"
+region_not_offered_here = "在所選地區沒有提供。"
+region_no_answer_here = "來源沒有回答所選地區。其餘地區也未檢查。"
+# 「未檢查」會讀成「還沒檢查」，而它旁邊那顆按鈕永遠不會啟用，這正是讓視窗
+# 看起來壞掉的原因。檔案不會指出應用程式，所以這項檢查不是被延後 —— 它根本
+# 沒有可問的對象。
+region_nothing_to_check = "對檔案沒有可檢查的東西：需要 Product ID。"
+region_checked_progress = "已檢查 {total} 個中的 {done} 個…"
+region_found = "找到的地區：{count} 個。"
+
+card_syntax_accepted = "Product ID {id} 已接受。選擇一個暫時地區，就可以要求應用程式卡片。"
+card_retrieving = "正在從 Store 取得應用程式卡片…"
+# 目錄是依現在生效的地區回答的，不是依暫時地區，所以這裡找不到應用程式並不
+# 說明使用者所選地區的任何事。指出被詢問的是哪個地區，可以避免卡片被讀成對
+# 那個選擇的判決。
+card_unavailable_in_region = """
+應用程式卡片無法取得：在目前的 Windows 地區（{region}）看不到這個應用程式。
+暫時地區尚未套用，而這並不會擋住安裝。"""
+card_unavailable = """
+應用程式卡片無法取得：在目前的 Windows 地區看不到這個應用程式。
+暫時地區尚未套用，而這並不會擋住安裝。"""
+
+# 卡片的最後一行：安裝究竟能不能開始。有三件事必須成立，而這段文字用使用者
+# 的說法而非程式的說法來指出它們 —— 把地區放回去、沒有留下未完成的操作、
+# 以及有能力執行安裝的東西。
+card_install_ready = "可以安裝。"
+card_install_not_ready = "還不能安裝：把地區放回去、先前未完成的操作、以及安裝程式本身，尚未全部確認。"
+
+# 受保護的操作進行到哪裡，一次一句。在安裝回報之前，這裡沒有一句話說「已安裝」；
+# 在地區被重新讀取之前，也沒有一句話說地區已經回來。
+operation_switching_region = "正在切換地區，並以重新讀取確認。"
+operation_looking_up = "暫時地區已確認。正在其中查詢應用程式。"
+operation_found = "找到了 {name}。正在開始安裝。"
+operation_restoring_region = "安裝結束。正在復原原本的地區。"
+operation_done = "完成：應用程式已安裝，地區是原本那一個。"
+operation_completion_uncertain = "無法確認是否完成。決定權在你。"
+operation_started = "操作已開始。正在等待它的第一份回報。"
+
+# Windows 不肯說有哪些地區。畫面上的清單是空的，它本身什麼也不說，所以由視窗
+# 代為說明，而不是留下一片空白。
+window_no_regions_listed = "Windows 沒有列出任何地區，因此沒有可供選擇暫時地區的來源。在它列出之前，什麼都無法安裝。"
+
+# 在暫時地區仍然生效時，觀察期限已過就會詢問這個。三個答案就是核心協定接受的
+# 三個，而按下第二個即表示認可它的警告。{state} 是操作所在的位置。
+operation_ask_timeout_resolution = """
+安裝沒有回報完成：{state}。
+
+Windows 仍在使用暫時地區。安裝屬於 Windows，無法從這個視窗停止。
+
+是 — 安裝已經結束，請復原原本的地區。
+否 — 現在就復原原本的地區，即使安裝仍在進行；它可能會被中斷。
+取消 — 繼續等待；視窗會重新接上這個安裝。"""
+# 附加在操作正在說的任何話後面，開頭的空格要保留。
+operation_region_already_back = " 原本的地區已經回來了。"
+installing_phase_running = "正在安裝"
+installing_phase_finishing = "正在完成安裝"
+installing_without_progress = "{phase}。"
+installing_with_progress = "{phase}：{percent}%。"
+
+# 把 Store 安裝程式檔案交出去。這裡沒有一句話回報進度或完成，因為這個操作兩者
+# 都沒有：那份工作屬於 Store，而它不會告訴這個視窗任何事。{button} 是復原按鈕
+# 的標題。
+handoff_switching_region = "正在切換地區，並以重新讀取確認。檔案尚未啟動。"
+handoff_handed_off = "地區已切換為 {region} 並確認。安裝已交給 Microsoft Store 安裝程式：請在 Store 中完成它。這裡不會顯示進度，本應用程式也不確認有任何東西被安裝。完成之後，請按「{button}」。"
+handoff_restoring_region = "正在復原原本的地區，並以重新讀取確認。"
+handoff_restored = "完成：原本的地區已回來並經確認，復原記錄也已消失。至於 Microsoft Store 安裝了什麼，不是本應用程式會檢查的事。"
+# 它在哪裡停下：先講原因，再講決定下一步的那唯一事實 —— Windows 是否仍持有
+# 暫時地區。
+handoff_did_not_happen = "安裝程式沒有啟動。"
+handoff_region_may_be_temporary = "Windows 可能仍持有暫時地區：請按「{button}」。"
+handoff_region_original = "Windows 仍持有原本的地區。"
+handoff_declined = "啟動已取消。地區沒有變更，檔案沒有執行，也沒有任何東西被修改。"
+
+resolution_card_confirmed = "應用程式卡片已確認。安裝仍在等待它的安全檢查：把地區放回去、先前未完成的操作，以及安裝程式。"
+resolution_catalogue_not_searchable = "在這個 Windows 設定檔上無法搜尋 Store 目錄。地區沒有變更，安裝無法使用。"
+resolution_checked_in_region = "在目前的 Windows 地區中檢查：{region}。"
+resolution_checked_in_current_region = "在目前的 Windows 地區中檢查。"
+resolution_still_possible = "暫時地區尚未套用，而這並不會擋住安裝：應用程式會在它之下重新查詢一次。"
+
+# Microsoft 自己的安裝程式，以 Product ID 索取。這段文字說明按鈕現在會做什麼，
+# 因為它的意義在使用者眼皮底下改變了：同一顆按鈕改成把檔案交給 Store，而不是
+# 直接安裝。{button} 是那顆按鈕的標題，{restore} 是把地區放回去那一顆。
+installer_download_ready = "Microsoft Store 安裝程式已下載，並選為來源。請按「{button}」：會檢查簽章、切換地區，然後啟動安裝程式。它不會回報完成 —— 你要在它自己的視窗中完成安裝，之後才用「{restore}」把地區放回去。"
+# 它為什麼沒有送到。每一句都說明什麼成立、什麼不成立；沒有一句說這個應用程式
+# 不存在。
+installer_download_network = "無法連上 Microsoft 索取安裝程式：網路無法使用。"
+installer_download_refused = "Microsoft 沒有為這個應用程式回傳安裝程式。"
+installer_download_refused_with_status = "Microsoft 沒有為這個應用程式回傳安裝程式（HTTP {status}）。"
+installer_download_too_large = "Microsoft 的回應超過本應用程式願意寫入的大小。"
+installer_download_not_writable = "安裝程式已送達，但無法寫入資料夾。"
+
+# 輸入的應用程式來源，對接下來那個命令代表什麼。在一顆啟用的按鈕旁邊寫「無法
+# 使用」比什麼都不寫更糟，所以這些句子各自指出仍然缺少的那一個條件。{button}
+# 的標題取自按鈕本身。
+source_choose_region = "Product ID {id} 已接受。請選擇暫時地區，或按「{button}」。"
+# 復原旗標一開始也是否，那是在復原尚未被檢查之前，所以這句話不可以斷言確實
+# 存在未完成的操作。
+source_recovery_pending = "Product ID {id} 已接受。等到「是否有先前未完成的操作」這項檢查跑完，安裝才會可用；若真的有，必須先處理掉。"
+source_prerequisites_unmet = "安裝的先決條件未滿足。"
+# 目錄是在任何東西被動到之前回答的，因此無法在這裡交付的應用程式，會在地區
+# 還是使用者自己那一個的時候就被拒絕。
+source_other_device_only = "Product ID {id}：Microsoft Store 不會把這個應用程式交付到這台裝置 —— 它針對的是另一種裝置類型。沒有任何地區能改變這件事，因此無法安裝。"
+source_newer_windows_required = "Product ID {id}：這個應用程式需要 Windows {version} 或更新版本，而這台機器較舊。沒有任何地區能改變這件事，因此無法安裝。"
+source_ready = "Product ID {id} 已接受，暫時地區：{region}。安裝可以開始：應用程式會在那個地區下被查詢。"
+source_syntax_accepted = "Product ID {id} 的格式正確。在 Store 目錄回答之前，安裝仍然無法使用。"
+
+# 所選檔案對接下來那個命令代表什麼。順序與上面相同：指出仍然缺少的那一個條件，
+# 而不是用一句籠統的話讓使用者猜是哪一個。
+file_choose = "請選擇一個 Microsoft Store 安裝程式檔案 (.exe)。它永遠不會被修改，安裝由 Store 自己接續完成。連結草稿會保留。"
+file_recovery_pending = "檔案通過了檢查，但在「是否有先前未完成的操作」這項檢查跑完之前不能交出去；若真的有，必須先處理掉。"
+file_store_not_confirmed = "檔案通過了檢查，但這台機器上的 Microsoft Store 未經確認，而完成安裝的正是 Store。地區沒有變更。"
+file_choose_region = "檔案由 Microsoft Store 簽署，而且沒有執行過。請選擇暫時地區：檔案會在它之下啟動。"
+# 安裝程式檔案不會指出應用程式，所以地區搜尋沒有可問的對象。把這件事說出來，
+# 好過留下一顆讓人猜疑的死按鈕。
+file_region_is_your_choice = "檔案的地區由你決定：安裝程式不會指出應用程式。若要找一個，請貼上連結、按「{button}」，然後切回檔案 —— 已選的檔案會保留。"
+file_ready = """
+檔案 {name} 由 Microsoft Store 簽署，而且沒有執行過。暫時地區：{region}。安裝可以交出去：地區會以重新讀取的方式切換，接著才啟動安裝程式本身，而你在 Microsoft Store 中完成後續工作。
+
+{unchecked}"""
+
+# 所選檔案為什麼不會被執行。原因是一個片段，會被放進它下面那句話裡，而且沒有
+# 一個把檔案叫作惡意：每一個都只說明什麼無法成立。
+file_refusal_signature_not_trusted = "Windows 沒有確認檔案的簽章"
+file_refusal_signer_unavailable = "Windows 沒有提供發行者憑證"
+file_refusal_not_store_signed = "檔案不是由 Microsoft Store 簽署的"
+file_refusal_changed_while_checked = "檔案在檢查期間改變了"
+file_refusal_identity_incomplete = "無法確立檔案名稱與 SHA-256"
+file_refused = "這個檔案不會被啟動：{reason}。地區沒有變更。請選擇由 Microsoft Store 簽署的安裝程式，或改為貼上 Microsoft Store 連結或 Product ID。"
+
+file_inspecting = "正在以唯讀方式檢查所選的 .exe：它的 SHA-256 與簽章。檔案不會被執行。"
+file_changed_during_inspection = "檔案在檢查期間被改變或替換。結果已捨棄；安裝仍然無法使用。"
+file_unreadable = "無法安全地讀取所選的檔案。結果已捨棄；安裝仍然無法使用。"
+
+# 檔案為什麼根本沒有被接受。這些情況下都沒有任何東西被變更，而句子會說出來，
+# 不是留給人去假設。
+file_error_empty_path = "檔案路徑是空的"
+file_error_unsupported_extension = "只支援 .exe 檔案"
+file_error_not_a_file = "路徑並未指向一個存在的檔案"
+file_error_link_or_device_path = "不支援捷徑與特殊系統路徑"
+file_error_multiple_files = "請剛好放下一個檔案"
+file_not_selected = "檔案沒有被選取：{detail}。目前的來源與兩份草稿都沒有變更。"
+
+# 一個地區在清單中與在「目前地區」方塊中的樣子。名稱放在最前面，因為清單方塊
+# 是用項目開頭的文字來搜尋的：把國碼放在前面時，打名稱什麼也找不到，而那正是
+# 讓兩百多個地區的清單沒有滑鼠就不能用的原因。那個數字是 Windows 自己保存的，
+# 放在這裡是讓使用者可以拿這個視窗去對照 Windows，而不必聽信它。
+region_choice = "{name} · {code}（地區代碼 {geo_id}）"
+region_choice_without_code = "{name}（地區代碼 {geo_id}）"
+
+region_choose_from_list = "請從 Windows 清單中選擇暫時地區。地區沒有變更，也沒有查詢任何應用程式。"
+region_not_confirmed = "Windows 無法確認所選的地區。地區沒有變更，也沒有查詢任何應用程式。"
+menu_file = "檔案"
+menu_paste = "貼上連結／ID"
+menu_exit = "結束"
+menu_help = "說明"
+menu_about = "關於"
+menu_open_diagnostic_log = "開啟診斷記錄檔"
+menu_copy_details = "複製細節"
+menu_recheck = "重新檢查先決條件"
+menu_get_app_installer = "取得 App Installer"
+menu_region_documentation = "Microsoft：變更你的國家或地區"
+menu_github = "專案的 GitHub"
+tabs = ["安裝", "記錄", "更新"]
+region_unavailable = "無法讀取目前的 Windows 地區。"
+
+# 失敗原因，每個診斷碼一句。
+diagnostic_backend_failed = "安裝程式回報失敗。"
+diagnostic_backend_reported_unknown_failure = "安裝沒有發生：Microsoft Store 回報了一個這裡不認識代碼的錯誤。代碼在細節裡。"
+diagnostic_backend_unavailable = "這個應用程式沒有可用的受支援安裝路徑。"
+diagnostic_clipboard_unavailable = "剪貼簿無法使用。"
+diagnostic_completion_uncertain = "安裝是否完成未經確認。"
+diagnostic_install_kind_not_supported = "這個應用程式的交付方式，是這個版本不會安裝的。可以在 Microsoft Store 中開啟它。"
+diagnostic_installer_file_not_a_store_stub = "這不是 Microsoft Store 的安裝程式。"
+diagnostic_installer_file_not_admitted = "這個檔案不會被啟動：它的簽章或簽署者沒有通過檢查。"
+diagnostic_installer_file_not_supported = "需要一個存在的 .exe 檔案。"
+diagnostic_installer_file_unreadable = "無法讀取所選的檔案。"
+diagnostic_installer_launch_rejected = "Windows 沒有啟動已驗證的安裝程式。"
+diagnostic_journal_unavailable = "操作記錄無法使用。"
+diagnostic_microsoft_account_required = "需要登入 Microsoft 帳戶。"
+diagnostic_microsoft_store_unavailable = "Microsoft Store 無法使用。"
+diagnostic_ms_store_source_terms_not_accepted = "Microsoft Store 來源條款未被接受。沒有安裝任何東西，而且下載也解決不了這件事。"
+diagnostic_ms_store_source_unavailable = "Microsoft Store 目錄無法作為安裝來源使用。"
+diagnostic_network_unavailable = "沒有網路連線。"
+diagnostic_operation_sequence_violated = "操作因內部順序錯誤而停止。沒有安裝任何東西。"
+diagnostic_product_already_installed = "這個應用程式已經安裝在這台電腦上。地區已復原，沒有安裝任何東西。"
+diagnostic_product_already_installing = "這個應用程式已經在安裝中。請等目前的安裝結束。"
+diagnostic_product_not_found = "找不到對應這個 Product ID 的應用程式。"
+diagnostic_product_not_on_this_device = "Microsoft Store 不會把這個應用程式交付到這台裝置：它針對的是另一種裝置類型，或是更新的 Windows。地區不是障礙，改變它也沒有幫助。"
+diagnostic_product_unavailable_in_region = "所選地區沒有提供這個應用程式。"
+diagnostic_recovery_record_unreadable = "無法安全地讀取復原資料。"
+diagnostic_region_change_rejected = "Windows 拒絕了地區變更。"
+diagnostic_region_conflict = "目前的地區既不是原本那個，也不是暫時那個。"
+diagnostic_region_unavailable = "Windows 沒有回報目前的地區。"
+diagnostic_region_unchanged = "地區沒有改變。"
+diagnostic_resolver_answer_mismatch = "目錄回答的是另一個應用程式，因此結果被拒絕。"
+diagnostic_resolver_unavailable = "無法連上 Microsoft Store 目錄。"
+diagnostic_restore_failed = "復原原本的地區未經確認。"
+diagnostic_store_input_not_understood = "無法辨識這個連結或 Product ID。"
+diagnostic_store_page_launch_rejected = "Windows 無法開啟 Microsoft Store 頁面。"
+diagnostic_store_refused_without_reason = "Microsoft Store 拒絕了，而且沒有給理由。"
+diagnostic_temporary_region_not_applied = "來源沒有接受暫時地區：它在安裝開始之前就回到了原本那一個。請再試一次。"
+
+# 地區已經確認，而目錄在片刻之前也在它之下回答過；到了要求安裝的時候，產品已經
+# 不在那裡了。這裡沒有一句話責怪地區，因為地區正是唯一被證明過的那件事。
+diagnostic_product_no_longer_offered = "來源不再提供這個應用程式：它在暫時地區下回答過它，然後卻沒有東西可以安裝。它可能已經下架。請再試一次，或選擇另一個地區。"
+diagnostic_unsupported_market = "目錄不接受所選的地區。"
+diagnostic_win_get_missing = "找不到安裝 Store 應用程式的那個 Windows 元件。"
+
+# 技術細節，只顯示在細節區域中，而且是給人複製用的。
+diagnostic_details_heading = "技術細節"
+
+# 安裝的先決條件。介面對每一項都分辨「我們檢查過，它不存在」與「檢查本身沒有
+# 成功」：後者不是不存在的證據，措辭也不可以把它變成證據。
+prerequisite_heading = "安裝無法使用：先決條件未滿足。"
+prerequisite_app_installer_missing = "App Installer 沒有安裝。Windows 是用它來安裝 Store 應用程式的，可以從它在 Microsoft Store 的頁面安裝。"
+prerequisite_app_installer_unknown = "無法判斷 App Installer 是否存在。在檢查成功之前，安裝仍然無法使用。"
+prerequisite_microsoft_store_missing = "Microsoft Store 不存在。它沒有獨立的下載：必須修復 Windows。"
+prerequisite_microsoft_store_unknown = "無法判斷 Microsoft Store 是否存在。在檢查成功之前，安裝仍然無法使用。"
+prerequisite_com_metadata_missing = "應用程式所在的目錄無法寫入，因此安裝所依賴的中繼資料檔案無法放在它旁邊。請把應用程式移到你可以寫入的目錄。"
+prerequisite_com_metadata_unknown = "無法在應用程式旁邊準備中繼資料檔案。在檢查成功之前，安裝仍然無法使用。"
+
+# 「記錄」索引標籤。
+journal_journal_details = "檔案原封不動地保留下來。"
+
+# 一筆記錄項目說明自己什麼。兩種主體各有不同的區塊，因為它們知道的事不同：
+# 為安裝程式檔案建立的項目沒有產品名稱、發行者、版本或套件識別，於是它把這件事
+# 說一次，而不是用「未知」去填六個欄位。標籤會翻譯；旁邊的值是當時記下來的。
+journal_details_product = """
+應用程式：{name}
+Product ID：{id}
+類型：{kind}
+發行者：{publisher}
+版本：{version}
+套件家族：{family}"""
+journal_details_file = """
+檔案：{name}
+SHA-256：{sha256}
+沒有指出應用程式：Microsoft Store 安裝程式不帶 Product ID。"""
+journal_details_common = """
+日期：{date}
+地區代碼：{geo_id}
+操作：{operation}
+方式：{backend}
+結果：{result}"""
+# 用來代替一個從未確立的值。這些沒有一個宣稱該值不存在 —— 只說這筆項目沒有帶著它。
+journal_details_kind_unknown = "未知"
+journal_details_publisher_not_provided = "未提供"
+journal_details_version_not_confirmed = "未確認"
+journal_details_family_not_confirmed = "未確認"
+
+# 記錄的結果。
+journal_result_installed = "已安裝並復原地區"
+journal_result_handed_off_to_installer = "已交給 Microsoft Store 安裝程式 — 未檢查是否完成"
+journal_result_completion_uncertain = "是否完成未經確認 — 需要驗證或復原"
+journal_result_recovery_required = "需要復原或人為決定"
+journal_result_failed = "失敗"
+
+# 對話方塊。
+dialog_filter_executables = "可執行檔 (*.exe)"
+dialog_filter_all_files = "所有檔案 (*.*)"
+dialog_show_stub_details = "簽署者：無法取得"
+
+# 交付確認。答案所依據的一切都在同一個畫面上：哪個檔案、誰簽的、它的雜湊、
+# 會持有哪個地區，以及本應用程式之後會知道與不會知道什麼。最後一段是不可以
+# 被軟化的那一段 —— 安裝由 Store 執行，而本應用程式不會知道它是否成功。
+# {button} 會填入把地區放回去那顆按鈕的標題，讓兩者不會走散。
+dialog_confirm_handoff = """
+要啟動 Microsoft Store 安裝程式嗎？
+
+檔案：{file}
+發行者：{publisher}
+SHA-256：{sha256}
+暫時地區：{region}
+
+Windows 地區會被暫時變更並以重新讀取確認，之後才啟動檔案。檔案本身永遠不會被修改。
+
+接下來由 Microsoft Store 接手安裝：這裡不會顯示進度，本應用程式也不確認有任何東西被安裝。Store 完成之後，請使用「{button}」。
+
+是 — 切換地區並啟動檔案。否 — 什麼都不改。"""
+
+# 安裝程式檔案的檢查結果，依要求顯示。這是證據而不是建議：標籤指出從檔案讀到
+# 了什麼，值則照 Windows 回報的樣子重現。
+dialog_stub_details = """
+SHA-256：{sha256}
+大小：{size} 位元組
+簽章：{signature}
+Store 安裝程式檢查：{status}
+Product ID：{product_id}
+
+{signer}
+
+{warnings}"""
+dialog_stub_signer = """
+簽署者主體：{subject}
+簽發者：{issuer}
+序號：{serial}
+SHA-256 憑證指紋：{thumbprint}
+有效期：{valid_from} — {valid_to}
+允許簽署程式碼：{eku}"""
+dialog_stub_product_id_not_extracted = "未擷取"
+dialog_stub_eku_yes = "是"
+dialog_stub_eku_no = "否"
+# 檢查可以記下、又不至於說檔案不好的事。每一句都說明什麼成立、什麼不成立，
+# 沒有一句是對檔案的判決。
+dialog_stub_warning_native_verification_code = "Windows 的驗證碼已留在本機"
+dialog_stub_warning_product_id_not_available = "未擷取到 Product ID"
+dialog_stub_warning_signer_data_unavailable = "Windows 沒有提供簽署者憑證"
+
+# 復原。
+recovery_ask_pending_recovery = """
+{situation}
+
+是 — 復原原本的地區：寫入之前會再讀一次，寫入之後會確認。
+否 — 保留目前的地區；復原記錄會留著，新的安裝仍然被擋住。"""
+recovery_recovery_execution_status = "復原記錄已保留。"
+
+# 交付的記錄沒有 Product ID 可以顯示。它指出交給 Microsoft Store 的那個檔案，
+# 以及它位元組的雜湊，而把那個叫作 Product ID 會是錯的 —— 使用者無法拿它做事。
+recovery_subject_installer_file = "安裝程式檔案：{value}"
+
+# 啟動時發現：上一次執行其實已經把地區放回去了，只剩下記錄留著。現在沒有復原
+# 任何東西，而這段文字就這麼說。
+recovery_verified_record_cleaned = "上一個操作其實已經復原了原本的地區。{id} 那筆已確認的復原記錄已被清除。"
+
+# 同一筆記錄，但它的安裝後來被發現已經不在執行了。這裡不宣稱它是否成功：歷史
+# 得到一筆未確認的項目，記錄則消失。
+recovery_outcome_unknown_recorded = "上一次執行的安裝已經不在進行中，而它是否完成未經確認。歷史中現在有它的一筆項目，{id} 的復原記錄也已清除。"
+
+# 同一筆記錄，但上一次執行正在安裝的那個應用程式，現在就在這台機器上。記錄是在
+# 那次安裝開始之前寫下的，因此它的出現就是那次安裝的完成，歷史可以這麼說。
+recovery_outcome_installed_recorded = "上一次執行的安裝完成了：應用程式就在這台機器上。歷史中現在有它的一筆項目，{id} 的復原記錄也已清除。"
+
+# 為什麼要請人做決定。每一句都說明地區現在的實情，而沒有一句因此責怪使用者。
+recovery_situation_temporary_region_active = "Windows 仍在使用暫時地區。"
+recovery_situation_external_region_conflict = "目前的地區是在這個操作之外被改變的。"
+recovery_situation_original_region_active = "原本的地區已經在生效。"
+
+# 一筆從未回報結果的操作記錄。地區已經回來，正是這件事讓它容易被誤認成完成的
+# 操作，所以這一行要指出真正未知的是什麼。
+recovery_situation_outcome_unknown = "上一次執行的安裝從未回報它是怎麼結束的。"
+
+# 完整的啟動通知。記錄不儲存顯示名稱，因此通知不可以宣稱有一個：下面每一行
+# 都是操作開始時真的寫下來的東西。
+recovery_required = """
+需要復原
+
+{situation}
+
+{subject}
+開始於：{started}
+方式：{backend}
+原本的地區代碼：{original}
+暫時的地區代碼：{temporary}
+目前的地區代碼：{current}
+最後狀態：{state}
+
+在這個視窗得到明確的決定之前，新的安裝仍然被擋住。"""
+recovery_startup_blocked = "新的安裝被擋住。"
+
+# 一次復原動作達成了什麼。只有在寫入之後重新讀取過地區的地方才說「已復原」；
+# 其餘則說明什麼被原封不動地留下。
+recovery_restored = "原本的地區已復原，並以重新讀取確認。復原記錄已移除。"
+recovery_verified_record_cleared = "原本的地區本來就在生效。已確認的復原記錄已移除。"
+recovery_pending_record_retained = "目前的地區原封不動地留下。復原記錄已保留，新的安裝被擋住。"
+recovery_restore_conflict = "地區在檢查與寫入之間改變了（現在是地區代碼 {geo_id}）。沒有任何東西被變更，記錄也保留著。"
+
+
+# 視窗與它的對話方塊。
+window_request_window_close = "關閉已取消。視窗仍然開著。"
+
+# 操作進行到哪裡，寫成片段以便放進句子裡。每一句都只說明已經成立的事：凡是
+# 「已確認」出現的地方，都有東西被重新讀取過，其他地方沒有。
+window_state_region_switched = "暫時地區已確認"
+window_state_refreshing_store_context = "正在重新整理 Store 內容"
+window_state_starting_install = "安裝正在開始"
+window_state_install_requested = "安裝要求已被接受"
+window_state_install_observed = "安裝觀察尚未完成"
+window_state_installing = "安裝進行中"
+window_state_completion_uncertain = "安裝是否完成未經確認"
+window_state_installed = "安裝已確認，但地區尚未復原"
+window_state_restoring_region = "正在復原地區"
+window_state_restored = "復原正在等待最後驗證"
+window_state_failed_with_temporary_region = "操作失敗，而暫時地區仍然生效"
+window_state_restore_conflict = "偵測到目前地區的衝突"
+window_state_restore_failed = "地區復原未經確認"
+# 用於上面沒有任何一行能指名的狀態，好讓日後新增的狀態仍然會被回報，而不是
+# 顯示成一片空白。
+window_state_requires_recovery = "這個操作需要復原"
+
+# 在安裝仍在進行時關閉。最後一段才是重點：本應用程式從不取消安裝，而對話方塊
+# 會說明使用者可以在哪裡做。{state} 是上面那些片段之一。
+window_close_with_running_operation = """
+操作仍在進行：{state}。
+
+太早復原地區可能中斷安裝。復原資料必須保留到復原被驗證為止。
+
+是 — 安全復原地區之後再關閉。
+否 — 關閉，並為下一次啟動保留暫時地區與復原資料。
+取消 — 繼續作業。
+
+至於安裝本身，要在 Microsoft Store 或 Windows 設定的「應用程式」裡停止或移除：安裝屬於 Windows，不屬於本應用程式。"""
+
+# 在交付仍持有暫時地區時關閉。沒有東西可取消，也沒有東西可等：安裝屬於 Store，
+# 而這個視窗只擁有地區。{button} 是把它放回去那顆按鈕的標題。
+window_close_with_pending_handoff = """
+Windows 仍持有暫時地區，而 Microsoft Store 正在完成安裝。
+
+是 — 關閉：復原記錄會保留，下一次啟動會提議把地區放回去。
+否 — 留在這裡，並使用「{button}」。"""
+
+window_installation_resumed = "上一次執行的安裝仍在進行。已恢復觀察。"
+window_journal_entry_deleted = "本機記錄項目已刪除。安裝與地區都沒有變更。"
+# {cause} 是指出哪裡出錯的那句話。
+window_journal_entry_not_deleted = "{cause} 沒有任何東西被變更。"
+
+# 視窗命令。
+command_begin_handoff = "未提供"
+command_dispatch_command = "已從記錄開啟 Store 頁面。這不是安裝要求；地區沒有變更。"
+command_dispatch_command_2 = "Windows 無法從記錄開啟 Store 頁面。地區沒有變更。"
+command_dispatch_command_3 = "記錄中的 Product ID 已複製到安裝草稿。安裝沒有開始；地區沒有變更。"
+command_dispatch_command_4 = "Product ID 已複製到剪貼簿。安裝與地區都沒有變更。"
+command_dispatch_command_5 = "要刪除本機記錄的每一筆項目嗎？整段操作歷史都會被清除。已安裝的應用程式、Windows 地區與復原記錄都不會改變。"
+command_dispatch_command_6 = "只刪除本機記錄的這一筆項目嗎？安裝、地區與復原記錄都不會改變。"
+command_dispatch_command_7 = "應用程式頁面已在 Microsoft Store 中開啟。這不是安裝要求；地區沒有變更。"
+command_dispatch_command_8 = "Windows 無法在 Microsoft Store 中開啟應用程式頁面。地區沒有變更。"
+command_dispatch_ui_event = "無法更新應用程式的選單。"
+command_begin_resolution_if_ready = "Windows 沒有說哪個 Store 目錄服務所選的暫時地區，因此沒有查詢任何東西。"
+command_begin_resolution_if_ready_2 = "正在從結構化的 Store 來源取得應用程式卡片…"
+# {id} 是索取安裝程式時所用的 Product ID。第二句才是重點：Microsoft 回傳的檔案
+# 會和使用者親手選的檔案受到完全相同的檢查，不會因為來處而有例外。
+command_installer_download_requested = "正在向 Microsoft 索取 {id} 的 Store 安裝程式。它由 Microsoft 簽署，並會和親手選的檔案受到完全相同的檢查。"
+# {cause} 是指出剪貼簿哪裡出錯的那句話。
+command_clipboard_copy_failed = "{cause} 沒有任何東西被變更。"
+# 一個選單項目回答什麼。每一組都說明發生了什麼，以及同樣重要的、沒有發生什麼：
+# 選單項目從不安裝任何東西，也從不改變地區，而回答會這麼說，不是留給人去假設。
+menu_documentation_opened = "Microsoft 文件頁面已開啟。這不是安裝；地區沒有變更。"
+menu_documentation_not_opened = "Windows 無法開啟文件頁面。沒有任何東西被變更。"
+menu_app_installer_page_opened = "App Installer 頁面已開啟。這不是安裝；地區沒有變更。"
+menu_app_installer_page_not_opened = "Windows 無法開啟 App Installer 頁面。沒有任何東西被變更。"
+# 啟動失敗時會把網址說出來，讓瀏覽器沒開起來的人仍然知道該去哪裡。{address}
+# 是專案的儲存庫。
+menu_project_page_opened = "專案頁面已在瀏覽器中開啟。"
+menu_project_page_not_opened = "Windows 沒有開啟專案頁面。網址是 {address}"
+menu_log_directory_opened = "診斷記錄檔的目錄已開啟。"
+menu_log_directory_not_opened = "無法開啟記錄檔目錄。沒有任何記錄被變更。"
+menu_details_copied = "細節已複製到剪貼簿。"
+menu_details_not_copied = "剪貼簿無法使用。沒有任何東西被變更。"
+menu_prerequisites_all_met = "所有安裝先決條件都已滿足。地區沒有變更。"
+
+# 「關於」對話方塊。名稱與版本由應用程式加上，所以這一段不帶會過時的版本號。
+about_description = "這個工具會暫時變更 Windows 的主要位置，以便搭配標準的 Microsoft Store 機制使用。被變更的只有一項 Windows 設定：Microsoft Store 與 Windows 都沒有被修改，安裝也是由 Store 自己執行。它不是 Microsoft 的產品。"
+about_translations = "翻譯："
+about_author = "作者"
+about_license = "授權"

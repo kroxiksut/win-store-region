@@ -39,6 +39,7 @@ to `C:\temp\WinStoreRegion`.
 │               ├── controls.rs     Child-control creation and static content
 │               ├── diagnostic.rs   Failure text and its separate details block
 │               ├── dialogs.rs      Modal dialogs, file picker, clipboard
+│               ├── direction.rs    Which way the interface reads, and the mirrored layout
 │               ├── dragdrop.rs     OLE drop target for an installer file
 │               ├── handoff.rs      One Store-installer handoff off the UI thread
 │               ├── ids.rs          Window class, control ids, private messages
@@ -96,14 +97,30 @@ to `C:\temp\WinStoreRegion`.
 ├── CHANGELOG.md                    What changed in each version, in English only
 ├── CLA.md                          Contributor licence agreement, in English
 ├── CONTRIBUTING.md                 How to contribute and the rules that bind, English
-├── assets/screenshots/             Interface screenshots used by the READMEs
+├── assets/screenshots/             One interface screenshot per language, `installation-<tag>.png`
 ├── lang/                           One TOML file per interface language
+│   ├── ar.toml                     Arabic, read right to left, machine-drafted and unreviewed
 │   ├── en.toml                     English interface text
+│   ├── es-ES.toml                  European Spanish, machine-drafted and unreviewed
+│   ├── fa.toml                     Persian, read right to left, machine-drafted and unreviewed
+│   ├── ja.toml                     Japanese, machine-drafted and unreviewed
+│   ├── ko.toml                     Korean, machine-drafted and unreviewed
+│   ├── pt-BR.toml                  Brazilian Portuguese, machine-drafted and unreviewed
 │   ├── ru.toml                     Russian interface text
-│   └── zh-CN.toml                  Simplified Chinese, machine-drafted and unreviewed
+│   ├── tr.toml                     Turkish, machine-drafted and unreviewed
+│   ├── zh-CN.toml                  Simplified Chinese, machine-drafted and unreviewed
+│   └── zh-TW.toml                  Traditional Chinese, machine-drafted and unreviewed
 ├── README.md                       Product documentation for users, in English
+├── README.ar.md                    The same document in Arabic, machine-translated
+├── README.es-ES.md                 The same document in European Spanish, machine-translated
+├── README.fa.md                    The same document in Persian, machine-translated
+├── README.ja.md                    The same document in Japanese, machine-translated
+├── README.ko.md                    The same document in Korean, machine-translated
+├── README.pt-BR.md                 The same document in Brazilian Portuguese, machine-translated
 ├── README.ru.md                    The same document in Russian
+├── README.tr.md                    The same document in Turkish, machine-translated
 ├── README.zh-CN.md                 The same document in Simplified Chinese, machine-translated
+├── README.zh-TW.md                 The same document in Traditional Chinese, machine-translated
 ├── SECURITY.md                     Threat model and private reporting, in English
 ├── rustfmt.toml                    Formatting policy
 ├── STRUCTURE.md                    This document

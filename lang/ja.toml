@@ -1,0 +1,596 @@
+# WinStoreRegion の日本語インターフェイステキスト。
+#
+# 1 つのファイルは 1 つの言語です。ビルドはこのディレクトリを解析し、ファイルを Rust
+# テーブルに変換します。キーが欠けている場合も不明なキーがある場合もビルドが失敗する
+# ため、不完全な翻訳は気づかれずにリリースできません。
+#
+# ここに含まれる多くの文字列は意図的に慎重です。完了が証明されていない、答えが単一の
+# マーケットから得られた、セットが不完全であることを述べています。これらの留保は製品
+# の本質であり、充填物ではありません。翻訳はこれらを保持する必要があります。より大胆
+# な文がより良く読めたとしても保持する必要があります。
+#
+# 注記：このファイルは機械翻訳による草稿であり、日本語ネイティブスピーカーによる
+# 校正は行われていません。プロジェクト自体は翻訳を審査していません。誤りを見つけた
+# 場合は issue または pull request を開いてください。この翻訳に名前を付けることを
+# 厭わない場合は、上記の authors に自分を追加してください。
+
+
+variant = "Japanese"
+code = "ja-JP"
+name = "日本語 (ja-JP)"
+# 言語が読まれる方向。オプション；指定されていない場合は "ltr"。
+direction = "ltr"
+# この言語を翻訳したユーザー。ヘルプ → バージョン情報およびREADMEに表示されます。
+authors = []
+
+[strings]
+title = "WinStoreRegion"
+subtitle = "安全な一時的な地域変更"
+language = "言語"
+current_region = "現在の地域（保持されます）"
+input = "Microsoft Store URL または Product ID"
+source_title = "インストールするアプリケーション"
+source_hint = "リンク/Product ID またはインストーラーファイルを選択します。非アクティブなドラフトは保持されます。"
+source_link = "リンクまたは Product ID"
+source_file = "インストーラーファイル (.exe)"
+paste = "貼り付け"
+choose_file = "ファイルを選択"
+clear_file = "クリア"
+clear_input = "クリア"
+download_installer = "Store インストーラーをダウンロード"
+downloading_installer = "インストーラーをダウンロード中…"
+no_file = "ファイルが選択されていません"
+drop_overlay = ".exe をここにドロップしてください"
+app_card = "一時的な地域を選択し、Store カタログが応答した後、アプリケーションカードが表示されます。"
+temporary_region = "一時的なインストール地域（Windows リスト）"
+find_region = "インストールが提供されている地域を探す"
+check_remaining = "残りの地域"
+show_all_regions = "すべての地域を表示"
+availability_idle = "地域はチェックされていません。"
+availability_incomplete = "セットは不完全です。"
+availability_none = "チェック済みの地域のいずれでもこのアプリケーションが提供されていません。"
+availability_offline = "ソースは応答しませんでした。"
+status = "インストールはまだ利用できません。アプリケーションが指定されておらず、安全性を確保するすべてのチェックが完了していません。"
+install = "インストール"
+restore = "インストール完了 — 地域を復元"
+open_store_page = "Store ページを開く"
+details = "技術的詳細"
+journal_placeholder = "操作ジャーナルは、ローカルジャーナルが実装された後に利用可能になります。インストールと復旧はこのタブでは実行されません。"
+journal_loading = "ローカル操作ジャーナルを読み込み中…"
+journal_empty = "ジャーナルは空です。確認済みの操作結果または復旧が必要な操作結果のみがここに表示されます。"
+journal_open_store = "Store ページを開く"
+journal_repeat = "インストールを繰り返す"
+journal_delete = "エントリを削除"
+journal_copy_id = "Product ID をコピー"
+journal_clear = "ジャーナルをクリア"
+journal_columns = ["時刻 (UTC)", "アプリケーション", "識別子", "結果"]
+updates_idle = "「チェック」を押すと、インストール済みの Microsoft Store アプリケーション、および Store が現在の地域でサービス提供していないものが表示されます。"
+updates_scanning = "インストール済みのアプリケーションをチェック中…"
+updates_refresh = "チェック"
+updates_open = "インストールで開く"
+updates_none = "Store が現在の地域でサービス提供していない Microsoft Store アプリケーションは見つかりませんでした。"
+updates_columns = ["アプリケーション", "Product ID", "インストール済み", "Store カタログ内"]
+updates_unavailable = "Windows がインストール済みアプリケーションを報告しなかったため、リストを作成できませんでした。"
+updates_choose_entry = "リストからアプリケーションを選択してください。"
+# 覚えられた答えは有用ですが、新しい答えと間違えてはいけません。そのため、その年齢を
+# 述べています。{button} はもう一度チェックするボタンのキャプションです。
+updates_scan_age = """
+{taken} (UTC) のチェックから。「{button}」を押して再度質問してください。
+
+"""
+# 1 つのエントリについて知られているすべて。ここでは更新が存在することは決して述べら
+# れません。Store 製品はここから全く更新できず、2 つのバージョン番号は常に比較可能
+# ではありません。唯一述べられた証明可能な事実は、Store がこの地域でこの製品を提供し
+# ていないということです。{button} はエントリを「インストール」タブに転送するボタンの
+# キャプションです。
+updates_entry_details = """
+{name}
+Product ID: {id}
+パッケージファミリー: {family}
+インストール済みバージョン: {installed}
+Store カタログのバージョン: {offered}
+
+Microsoft Store はこのアプリケーションを現在の地域でサービス提供していないため、ここでも更新しません。「{button}」は Product ID を「インストール」タブに転送し、アプリケーションが提供されている地域の検索を開始します。
+
+これは更新がリリースされたことを主張していません。上記の 2 つのバージョンは異なるスキームで番号付けされている可能性があり、その場合、それらの間の順序は意味がありません。"""
+updates_version_not_named = "カタログはバージョンを指定しませんでした"
+
+# アプリケーションカード。最後の行は装飾ではありません。カタログが提供する内容と、
+# インストールが見つける内容は同じではなく、カードはどちらを表示しているかを示します。
+card_publisher_not_provided = "発行者が提供されていません"
+card_product_id = "Product ID: {id}"
+card_store_catalogue = "Store カタログ: {market}"
+card_version = "バージョン: {version}"
+# カタログが報告するダウンロードサイズ。ユニット名はバイナリのもの。書き方が異なる
+# 言語はここで変更し、小数点区切り文字は文に沿って移動します。
+card_size_bytes = "サイズ: {size} バイト"
+card_size = "サイズ: {whole}.{tenths} {unit}"
+card_size_kibibytes = "KiB"
+card_size_mebibytes = "MiB"
+card_offered_installable = "選択した地域で提供されています。これはカタログが述べていることであり、インストールをチェックしたのではありません。アプリケーションは一時的な地域の下で再度検索されます。"
+card_offered_not_installable = "選択した地域で提供されていますが、このバージョンはそのように配信されるアプリケーションをインストールしません。"
+
+# 選択されている 1 つの地域について知られていることについて。それぞれは知識がどこまで
+# 及ぶかを示します。1 つの地域が応答したことは、すべての地域がチェックされたことと
+# は同じではありません。
+region_checking_selected = "選択した地域をチェック中…"
+region_offered_here = "選択した地域で提供されています。他の地域はチェックされていません。"
+region_not_offered_here = "選択した地域では提供されていません。"
+region_no_answer_here = "ソースは選択した地域について応答しませんでした。他はチェックされていません。"
+# 「チェックされていない」は「まだチェックされていない」と読め、決して有効にならない
+# ボタンの横にはウィンドウが壊れているように見えます。ファイルはアプリケーションを
+# 指定しないため、このチェックは延期されません。質問するものがありません。
+region_nothing_to_check = "ファイルをチェックするものはありません。Product ID が必要です。"
+region_checked_progress = "{total} のうち {done} をチェック中…"
+region_found = "見つかった地域: {count}。"
+
+card_syntax_accepted = "Product ID {id} は受け入れられました。一時的な地域を選択すると、アプリケーションカードをリクエストできます。"
+card_retrieving = "Store からアプリケーションカードを取得中…"
+# カタログは現在有効な地域の下で応答し、一時的な地域の下では応答しません。そのため、
+# ここにないアプリケーションはユーザーが選んだ地域について何も述べていません。
+# 要求された地域を名付けることで、カードがその選択の判決として読むことを防ぎます。
+card_unavailable_in_region = """
+アプリケーションカードは利用できません。アプリケーションは現在の Windows 地域 ({region}) では表示されません。
+一時的な地域はまだ適用されておらず、これはインストールをブロックしません。"""
+card_unavailable = """
+アプリケーションカードは利用できません。アプリケーションは現在の Windows 地域では表示されません。
+一時的な地域はまだ適用されておらず、これはインストールをブロックしません。"""
+
+# カードの最後の行。インストールを開始できるかどうか。3 つのことが成立する必要があり、
+# テキストは、プログラムの観点ではなく、ユーザーの観点から名付けられています。地域を
+# 戻す、未完了の操作が残っていない、インストールを実行できる何かがあります。
+card_install_ready = "インストール準備完了。"
+card_install_not_ready = "インストール準備がまだできていません。地域を戻す、未完了の前の操作、インストーラー自体がすべて確認されていません。"
+
+# ガード付き操作の状態は、一度に 1 文です。ここには、インストールが報告するまで
+# 「インストール済み」とは述べられず、地域が読み直された後まで戻ったと述べられません。
+operation_switching_region = "地域を切り替え、読み直して確認しています。"
+operation_looking_up = "一時的な地域が確認されました。それの下でアプリケーションを検索しています。"
+operation_found = "{name} が見つかりました。インストールを開始します。"
+operation_restoring_region = "インストールが完了しました。元の地域を復元しています。"
+operation_done = "完了。アプリケーションがインストールされ、地域は元のものです。"
+operation_completion_uncertain = "完了を確認できませんでした。決定はあなたの判断です。"
+operation_started = "操作が開始されました。最初のレポートを待機中です。"
+
+# Windows が存在する地域を述べなかったため。画面上のリストは空で、それ自体は何も述べ
+# ないため、ウィンドウは代わりにそれを述べます。
+window_no_regions_listed = "Windows は地域を指定しなかったため、一時的な地域を選択するものがありません。それが実行されるまで何もインストールできません。"
+
+# 観測期限が経過しても一時的な地域がまだ有効なときに尋ねられます。3 つの答えは
+# コアプロトコルが受け入れる 3 つです。2 番目のボタンを押すことが警告を確認する
+# ことです。{state} は操作が進んでいるところです。
+operation_ask_timeout_resolution = """
+インストールは完了を報告していません。{state}。
+
+Windows はまだ一時的な地域を使用しています。Windows はインストールを所有し、このウィンドウから停止できません。
+
+はい — インストールが完了しているため、元の地域を復元してください。
+いいえ — インストールがまだ実行中であっても、元の地域を今すぐ復元してください。中断される可能性があります。
+キャンセル — 待機を続けてください。ウィンドウはインストールに再度アタッチされます。"""
+# 操作が述べていることに追加され、先頭のスペースは保持されます。
+operation_region_already_back = " 元の地域はすでに戻っています。"
+installing_phase_running = "インストール中"
+installing_phase_finishing = "インストール完了中"
+installing_without_progress = "{phase}。"
+installing_with_progress = "{phase}: {percent}%。"
+
+# Store インストーラーファイルを転送する場合。ここには、操作が実行中であるため、進行
+# 状況や完了を報告するものはありません。Store がその作業を所有し、このウィンドウには
+# 何も通知しません。{button} は復元ボタンのキャプションです。
+handoff_switching_region = "地域を切り替え、読み直して確認しています。ファイルはまだ開始されていません。"
+handoff_handed_off = "地域が {region} に切り替わり、確認されました。インストールは Microsoft Store インストーラーに転送されました。Store でこれを完了してください。ここに進行状況は表示されず、このアプリケーションは何もインストールされたことを確認しません。完了したら、「{button}」を押してください。"
+handoff_restoring_region = "元の地域を復元し、読み直して確認しています。"
+handoff_restored = "完了。元の地域は戻り、確認されました。復旧レコードは削除されました。Microsoft Store がインストールしたものは、このアプリケーションがチェックするものではありません。"
+# それが停止したとき。原因が最初にあり、その後、何をするかを決定する 1 つの事実
+# Windows がまだ一時的な地域を保持しているかどうかです。
+handoff_did_not_happen = "インストーラーは開始されませんでした。"
+handoff_region_may_be_temporary = "Windows は一時的な地域を保持する可能性があります。「{button}」を押してください。"
+handoff_region_original = "Windows はまだ元の地域を保持しています。"
+handoff_declined = "起動はキャンセルされました。地域は変更されず、ファイルは開始されず、何も変更されませんでした。"
+
+resolution_card_confirmed = "アプリケーションカードが確認されました。インストールはまだ安全チェックで待機しています。地域を戻す、未完了の前の操作、インストーラーです。"
+resolution_catalogue_not_searchable = "Store カタログはこの Windows プロファイルで検索できません。地域は変更されず、インストールは利用できません。"
+resolution_checked_in_region = "現在の Windows 地域でチェック。{region}。"
+resolution_checked_in_current_region = "現在の Windows 地域でチェック。"
+resolution_still_possible = "一時的な地域はまだ適用されておらず、これはインストールをブロックしません。アプリケーションは下で再度検索されます。"
+
+# Microsoft 独自のインストーラー。Product ID によってリクエストされました。テキストは
+# ボタンが今何をするかを示します。なぜなら、その意味がユーザーの下で変わったからです。
+# 同じボタンがファイルを直接インストールする代わりに Store に転送します。{button} は
+# そのボタンのキャプション、{restore} は地域を戻すボタンです。
+installer_download_ready = "Microsoft Store インストーラーがダウンロードされ、ソースとして選択されています。「{button}」を押してください。署名がチェックされ、地域が切り替わり、インストーラーが開始されます。完了を報告しません。独自のウィンドウでインストールを完了し、その後「{restore}」で地域を戻してください。"
+# それが到着しなかった理由。それぞれが何が確立されたのか、何が確立されなかったのかを
+# 述べます。これらのいずれもアプリケーションが存在しないと述べていません。
+installer_download_network = "ネットワークが利用できないため、Microsoft にインストーラーに達することができませんでした。"
+installer_download_refused = "Microsoft はこのアプリケーションのインストーラーを返しませんでした。"
+installer_download_refused_with_status = "Microsoft はこのアプリケーションのインストーラーを返しませんでした (HTTP {status})。"
+installer_download_too_large = "Microsoft の回答はこのアプリケーションが書き込む以上のサイズでした。"
+installer_download_not_writable = "インストーラーは到着しましたが、データフォルダーに書き込むことができませんでした。"
+
+# タイプされたアプリケーション ソースが続くコマンドを意味するもの。「利用できない」
+# と述べるステータスが有効なボタンの横にあることは、ステータスがないことより悪い
+# ため、それぞれが欠落している状態を指定します。{button} キャプションはボタン自体
+# から入力されます。
+source_choose_region = "Product ID {id} は受け入れられました。一時的な地域を選択するか、「{button}」を押してください。"
+# 復旧フラグも偽から開始され、復旧が全く検査される前なため、これは未完了の操作が
+# 存在することを主張してはいけません。
+source_recovery_pending = "Product ID {id} は受け入れられました。未完了の前の操作のチェックが実行されれば、インストールが利用可能になります。存在する場合は、最初に解決する必要があります。"
+source_prerequisites_unmet = "インストールの前提条件が満たされていません。"
+# カタログが何も触れられる前に応答するため、ここで配信できないアプリケーションは
+# 地域がユーザー自身の間に拒否されます。
+source_other_device_only = "Product ID {id}: Microsoft Store はこのアプリケーションをこのデバイスに配信しません。別のデバイスタイプをターゲットにしています。地域を変更してもそれは変わりません。インストールは利用できません。"
+source_newer_windows_required = "Product ID {id}: このアプリケーションは Windows {version} 以降が必要であり、このマシンはそれより古いです。地域を変更してもそれは変わりません。インストールは利用できません。"
+source_ready = "Product ID {id} は受け入れられました。一時的な地域: {region}。インストールを開始できます。アプリケーションはその地域の下で検索されます。"
+source_syntax_accepted = "Product ID {id} は有効な構文です。Store カタログが応答するまでインストールは利用できません。"
+
+# 選択されたファイルが続くコマンドを意味するもの。上記と同じ順序。一般的な文ではなく、
+# ユーザーをどれが適用されるかについて推測させる代わりに、欠落している状態を述べます。
+file_choose = "Microsoft Store インストーラーファイル (.exe) を選択してください。それは決して変更されず、Store 自体がインストールを続行します。リンクドラフトが保持されます。"
+file_recovery_pending = "ファイルはチェックに合格しましたが、未完了の前の操作のチェックが実行されるまで転送できません。存在する場合は、最初に解決する必要があります。"
+file_store_not_confirmed = "ファイルはチェックに合格しましたが、このマシンで Microsoft Store は確認されておらず、Store がインストールを完了します。地域は変更されませんでした。"
+file_choose_region = "ファイルは Microsoft Store によって署名され、実行されていません。一時的な地域を選択してください。ファイルはその下で開始されます。"
+# インストーラーファイルはアプリケーションを指定しないため、地域検索は質問するもの
+# がありません。死んだボタンを戸惑わせる代わりに、そう言ってください。
+file_region_is_your_choice = "ファイルの地域はあなたの選択です。インストーラーはアプリケーションを指定しません。1 つを見つけるには、リンクを貼り付け、「{button}」を押してから、ファイルに戻ってください。選択したファイルは保持されます。"
+file_ready = """
+ファイル {name} は Microsoft Store によって署名され、実行されていません。一時的な地域: {region}。インストールを転送できます。地域は読み直して切り替えられ、インストーラー自体が開始され、Microsoft Store で作業を完了します。
+
+{unchecked}"""
+
+# 選択されたファイルが実行されない理由。理由は下のセンテンスにドロップされたフラグメント
+# であり、それらのいずれも悪意のあるファイルを呼び出しません。それぞれは確立できなかった
+# ことだけを述べます。
+file_refusal_signature_not_trusted = "Windows はファイル署名を確認しませんでした"
+file_refusal_signer_unavailable = "Windows は発行者証明書を提供しませんでした"
+file_refusal_not_store_signed = "ファイルは Microsoft Store によって署名されていません"
+file_refusal_changed_while_checked = "ファイルはチェック中に変更されました"
+file_refusal_identity_incomplete = "ファイル名と SHA-256 を確立できませんでした"
+file_refused = "このファイルは開始されません。{reason}。地域は変更されませんでした。Microsoft Store によって署名されたインストーラーを選択するか、Microsoft Store リンクまたは Product ID を代わりに貼り付けてください。"
+
+file_inspecting = "選択された .exe を読み取り専用で検査。SHA-256 と署名。ファイルは実行されません。"
+file_changed_during_inspection = "ファイルは検査中に変更または置き換えられました。結果は破棄されました。インストールは利用できません。"
+file_unreadable = "選択したファイルを安全に読み取ることができませんでした。結果は破棄されました。インストールは利用できません。"
+
+# ファイルが全く受け入れられなかった理由。これらのいずれの場合も何も変更されず、
+# センテンスはそう述べます。それを想定するのではなく述べます。
+file_error_empty_path = "ファイルパスが空です"
+file_error_unsupported_extension = ".exe ファイルのみがサポートされています"
+file_error_not_a_file = "パスは既存のファイルを指していません"
+file_error_link_or_device_path = "ショートカットと特殊システムパスはサポートされていません"
+file_error_multiple_files = "正確に 1 つのファイルをドロップしてください"
+file_not_selected = "ファイルが選択されていません。{detail}。現在のソースと両方のドラフトは変更されていません。"
+
+# リストに表示される 1 つの地域、および現在の地域ボックス内。名前が最初に来ます。
+# リストボックスはエントリが始まるテキストで検索するため、国コードが前にある場合、
+# 名前を入力するとは何も見つかりませんでした。これが 200 の地域のリストをマウスなしで
+# 使用できなくしました。数字は Windows 自体が保持している数字であり、ユーザーが
+# このウィンドウを Windows と照らし合わせることができるようにここにあります。
+region_choice = "{name} · {code} (地域コード {geo_id})"
+region_choice_without_code = "{name} (地域コード {geo_id})"
+
+region_choose_from_list = "Windows リストから一時的な地域を選択してください。地域は変更されず、アプリケーションは検索されていません。"
+region_not_confirmed = "Windows は選択した地域を確認できませんでした。地域は変更されず、アプリケーションは検索されていません。"
+menu_file = "ファイル"
+menu_paste = "リンク/ID を貼り付け"
+menu_exit = "終了"
+menu_help = "ヘルプ"
+menu_about = "バージョン情報"
+menu_open_diagnostic_log = "診断ログを開く"
+menu_copy_details = "詳細をコピー"
+menu_recheck = "前提条件を再チェック"
+menu_get_app_installer = "App Installer を取得"
+menu_region_documentation = "Microsoft: 国または地域を変更する"
+menu_github = "プロジェクト GitHub"
+tabs = ["インストール", "ジャーナル", "更新"]
+region_unavailable = "現在の Windows 地域を読み取ることができませんでした。"
+
+# 失敗の原因。1 診断コード1つ。
+diagnostic_backend_failed = "インストーラーは失敗を報告しました。"
+diagnostic_backend_reported_unknown_failure = "インストールは発生しませんでした。Microsoft Store は不明なコードのエラーを報告しました。コードは詳細にあります。"
+diagnostic_backend_unavailable = "このアプリケーションでサポートされているインストールパスは利用できません。"
+diagnostic_clipboard_unavailable = "クリップボードは利用できません。"
+diagnostic_completion_uncertain = "インストール完了は確認されていません。"
+diagnostic_install_kind_not_supported = "このアプリケーションはこのバージョンがインストールしない方法で配信されます。Microsoft Store で開くことができます。"
+diagnostic_installer_file_not_a_store_stub = "これは Microsoft Store インストーラーではありません。"
+diagnostic_installer_file_not_admitted = "このファイルは開始されません。署名または署名者がチェックに合格しませんでした。"
+diagnostic_installer_file_not_supported = "1 つの既存 `.exe` ファイルが必要です。"
+diagnostic_installer_file_unreadable = "選択したファイルを読み取ることができませんでした。"
+diagnostic_installer_launch_rejected = "Windows は確認されたインストーラーを開始しませんでした。"
+diagnostic_journal_unavailable = "操作ジャーナルは利用できません。"
+diagnostic_microsoft_account_required = "Microsoft アカウントのサインインが必要です。"
+diagnostic_microsoft_store_unavailable = "Microsoft Store は利用できません。"
+diagnostic_ms_store_source_terms_not_accepted = "Microsoft Store ソース条件は受け入れられていません。何もインストールされず、ダウンロードがこれを修正します。"
+diagnostic_ms_store_source_unavailable = "Microsoft Store カタログはインストールソースとして利用できません。"
+diagnostic_network_unavailable = "ネットワーク接続がありません。"
+diagnostic_operation_sequence_violated = "内部シーケンシング障害により、操作が停止しました。何もインストールされていません。"
+diagnostic_product_already_installed = "アプリケーションはこのコンピューターに既にインストールされています。地域は復元され、何もインストールされていません。"
+diagnostic_product_already_installing = "このアプリケーションはすでにインストール中です。現在のインストールが完了するまで待機してください。"
+diagnostic_product_not_found = "この Product ID のアプリケーションが見つかりませんでした。"
+diagnostic_product_not_on_this_device = "Microsoft Store はこのアプリケーションをこのデバイスに配信しません。別のデバイスタイプまたは新しい Windows をターゲットにしています。地域は問題ではなく、変更してもヘルプにはなりません。"
+diagnostic_product_unavailable_in_region = "アプリケーションは選択した地域では提供されていません。"
+diagnostic_recovery_record_unreadable = "復旧データを安全に読み取ることができませんでした。"
+diagnostic_region_change_rejected = "Windows は地域の変更を拒否しました。"
+diagnostic_region_conflict = "現在の地域は元の地域でも一時的な地域でも一致しません。"
+diagnostic_region_unavailable = "Windows は現在の地域を報告しません。"
+diagnostic_region_unchanged = "地域は変更されませんでした。"
+diagnostic_resolver_answer_mismatch = "カタログは別のアプリケーションについて応答したため、結果は拒否されました。"
+diagnostic_resolver_unavailable = "Microsoft Store カタログに到達できませんでした。"
+diagnostic_restore_failed = "元の地域の復元は確認されませんでした。"
+diagnostic_store_input_not_understood = "リンクまたは Product ID が認識されませんでした。"
+diagnostic_store_page_launch_rejected = "Windows は Microsoft Store ページを開くことができませんでした。"
+diagnostic_store_refused_without_reason = "Microsoft Store は理由を示さずに拒否しました。"
+diagnostic_temporary_region_not_applied = "ソースが一時的な地域を受け入れませんでした。インストールが開始される前に元の地域に戻りました。もう一度試すか、別の地域を選択してください。"
+
+# 地域が確認され、カタログがそれの下でいくつかの前に応答しました。インストールリクエスト時に、
+# 製品はもはやそこにありませんでした。ここに地域のせいにするものはありません。
+# なぜなら、地域はそれが証明された 1 つの事実だからです。
+diagnostic_product_no_longer_offered = "ソースはもはやこのアプリケーションを提供していません。一時的な地域の下でそれについて応答し、その後インストールするものがありませんでした。販売から削除された可能性があります。もう一度試すか、別の地域を選択してください。"
+diagnostic_unsupported_market = "カタログは選択した地域を受け入れません。"
+diagnostic_win_get_missing = "Store アプリケーションをインストールする Windows コンポーネントが見つかりませんでした。"
+
+# 技術的詳細。詳細領域にのみ表示され、コピーされることを意図しています。
+diagnostic_details_heading = "技術的詳細"
+
+# インストール前提条件。それぞれについて、インターフェイスは「チェックしたものが欠けている」
+# を「チェック自体が成功しなかった」から区別します。2 番目は不在の証拠ではなく、
+# 言い方はそれに変わらないはずです。
+prerequisite_heading = "インストールは利用できません。前提条件が満たされていません。"
+prerequisite_app_installer_missing = "App Installer がインストールされていません。Windows はそれで Store アプリケーションをインストールし、Microsoft Store ページからインストールできます。"
+prerequisite_app_installer_unknown = "App Installer が存在するかどうかを判断できませんでした。チェックが成功するまでインストールは利用できません。"
+prerequisite_microsoft_store_missing = "Microsoft Store はありません。スタンドアロンダウンロードは存在しません。Windows を修復する必要があります。"
+prerequisite_microsoft_store_unknown = "Microsoft Store が存在するかどうかを判断できませんでした。チェックが成功するまでインストールは利用できません。"
+prerequisite_com_metadata_missing = "アプリケーションのディレクトリは書き込み可能ではないため、それが依存するメタデータファイルをその横に配置できませんでした。アプリケーションを書き込み可能なディレクトリに移動します。"
+prerequisite_com_metadata_unknown = "アプリケーションの横のメタデータファイルを準備できませんでした。チェックが成功するまでインストールは利用できません。"
+
+# ジャーナルタブ。
+journal_journal_details = "ファイルは変更されずに保持されました。"
+
+# 1 つのジャーナルエントリがそれ自体について述べるもの。2 つのサブジェクトは異なる
+# ブロックを実行します。彼らは異なることを知っているため。インストーラーファイル
+# 用に作成されたエントリには、製品名、発行者、バージョン、またはパッケージID がなく、
+# 6 つのフィールドに「不明」を入力する代わりに、一度にそう述べます。ラベルは
+# 翻訳されます。値の横の値はその時に記録されたものです。
+journal_details_product = """
+アプリケーション: {name}
+Product ID: {id}
+タイプ: {kind}
+発行者: {publisher}
+バージョン: {version}
+パッケージファミリー: {family}"""
+journal_details_file = """
+ファイル: {name}
+SHA-256: {sha256}
+アプリケーションは指定されていません。Microsoft Store インストーラーは Product ID を実行しません。"""
+journal_details_common = """
+日付: {date}
+地域コード: {geo_id}
+操作: {operation}
+方法: {backend}
+結果: {result}"""
+# 確立されなかった値に代わりに述べられます。これらのいずれも値が欠けていること
+# を主張しません。このエントリがそれを実行しないことだけです。
+journal_details_kind_unknown = "不明"
+journal_details_publisher_not_provided = "提供されていません"
+journal_details_version_not_confirmed = "確認されていません"
+journal_details_family_not_confirmed = "確認されていません"
+
+# ジャーナル結果。
+journal_result_installed = "インストール済みと復元"
+journal_result_handed_off_to_installer = "Microsoft Store インストーラーに転送 — 完了はチェックされていません"
+journal_result_completion_uncertain = "完了は確認されていません — 検証/復旧が必要"
+journal_result_recovery_required = "復旧または手動による判断が必要"
+journal_result_failed = "失敗"
+
+# ダイアログ。
+dialog_filter_executables = "実行可能ファイル (*.exe)"
+dialog_filter_all_files = "すべてのファイル (*.*)"
+dialog_show_stub_details = "署名者: 利用できません"
+
+# ハンドオフ確認。答えが依存するすべてが 1 つの画面にあります。
+# どのファイル、誰が署名したか、その要約、どの地域が保持されるか、
+# およびこのアプリケーションが何を知ることになるか。最後の段落は
+# やさしくすることができないもの -- Store がインストールを実行し、
+# このアプリケーションは、それが成功したかどうかを学びません。
+# {button} は地域を復元するボタンのキャプションで入力されます。
+dialog_confirm_handoff = """
+Microsoft Store インストーラーを開始しますか？
+
+ファイル: {file}
+発行者: {publisher}
+SHA-256: {sha256}
+一時的な地域: {region}
+
+Windows 地域は一時的に変更され、読み直して確認されます。その後、ファイルが開始されます。ファイル自体は決して変更されません。
+
+Microsoft Store はそこからインストールを取得します。ここに進行状況は表示されず、このアプリケーションは何もインストールされたことを確認しません。Store が完了したら、「{button}」を使用してください。
+
+はい — 地域を切り替えてファイルを開始してください。いいえ — 何も変更しないでください。"""
+
+# インストーラーファイルの検査。リクエストで表示。これは
+# アドバイスではなく証拠です。ラベルはファイルから読み取られたものに
+# 名前を付け、値は Windows が報告したとおりに再現されます。
+dialog_stub_details = """
+SHA-256: {sha256}
+サイズ: {size} バイト
+署名: {signature}
+Store インストーラーチェック: {status}
+Product ID: {product_id}
+
+{signer}
+
+{warnings}"""
+dialog_stub_signer = """
+署名者サブジェクト: {subject}
+発行者: {issuer}
+シリアル: {serial}
+SHA-256 証明書ファムプリント: {thumbprint}
+有効: {valid_from} — {valid_to}
+コード署名が許可されています: {eku}"""
+dialog_stub_product_id_not_extracted = "抽出されていません"
+dialog_stub_eku_yes = "はい"
+dialog_stub_eku_no = "いいえ"
+# 検査が呼び出すことなく何かに注意することができる。それぞれは何が確立されたのか、
+# 何が確立されなかったのかを述べ、それらのいずれもファイルの評決ではありません。
+dialog_stub_warning_native_verification_code = "Windows 検証コードがローカルに保持されました"
+dialog_stub_warning_product_id_not_available = "Product ID は抽出されていません"
+dialog_stub_warning_signer_data_unavailable = "Windows は署名者証明書を提供しませんでした"
+
+# 復旧。
+recovery_ask_pending_recovery = """
+{situation}
+
+はい — 元の地域を復元してください。読み直してから書き込みされ、その後確認されます。
+いいえ — 現在の地域を保持してください。復旧レコードは保持され、新しいインストールはブロックされます。"""
+recovery_recovery_execution_status = "復旧レコードが保持されます。"
+
+# ハンドオフレコードには Product ID がありません。それが Microsoft Store に与えられた
+# ファイルの名前とそのバイトの要約に名前を付け、それを Product ID と呼ぶことは
+# 間違いです -- ユーザーはそれに対して行動できませんでした。
+recovery_subject_installer_file = "インストーラーファイル: {value}"
+
+# スタートアップで見つかりました。前回の実行はすでに地域を戻していて、
+# レコードだけが後に残っていました。今何も復元されず、テキストはそう述べます。
+recovery_verified_record_cleaned = "前の操作はすでに元の地域を復元していました。{id} の確認された復旧レコードがクリアされました。"
+
+# 同じレコード。その後、インストールがもはや実行されていないことが判明しました。
+# 完了したかどうかについて何も主張されていません。履歴は確認されていないエントリと
+# レコードが削除されます。
+recovery_outcome_unknown_recorded = "前回の実行からのインストールはもはや実行されておらず、その完了は確認されていません。履歴にはエントリがあり、{id} の復旧レコードがクリアされました。"
+
+# 同じレコード。ただし、前回の実行がインストールしていたアプリケーションが
+# このマシンにあります。レコードはそのインストールが始まる前に書き込まれたため、
+# その到着はそのインストールが完了し、履歴がそう述べる可能性があります。
+recovery_outcome_installed_recorded = "前回の実行からのインストールが完了しました。アプリケーションがこのマシンにあります。履歴にはエントリがあり、{id} の復旧レコードがクリアされました。"
+
+# 決定が尋ねられている理由。それぞれが地域について何が本当かに名前を付け、
+# ユーザーのせいにするものはありません。
+recovery_situation_temporary_region_active = "Windows は一時的な地域を使用しています。"
+recovery_situation_external_region_conflict = "現在の地域がこの操作の外で変更されました。"
+recovery_situation_original_region_active = "元の地域はすでにアクティブです。"
+
+# 操作が決して結果を報告しなかったレコード。地域が戻っているという事実は、
+# これを完了した操作と間違えやすいため、行は実際に不明なものに名前を付けます。
+recovery_situation_outcome_unknown = "前回の実行からのインストールは終了方法を報告したことがありません。"
+
+# 完全なスタートアップ通知。レコードはディスプレイ名を保存しないため、通知は
+# 1 つを主張してはいけません。以下の各行は、操作が開始されたときに実際に書き込まれたものです。
+recovery_required = """
+復旧が必要です
+
+{situation}
+
+{subject}
+開始: {started}
+方法: {backend}
+元の地域コード: {original}
+一時的な地域コード: {temporary}
+現在の地域コード: {current}
+最後の状態: {state}
+
+このウィンドウに明示的な決定が与えられるまで、新しいインストールはブロックされます。"""
+recovery_startup_blocked = "新しいインストールはブロックされます。"
+
+# 1 つの復旧アクションが達成したもの。「復元」は地域が書き込み後に読み直された
+# ところでのみ主張されます。他は一人にされたものを述べます。
+recovery_restored = "元の地域が復元され、読み直して確認されました。復旧レコードが削除されました。"
+recovery_verified_record_cleared = "元の地域はすでにアクティブです。確認された復旧レコードが削除されました。"
+recovery_pending_record_retained = "現在の地域は変更されませんでした。復旧レコードが保持され、新しいインストールはブロックされます。"
+recovery_restore_conflict = "地域はチェックと書き込みの間で変更されました (現在は地域コード {geo_id} です)。何も変更されず、レコードは保持されます。"
+
+
+# ウィンドウとそのダイアログ。
+window_request_window_close = "ウィンドウを閉じることはキャンセルされました。ウィンドウは開いたままです。"
+
+# 操作がどこまで進んだか。フラグメント として名付けられているため、文に
+# ドロップできます。それぞれが確立されたことだけを述べます。「確認」は何かが
+# 読み直されたところ、その他の場所では表示されません。
+window_state_region_switched = "一時的な地域が確認されました"
+window_state_refreshing_store_context = "Store コンテキストが更新されています"
+window_state_starting_install = "インストールが開始されています"
+window_state_install_requested = "インストール要求が受け入れられました"
+window_state_install_observed = "インストール観測は保留中です"
+window_state_installing = "インストールが実行されています"
+window_state_completion_uncertain = "インストール完了は確認されていません"
+window_state_installed = "インストールは確認されていますが、地域は復元されていません"
+window_state_restoring_region = "地域が復元されています"
+window_state_restored = "復元は最終検証を待機しています"
+window_state_failed_with_temporary_region = "操作は失敗し、一時的な地域はアクティブのままです"
+window_state_restore_conflict = "現在の地域競合が検出されました"
+window_state_restore_failed = "地域復元は確認されませんでした"
+# 上の行が名付けられていない状態に対して述べられます。そのため、
+# 後で追加された状態はまだ報告されます。何も表示されるのではなく。
+window_state_requires_recovery = "操作は復旧を要求します"
+
+# インストールがまだ実行中に閉じています。最後の段落は重要なもの。
+# このアプリケーションはインストールをキャンセルしない
+# ユーザーが見つける場所です。{state} は上記のいずれかのフラグメントです。
+window_close_with_running_operation = """
+操作はまだアクティブです。{state}。
+
+地域を早期に復元すると、インストールが中断される可能性があります。復旧データは復元が確認されるまで残る必要があります。
+
+はい — 安全な地域復旧後に閉じてください。
+いいえ — 一時的な地域と復旧データを保持したまま閉じ、次回の起動用に保持します。
+キャンセル — 作業を続けてください。
+
+インストール自体は Microsoft Store または Windows 設定のアプリケーションで停止または削除されます。Windows はインストールを所有し、このアプリケーションは所有しません。"""
+
+# ハンドオフがまだ一時的な地域を保持しているときに閉じています。
+# キャンセルするものがなく、待つものもありません。Store はインストール
+# を所有し、このウィンドウはのみ地域を所有します。{button} は
+# それを復元するボタンのキャプションです。
+window_close_with_pending_handoff = """
+Windows はまだ一時的な地域を保持しており、Microsoft Store がインストールを完了しています。
+
+はい — 閉じてください。復旧レコードは保持され、次の開始で地域が戻ります。
+いいえ — ここにとどまり、「{button}」を使用してください。"""
+
+window_installation_resumed = "前回の実行からのインストールがまだ続いています。観測が再開されました。"
+window_journal_entry_deleted = "ローカルジャーナルエントリが削除されました。インストールと地域は変更されませんでした。"
+# {cause} は何が悪かったのかを述べるセンテンス。
+window_journal_entry_not_deleted = "{cause} 何も変更されませんでした。"
+
+# ウィンドウコマンド。
+command_begin_handoff = "提供されていません"
+command_dispatch_command = "Store ページはジャーナルから開かれました。これはインストール要求ではありません。地域は変更されていません。"
+command_dispatch_command_2 = "Windows はジャーナルから Store ページを開くことができませんでした。地域は変更されていません。"
+command_dispatch_command_3 = "ジャーナル Product ID がインストールドラフトにコピーされました。インストールが開始されず、地域が変更されていません。"
+command_dispatch_command_4 = "Product ID がクリップボードにコピーされました。インストールと地域は変更されていません。"
+command_dispatch_command_5 = "ローカルジャーナルのすべてのエントリを削除しますか？操作履歴全体がクリアされます。インストール済みアプリケーション、Windows 地域、復旧レコードは変更されません。"
+command_dispatch_command_6 = "このローカルジャーナルエントリのみを削除しますか？インストール、地域、復旧レコードは変更されません。"
+command_dispatch_command_7 = "アプリケーションページが Microsoft Store で開かれました。これはインストール要求ではありません。地域は変更されていません。"
+command_dispatch_command_8 = "Windows はアプリケーションページを Microsoft Store で開くことができませんでした。地域は変更されていません。"
+command_dispatch_ui_event = "アプリケーションメニューを更新できませんでした。"
+command_begin_resolution_if_ready = "Windows は選択した一時的な地域にサービスを提供する Store カタログを述べなかったため、何も検索されていません。"
+command_begin_resolution_if_ready_2 = "構造化 Store ソースからアプリケーションカードを取得中…"
+# {id} は インストーラーが要求された Product ID。2 番目の文は
+# ポイントです。ファイル Microsoft 戻りはユーザーが手で選択したように正確に
+# チェックされ、例外がこのファイルが来たところからは発行されません。
+command_installer_download_requested = "Microsoft に {id} の Store インストーラーを要求しています。Microsoft によって署名され、手で選択したファイルのように正確にチェックされます。"
+# {cause} はクリップボードで何が悪かったのかを述べるセンテンス。
+command_clipboard_copy_failed = "{cause} 何も変更されませんでした。"
+# メニュー項目が何に答えるか。各ペアは何が起きたかを述べます、
+# そして、同様に重要なこと、何が起きなかったか。メニュー項目は
+# 決してインストールしず、決して地域を変更しません。そして答えは
+# そう述べます。それを想定するのではなく。
+menu_documentation_opened = "Microsoft ドキュメントページが開かれました。これはインストールではありません。地域は変更されていません。"
+menu_documentation_not_opened = "Windows がドキュメントページを開くことができませんでした。何も変更されていません。"
+menu_app_installer_page_opened = "App Installer ページが開かれました。これはインストールではありません。地域は変更されていません。"
+menu_app_installer_page_not_opened = "Windows が App Installer ページを開くことができませんでした。何も変更されていません。"
+# アドレスは起動が失敗したときに名付けられています。ユーザーの
+# ブラウザが上に来なかった場合でも、どこに行くかを知っています。
+# {address} はプロジェクトリポジトリです。
+menu_project_page_opened = "プロジェクトページがブラウザーで開かれました。"
+menu_project_page_not_opened = "Windows がプロジェクトページを開きませんでした。アドレスは {address} です"
+menu_log_directory_opened = "診断ログディレクトリが開かれました。"
+menu_log_directory_not_opened = "ログディレクトリを開くことができませんでした。レコードは変更されませんでした。"
+menu_details_copied = "詳細がクリップボードにコピーされました。"
+menu_details_not_copied = "クリップボードは利用できません。何も変更されていません。"
+menu_prerequisites_all_met = "すべてのインストール前提条件が満たされています。地域は変更されていません。"
+
+# About ダイアログ。名前とバージョンはアプリケーションによって追加されるため、
+# この段落はバージョン番号を実行していません。
+about_description = "このユーティリティは、標準的な Microsoft Store メカニズムで使用するための Windows Home Location を一時的に変更します。Windows 設定のみが変更されます。Microsoft Store も Windows も変更されず、Store がインストール自体を実行します。Microsoft 製品ではありません。"
+about_translations = "翻訳:"
+about_author = "著者"
+about_license = "ライセンス"

@@ -1,0 +1,454 @@
+# Texto de la interfaz en español europeo para WinStoreRegion.
+#
+# Un archivo, un idioma. La compilación lee este directorio y convierte los
+# archivos en tablas Rust: tanto una clave faltante como una clave desconocida
+# rompen la compilación, por lo que una traducción incompleta no puede enviarse
+# sin ser notada.
+#
+# Muchas cadenas aquí son deliberadamente cautelosas: dicen que una finalización
+# no se probó, que una respuesta llegó de un solo mercado, que un conjunto está
+# incompleto. Estas reservas son el producto, no relleno. Una traducción debe
+# mantenerlas incluso cuando una frase más audaz se lería mejor.
+#
+# NOTA IMPORTANTE: Este archivo es un borrador generado por máquina que no ha
+# sido revisado por un hispanohablante. Está escrito en español europeo. El
+# proyecto no revisa las traducciones. Si encuentras un error, abre un issue o
+# un pull request en el repositorio del proyecto. Si alguien desea añadir su
+# nombre a los autores, que lo haga editando este archivo.
+
+
+variant = "SpanishSpain"
+code = "es-ES"
+name = "Español (es-ES)"
+direction = "ltr"
+authors = []
+
+[strings]
+title = "WinStoreRegion"
+subtitle = "Cambio de región temporal seguro"
+language = "Idioma"
+current_region = "Región actual (se conservará)"
+input = "URL de Microsoft Store o ID de producto"
+source_title = "Aplicación para instalar"
+source_hint = "Elija un enlace/ID de producto o archivo de instalador. El borrador inactivo se conserva."
+source_link = "Enlace o ID de producto"
+source_file = "Archivo de instalador (.exe)"
+paste = "Pegar"
+choose_file = "Elegir archivo"
+clear_file = "Limpiar"
+clear_input = "Limpiar"
+download_installer = "Descargar el instalador de Store"
+downloading_installer = "Descargando el instalador…"
+no_file = "No hay archivo seleccionado"
+drop_overlay = "Suelta el .exe aquí"
+app_card = "La tarjeta de aplicación aparecerá una vez que se elija una región temporal y el catálogo de Store responda."
+temporary_region = "Región temporal de instalación (lista de Windows)"
+find_region = "Buscar una región donde se ofrezca"
+check_remaining = "Regiones restantes"
+show_all_regions = "Mostrar todas las regiones"
+availability_idle = "No se han comprobado las regiones."
+availability_incomplete = "El conjunto está incompleto."
+availability_none = "No se ofrece en ninguna región comprobada."
+availability_offline = "La fuente no respondió."
+status = "La instalación aún no está disponible: no se ha identificado ninguna aplicación y no se han realizado todas las comprobaciones que la hacen segura."
+install = "Instalar"
+restore = "Instalación completada — restaurar región"
+open_store_page = "Abrir página de Store"
+details = "Detalles técnicos"
+journal_placeholder = "El diario de operaciones estará disponible después de implementar el diario local. La instalación y la recuperación no se ejecutan en esta pestaña."
+journal_loading = "Cargando el diario local de operaciones…"
+journal_empty = "El diario está vacío. Solo aparecerán aquí los resultados de operaciones confirmadas o que requieran recuperación."
+journal_open_store = "Abrir página de Store"
+journal_repeat = "Repetir instalación"
+journal_delete = "Eliminar entrada"
+journal_copy_id = "Copiar ID de producto"
+journal_clear = "Limpiar el diario"
+journal_columns = ["Hora (UTC)", "Aplicación", "Identificador", "Resultado"]
+updates_idle = "Presione «Comprobar» para ver las aplicaciones de Microsoft Store instaladas y cuáles de ellas Store no sirve en la región actual."
+updates_scanning = "Comprobando las aplicaciones instaladas…"
+updates_refresh = "Comprobar"
+updates_open = "Abrir en Instalación"
+updates_none = "No se encontró ninguna aplicación de Microsoft Store que Store no sirva en la región actual."
+updates_columns = ["Aplicación", "ID de producto", "Instalada", "En el catálogo de Store"]
+updates_unavailable = "Windows no informó qué aplicaciones están instaladas, por lo que no se pudo crear la lista."
+updates_choose_entry = "Elija una aplicación de la lista."
+updates_scan_age = """
+De la comprobación de {taken} (UTC). Presione «{button}» para preguntar de nuevo.
+
+"""
+updates_entry_details = """
+{name}
+ID de producto: {id}
+Familia de paquete: {family}
+Versión instalada: {installed}
+Versión en el catálogo de Store: {offered}
+
+Microsoft Store no sirve esta aplicación en la región actual, por lo que tampoco la actualizará desde aquí. «{button}» lleva el ID de producto a la pestaña de Instalación e inicia la búsqueda de regiones donde se ofrece la aplicación.
+
+Esto no afirma que se haya publicado una actualización: las dos versiones anteriores pueden estar numeradas en esquemas diferentes, en cuyo caso el orden entre ellas no significa nada."""
+updates_version_not_named = "el catálogo no indicó una versión"
+
+card_publisher_not_provided = "editor no proporcionado"
+card_product_id = "ID de producto: {id}"
+card_store_catalogue = "Catálogo de Store: {market}"
+card_version = "Versión: {version}"
+card_size_bytes = "Tamaño: {size} bytes"
+card_size = "Tamaño: {whole},{tenths} {unit}"
+card_size_kibibytes = "KiB"
+card_size_mebibytes = "MiB"
+card_offered_installable = "Se ofrece en la región seleccionada. Esto es lo que dice el catálogo, no una comprobación de instalación: la aplicación se buscará de nuevo en la región temporal."
+card_offered_not_installable = "Se ofrece en la región seleccionada, pero esta versión no instala aplicaciones entregadas de esa manera."
+
+region_checking_selected = "Comprobando la región seleccionada…"
+region_offered_here = "Se ofrece en la región seleccionada. Las otras regiones no fueron comprobadas."
+region_not_offered_here = "No se ofrece en la región seleccionada."
+region_no_answer_here = "La fuente no respondió sobre la región seleccionada. Las otras no fueron comprobadas."
+region_nothing_to_check = "Nada que comprobar para un archivo: se necesita un ID de producto."
+region_checked_progress = "Comprobadas {done} de {total}…"
+region_found = "Regiones encontradas: {count}."
+
+card_syntax_accepted = "El ID de producto {id} es aceptado. Elija una región temporal y la tarjeta de aplicación puede solicitarse."
+card_retrieving = "Obteniendo la tarjeta de aplicación de Store…"
+card_unavailable_in_region = """
+La tarjeta de aplicación no está disponible: la aplicación no es visible en la región actual de Windows ({region}).
+La región temporal aún no se ha aplicado, y esto no bloquea la instalación."""
+card_unavailable = """
+La tarjeta de aplicación no está disponible: la aplicación no es visible en la región actual de Windows.
+La región temporal aún no se ha aplicado, y esto no bloquea la instalación."""
+
+card_install_ready = "Listo para instalar."
+card_install_not_ready = "Aún no listo para instalar: la restauración de región, la ausencia de una operación anterior sin terminar y el instalador en sí no están todos confirmados."
+
+operation_switching_region = "Cambiando la región y confirmándola por lectura inversa."
+operation_looking_up = "La región temporal está confirmada. Buscando la aplicación en ella."
+operation_found = "Encontrado: {name}. Iniciando la instalación."
+operation_restoring_region = "La instalación terminó. Restaurando la región original."
+operation_done = "Completado: la aplicación está instalada y la región es la original."
+operation_completion_uncertain = "No se pudo confirmar la finalización. La decisión es suya."
+operation_started = "La operación ha comenzado. Esperando su primer informe."
+
+window_no_regions_listed = "Windows no indicó ninguna región, así que no hay nada de lo que elegir una región temporal. Nada puede instalarse hasta que lo haga."
+
+operation_ask_timeout_resolution = """
+La instalación no informó de la finalización: {state}.
+
+Windows sigue usando la región temporal. Windows es dueño de la instalación y no se puede detener desde esta ventana.
+
+Sí — la instalación ha terminado, restaurar la región original.
+No — restaurar la región original ahora, incluso si la instalación aún se está ejecutando; puede interrumpirse.
+Cancelar — seguir esperando; la ventana se vuelve a conectar a la instalación."""
+operation_region_already_back = " La región original ya se ha restaurado."
+installing_phase_running = "Instalando"
+installing_phase_finishing = "Finalizando la instalación"
+installing_without_progress = "{phase}."
+installing_with_progress = "{phase}: {percent} %."
+
+handoff_switching_region = "Cambiando la región y confirmándola por lectura inversa. El archivo aún no se ha iniciado."
+handoff_handed_off = "La región se cambió a {region} y se confirmó. La instalación se pasó al instalador de Microsoft Store: complétela en Store. No se muestra progreso aquí y esta aplicación no confirma que se instalara nada. Cuando termine, pulse «{button}»."
+handoff_restoring_region = "Restaurando la región original y confirmándola por lectura inversa."
+handoff_restored = "Completado: la región original se restauró y se confirmó, y el registro de recuperación se eliminó. Esta aplicación no comprueba qué instaló Microsoft Store."
+handoff_did_not_happen = "El instalador no se inició."
+handoff_region_may_be_temporary = "Windows puede seguir manteniendo la región temporal: presiona «{button}»."
+handoff_region_original = "Windows aún mantiene la región original."
+handoff_declined = "El lanzamiento se canceló. La región no cambió, el archivo no se inició y nada se modificó."
+
+resolution_card_confirmed = "La tarjeta de aplicación está confirmada. La instalación sigue esperando sus comprobaciones de seguridad: restauración de región, ausencia de una operación anterior sin terminar e instalador."
+resolution_catalogue_not_searchable = "El catálogo de Store no se puede buscar en este perfil de Windows. La región no cambió e instalación no está disponible."
+resolution_checked_in_region = "Comprobado en la región de Windows actual: {region}."
+resolution_checked_in_current_region = "Comprobado en la región actual de Windows."
+resolution_still_possible = "La región temporal aún no se ha aplicado, y esto no bloquea la instalación: la aplicación se buscará de nuevo en ella."
+
+installer_download_ready = "El instalador de Microsoft Store se ha descargado y seleccionado como fuente. Presione «{button}»: la firma se comprueba, la región se cambia y se inicia el instalador. No informa de la finalización — terminas la instalación en su propia ventana, y solo entonces pones la región atrás con «{restore}»."
+installer_download_network = "No se pudo contactar con Microsoft para el instalador: la red no está disponible."
+installer_download_refused = "Microsoft no devolvió un instalador para esta aplicación."
+installer_download_refused_with_status = "Microsoft no devolvió un instalador para esta aplicación (HTTP {status})."
+installer_download_too_large = "La respuesta de Microsoft era mayor de lo que esta aplicación escribirá."
+installer_download_not_writable = "El instalador llegó, pero no se pudo escribir en la carpeta de datos."
+
+source_choose_region = "El ID de producto {id} es aceptado. Elija una región temporal, o presiona «{button}»."
+source_recovery_pending = "El ID de producto {id} es aceptado. La instalación estará disponible una vez que se complete la comprobación de una operación anterior sin terminar; si hay una, debe resolverse primero."
+source_prerequisites_unmet = "Los requisitos previos de instalación no se cumplen."
+source_other_device_only = "ID de producto {id}: Microsoft Store no entregará esta aplicación a este dispositivo — se dirige a otro tipo de dispositivo. Ningún cambio de región cambia eso, así que la instalación no está disponible."
+source_newer_windows_required = "ID de producto {id}: esta aplicación necesita Windows {version} o más nueva, y esta máquina es más antigua. Ningún cambio de región cambia eso, así que la instalación no está disponible."
+source_ready = "El ID de producto {id} es aceptado, región temporal: {region}. La instalación puede comenzar: la aplicación se buscará en esa región."
+source_syntax_accepted = "El ID de producto {id} tiene sintaxis válida. La instalación permanecerá no disponible hasta que el catálogo de Store responda sobre él."
+
+file_choose = "Elija un archivo de instalador de Microsoft Store (.exe). Nunca se modifica, y el mismo Store continúa la instalación. Se conserva el borrador de enlace."
+file_recovery_pending = "El archivo pasó sus comprobaciones, pero no puede entregarse hasta que se complete la comprobación de una operación anterior sin terminar; si hay una, debe resolverse primero."
+file_store_not_confirmed = "El archivo pasó sus comprobaciones, pero Microsoft Store no está confirmado en esta máquina, y es Store quien termina la instalación. La región no cambió."
+file_choose_region = "El archivo está firmado por Microsoft Store y no se ejecutó. Elija una región temporal: el archivo se iniciará bajo ella."
+file_region_is_your_choice = "La región para un archivo es tu elección: el instalador no menciona la aplicación. Para encontrar una, pega un enlace, presiona «{button}» y vuelve al archivo — el archivo elegido se conserva."
+file_ready = """
+El archivo {name} está firmado por Microsoft Store y aún no se ha ejecutado. Región temporal: {region}. La instalación puede entregarse: la región se cambia con lectura inversa, luego se inicia el instalador en sí y completas el trabajo en Microsoft Store.
+
+{unchecked}"""
+
+file_refusal_signature_not_trusted = "Windows no confirmó la firma del archivo"
+file_refusal_signer_unavailable = "Windows no proporcionó un certificado de editor"
+file_refusal_not_store_signed = "el archivo no está firmado por Microsoft Store"
+file_refusal_changed_while_checked = "el archivo cambió mientras se comprobaba"
+file_refusal_identity_incomplete = "no se pudo establecer el nombre de archivo y SHA-256"
+file_refused = "Este archivo no se iniciará: {reason}. La región no cambió. Elija un instalador firmado por Microsoft Store o pega un enlace de Microsoft Store o ID de producto en su lugar."
+
+file_inspecting = "Inspeccionando el .exe seleccionado de solo lectura: su SHA-256 y su firma. El archivo no se ejecuta."
+file_changed_during_inspection = "El archivo cambió o se reemplazó durante la inspección. El resultado se descartó; la instalación permanece no disponible."
+file_unreadable = "No se pudo leer el archivo seleccionado de forma segura. El resultado se descartó; la instalación permanece no disponible."
+
+file_error_empty_path = "la ruta del archivo está vacía"
+file_error_unsupported_extension = "solo se admiten archivos .exe"
+file_error_not_a_file = "la ruta no apunta a un archivo existente"
+file_error_link_or_device_path = "no se admiten accesos directos ni rutas especiales del sistema"
+file_error_multiple_files = "suelta exactamente un archivo"
+file_not_selected = "El archivo no se seleccionó: {detail}. La fuente actual y ambos borradores no se modificaron."
+
+region_choice = "{name} · {code} (código de región {geo_id})"
+region_choice_without_code = "{name} (código de región {geo_id})"
+
+region_choose_from_list = "Seleccione una región temporal de la lista de Windows. La región no cambió y no se buscó ninguna aplicación."
+region_not_confirmed = "Windows no pudo confirmar la región seleccionada. La región no cambió y no se buscó ninguna aplicación."
+menu_file = "Archivo"
+menu_paste = "Pegar enlace/ID"
+menu_exit = "Salir"
+menu_help = "Ayuda"
+menu_about = "Acerca de"
+menu_open_diagnostic_log = "Abrir registro de diagnóstico"
+menu_copy_details = "Copiar detalles"
+menu_recheck = "Recomprobar requisitos previos"
+menu_get_app_installer = "Obtener App Installer"
+menu_region_documentation = "Microsoft: cambiar tu país o región"
+menu_github = "GitHub del proyecto"
+tabs = ["Instalación", "Diario", "Actualizaciones"]
+region_unavailable = "No se pudo leer la región de Windows actual."
+
+diagnostic_backend_failed = "El instalador reportó un fallo."
+diagnostic_backend_reported_unknown_failure = "La instalación no se realizó: Microsoft Store reportó un error cuyo código no se conoce aquí. El código está en los detalles."
+diagnostic_backend_unavailable = "No hay una ruta de instalación compatible disponible para esta aplicación."
+diagnostic_clipboard_unavailable = "El portapapeles no está disponible."
+diagnostic_completion_uncertain = "La finalización de la instalación no está confirmada."
+diagnostic_install_kind_not_supported = "Esta aplicación se entrega de una manera que esta versión no instala. Se puede abrir en Microsoft Store."
+diagnostic_installer_file_not_a_store_stub = "Este no es un instalador de Microsoft Store."
+diagnostic_installer_file_not_admitted = "Este archivo no se iniciará: su firma o firmante no pasaron la comprobación."
+diagnostic_installer_file_not_supported = "Se requiere un archivo `.exe` existente."
+diagnostic_installer_file_unreadable = "No se pudo leer el archivo seleccionado."
+diagnostic_installer_launch_rejected = "Windows no inició el instalador verificado."
+diagnostic_journal_unavailable = "El diario de operaciones no está disponible."
+diagnostic_microsoft_account_required = "Se requiere inicio de sesión en una Cuenta Microsoft."
+diagnostic_microsoft_store_unavailable = "Microsoft Store no está disponible."
+diagnostic_ms_store_source_terms_not_accepted = "Los términos de la fuente de Microsoft Store no fueron aceptados. Nada se instaló, y la descarga no soluciona esto."
+diagnostic_ms_store_source_unavailable = "El catálogo de Microsoft Store no está disponible como fuente de instalación."
+diagnostic_network_unavailable = "No hay conexión de red."
+diagnostic_operation_sequence_violated = "La operación se detuvo debido a un error de secuencia interna. Nada se instaló."
+diagnostic_product_already_installed = "La aplicación ya está instalada en esta computadora. La región se restauró y nada se instaló."
+diagnostic_product_already_installing = "Esta aplicación ya se está instalando. Espera a que la instalación actual termine."
+diagnostic_product_not_found = "No se encontró ninguna aplicación para este ID de producto."
+diagnostic_product_not_on_this_device = "Microsoft Store no entregará esta aplicación a este dispositivo: se dirige a otro tipo de dispositivo o a una versión más nueva de Windows. La región no es el obstáculo y cambiarla no ayudará."
+diagnostic_product_unavailable_in_region = "La aplicación no se ofrece en la región seleccionada."
+diagnostic_recovery_record_unreadable = "No se pudo leer el registro de recuperación de forma segura."
+diagnostic_region_change_rejected = "Windows rechazó el cambio de región."
+diagnostic_region_conflict = "La región actual no coincide ni con la original ni con la temporal."
+diagnostic_region_unavailable = "Windows no informa de la región actual."
+diagnostic_region_unchanged = "La región no cambió."
+diagnostic_resolver_answer_mismatch = "El catálogo respondió sobre una aplicación diferente, por lo que el resultado fue rechazado."
+diagnostic_resolver_unavailable = "No se pudo contactar con el catálogo de Microsoft Store."
+diagnostic_restore_failed = "La restauración de la región original no se confirmó."
+diagnostic_store_input_not_understood = "El enlace o ID de producto no fue reconocido."
+diagnostic_store_page_launch_rejected = "Windows no pudo abrir la página de Microsoft Store."
+diagnostic_store_refused_without_reason = "Microsoft Store rechazó sin dar una razón."
+diagnostic_temporary_region_not_applied = "La fuente no aceptó la región temporal: volvió a la original antes de que la instalación comenzara. Inténtelo de nuevo."
+
+diagnostic_product_no_longer_offered = "La fuente ya no ofrece esta aplicación: respondió sobre ella en la región temporal y luego no había nada que instalar. Puede haber sido retirada de la venta. Inténtelo de nuevo o elija otra región."
+diagnostic_unsupported_market = "El catálogo no acepta la región seleccionada."
+diagnostic_win_get_missing = "El componente de Windows que instala aplicaciones de Store no fue encontrado."
+
+diagnostic_details_heading = "Detalles técnicos"
+
+prerequisite_heading = "La instalación no está disponible: no se cumplen los requisitos previos."
+prerequisite_app_installer_missing = "App Installer no está instalado. Windows instala aplicaciones de Store con él, y puede instalarse desde su página de Microsoft Store."
+prerequisite_app_installer_unknown = "No se pudo determinar si App Installer está presente. La instalación permanece no disponible hasta que la comprobación sea exitosa."
+prerequisite_microsoft_store_missing = "Microsoft Store está ausente. No existe una descarga independiente para él: Windows debe repararse."
+prerequisite_microsoft_store_unknown = "No se pudo determinar si Microsoft Store está presente. La instalación permanece no disponible hasta que la comprobación sea exitosa."
+prerequisite_com_metadata_missing = "El directorio de la aplicación no es escribible, por lo que no se pudo colocar el archivo de metadatos del que depende la instalación junto a él. Mueva la aplicación a un directorio en el que pueda escribir."
+prerequisite_com_metadata_unknown = "No se pudo preparar el archivo de metadatos junto a la aplicación. La instalación permanece no disponible hasta que la comprobación sea exitosa."
+
+journal_journal_details = "El archivo se conservó sin cambios."
+
+journal_details_product = """
+Aplicación: {name}
+ID de producto: {id}
+Tipo: {kind}
+Editor: {publisher}
+Versión: {version}
+Familia de paquete: {family}"""
+journal_details_file = """
+Archivo: {name}
+SHA-256: {sha256}
+La aplicación no se menciona: un instalador de Microsoft Store no contiene ID de producto."""
+journal_details_common = """
+Fecha: {date}
+Código de región: {geo_id}
+Operación: {operation}
+Método: {backend}
+Resultado: {result}"""
+journal_details_kind_unknown = "Desconocido"
+journal_details_publisher_not_provided = "no proporcionado"
+journal_details_version_not_confirmed = "no confirmada"
+journal_details_family_not_confirmed = "no confirmada"
+
+journal_result_installed = "Instalado y restaurado"
+journal_result_handed_off_to_installer = "Entregado al instalador de Microsoft Store — la finalización no fue comprobada"
+journal_result_completion_uncertain = "La finalización no está confirmada — se requiere verificación/recuperación"
+journal_result_recovery_required = "Se requiere recuperación o una decisión manual"
+journal_result_failed = "Falló"
+
+dialog_filter_executables = "Archivos ejecutables (*.exe)"
+dialog_filter_all_files = "Todos los archivos (*.*)"
+dialog_show_stub_details = "Firmante: no disponible"
+
+dialog_confirm_handoff = """
+¿Iniciar el instalador de Microsoft Store?
+
+Archivo: {file}
+Editor: {publisher}
+SHA-256: {sha256}
+Región temporal: {region}
+
+La región de Windows se cambia temporalmente y se confirma por lectura inversa, y solo entonces se inicia el archivo. El archivo en sí nunca se modifica.
+
+Microsoft Store toma la instalación desde allí: no se muestra progreso aquí y esta aplicación no confirma que se haya instalado nada. Cuando Store termine, usa «{button}».
+
+Sí — cambiar la región e iniciar el archivo. No — no cambiar nada."""
+
+dialog_stub_details = """
+SHA-256: {sha256}
+Tamaño: {size} bytes
+Firma: {signature}
+Comprobación de instalador de Store: {status}
+ID de producto: {product_id}
+
+{signer}
+
+{warnings}"""
+dialog_stub_signer = """
+Sujeto: {subject}
+Emisor: {issuer}
+Serie: {serial}
+Huella digital SHA-256 del certificado: {thumbprint}
+Válido: {valid_from} — {valid_to}
+Permitido firmar código: {eku}"""
+dialog_stub_product_id_not_extracted = "no extraído"
+dialog_stub_eku_yes = "sí"
+dialog_stub_eku_no = "no"
+dialog_stub_warning_native_verification_code = "el código de verificación de Windows se retuvo localmente"
+dialog_stub_warning_product_id_not_available = "El ID de producto no se extrajo"
+dialog_stub_warning_signer_data_unavailable = "Windows no proporcionó un certificado de firmante"
+
+recovery_ask_pending_recovery = """
+{situation}
+
+Sí — restaurar la región original: se relee antes de la escritura y se confirma después.
+No — mantener la región actual; el registro de recuperación se conserva y una nueva instalación permanece bloqueada."""
+recovery_recovery_execution_status = "El registro de recuperación se conserva."
+
+recovery_subject_installer_file = "Archivo de instalador: {value}"
+
+recovery_verified_record_cleaned = "La operación anterior ya había restaurado la región original. El registro de recuperación verificado para {id} fue borrado."
+
+recovery_outcome_unknown_recorded = "La instalación de la ejecución anterior ya no se ejecuta, y su finalización no está confirmada. El historial ahora tiene una entrada para ella, y el registro de recuperación para {id} fue borrado."
+
+recovery_outcome_installed_recorded = "La instalación de la ejecución anterior se completó: la aplicación está en esta máquina. El historial ahora tiene una entrada para ella, y el registro de recuperación para {id} fue borrado."
+
+recovery_situation_temporary_region_active = "Windows aún usa la región temporal."
+recovery_situation_external_region_conflict = "La región actual se cambió fuera de esta operación."
+recovery_situation_original_region_active = "La región original ya está activa."
+
+recovery_situation_outcome_unknown = "La instalación de la ejecución anterior nunca reportó cómo terminó."
+
+recovery_required = """
+Se requiere recuperación
+
+{situation}
+
+{subject}
+Iniciado: {started}
+Método: {backend}
+Código de región original: {original}
+Código de región temporal: {temporary}
+Código de región actual: {current}
+Último estado: {state}
+
+Una nueva instalación permanece bloqueada hasta que se dé una decisión explícita en esta ventana."""
+recovery_startup_blocked = "Una nueva instalación está bloqueada."
+
+recovery_restored = "La región original se restauró y se confirmó por lectura inversa. El registro de recuperación fue eliminado."
+recovery_verified_record_cleared = "La región original ya estaba activa. El registro de recuperación verificado fue eliminado."
+recovery_pending_record_retained = "La región actual se dejó sin cambios. El registro de recuperación se conserva y una nueva instalación está bloqueada."
+recovery_restore_conflict = "La región cambió entre la comprobación y la escritura (ahora es código de región {geo_id}). Nada se cambió y el registro se conserva."
+
+window_request_window_close = "El cierre fue cancelado. La ventana permanece abierta."
+
+window_state_region_switched = "la región temporal está confirmada"
+window_state_refreshing_store_context = "se actualiza el contexto de Store"
+window_state_starting_install = "la instalación se está iniciando"
+window_state_install_requested = "se aceptó la solicitud de instalación"
+window_state_install_observed = "la observación de instalación está pendiente"
+window_state_installing = "la instalación se ejecuta"
+window_state_completion_uncertain = "la finalización de la instalación no está confirmada"
+window_state_installed = "la instalación está confirmada pero la región no está restaurada"
+window_state_restoring_region = "la región se restaura"
+window_state_restored = "la restauración espera verificación final"
+window_state_failed_with_temporary_region = "la operación falló y la región temporal permanece activa"
+window_state_restore_conflict = "se detectó un conflicto de región actual"
+window_state_restore_failed = "la restauración de región no se confirmó"
+window_state_requires_recovery = "la operación requiere recuperación"
+
+window_close_with_running_operation = """
+La operación sigue activa: {state}.
+
+Restaurar la región temprano puede interrumpir la instalación. Los datos de recuperación deben permanecer hasta que la restauración sea verificada.
+
+Sí — cerrar después de una recuperación de región segura.
+No — cerrar mientras se conserva la región temporal y los datos de recuperación para el próximo lanzamiento.
+Cancelar — continuar trabajando.
+
+La instalación en sí se detiene o se elimina en Microsoft Store o en Configuración de Windows en Aplicaciones: Windows es dueño de la instalación, esta aplicación no lo es."""
+
+window_close_with_pending_handoff = """
+Windows todavía mantiene la región temporal y Microsoft Store está terminando la instalación.
+
+Sí — cerrar: el registro de recuperación se conserva y el próximo inicio ofrece restaurar la región.
+No — quedarse aquí y usar «{button}»."""
+
+window_installation_resumed = "Una instalación de una ejecución anterior aún se está ejecutando. Observación reanudada."
+window_journal_entry_deleted = "La entrada del diario local fue eliminada. La instalación y la región no se modificaron."
+window_journal_entry_not_deleted = "{cause} Nada se modificó."
+
+command_begin_handoff = "no proporcionado"
+command_dispatch_command = "La página de Store se abrió desde el diario. Esto no es una solicitud de instalación; la región no cambió."
+command_dispatch_command_2 = "Windows no pudo abrir la página de Store desde el diario. La región no cambió."
+command_dispatch_command_3 = "El ID de producto del diario se copió al borrador de instalación. La instalación no se inició; la región no cambió."
+command_dispatch_command_4 = "El ID de producto se copió al portapapeles. La instalación y la región no se modificaron."
+command_dispatch_command_5 = "¿Eliminar todas las entradas del diario local? Se borra todo el historial de operaciones. Las aplicaciones instaladas, la región de Windows y el registro de recuperación no cambiarán."
+command_dispatch_command_6 = "¿Eliminar solo esta entrada del diario local? La instalación, la región y el registro de recuperación no cambiarán."
+command_dispatch_command_7 = "La página de la aplicación se abrió en Microsoft Store. Esto no es una solicitud de instalación; la región no cambió."
+command_dispatch_command_8 = "Windows no pudo abrir la página de la aplicación en Microsoft Store. La región no cambió."
+command_dispatch_ui_event = "El menú de aplicación no se pudo actualizar."
+command_begin_resolution_if_ready = "Windows no dijo qué catálogo de Store sirve la región temporal seleccionada, así que nada se buscó."
+command_begin_resolution_if_ready_2 = "Obteniendo la tarjeta de aplicación de la fuente Store estructurada…"
+command_installer_download_requested = "Pidiendo a Microsoft el instalador de Store para {id}. Está firmado por Microsoft y será comprobado exactamente como un archivo elegido a mano."
+command_clipboard_copy_failed = "{cause} Nada se modificó."
+menu_documentation_opened = "La página de documentación de Microsoft se abrió. Esto no es una instalación; la región no cambió."
+menu_documentation_not_opened = "Windows no pudo abrir la página de documentación. Nada se modificó."
+menu_app_installer_page_opened = "La página de App Installer se abrió. Esto no es una instalación; la región no cambió."
+menu_app_installer_page_not_opened = "Windows no pudo abrir la página de App Installer. Nada se modificó."
+menu_project_page_opened = "La página del proyecto se abrió en el navegador."
+menu_project_page_not_opened = "Windows no abrió la página del proyecto. La dirección es {address}"
+menu_log_directory_opened = "El directorio del registro de diagnóstico se abrió."
+menu_log_directory_not_opened = "El directorio de registro no se pudo abrir. Ningún registro fue modificado."
+menu_details_copied = "Los detalles se copiaron al portapapeles."
+menu_details_not_copied = "El portapapeles no está disponible. Nada se modificó."
+menu_prerequisites_all_met = "Se cumplen todos los requisitos previos de instalación. La región no cambió."
+
+about_description = "Esta utilidad cambia temporalmente Windows Home Location para usar con mecanismos estándar de Microsoft Store. Solo se cambia una configuración de Windows: ni Microsoft Store ni Windows se modifican, y Store realiza la instalación en sí. No es un producto de Microsoft."
+about_translations = "Traducciones:"
+about_author = "Autor"
+about_license = "Licencia"

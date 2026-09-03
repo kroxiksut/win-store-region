@@ -12,10 +12,11 @@
 # pull request；如果你愿意署名接手这份翻译，请把自己写进上面的 authors。
 
 
-variant = "Chinese"
+variant = "ChineseSimplified"
 code = "zh-CN"
-name = "中文 (zh-CN)"
-order = 2
+name = "简体中文 (zh-CN)"
+# 语言的书写方向。可选字段；省略即为 "ltr"。
+direction = "ltr"
 authors = []
 
 [strings]
