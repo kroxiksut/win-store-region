@@ -26,8 +26,11 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       # A tag that disagrees with the manifest would publish a version nobody
-      # can find in the source. Checked before anything is built.
-      - name: The tag must be the version in Cargo.toml
+      # can find in the source, and one the changelog does not describe would
+      # publish a release with nothing to say about itself. Both are checked
+      # here, before anything is built rather than after three architectures
+      # have compiled.
+      - name: The tag must match the manifest and the changelog
         shell: pwsh
         run: |
           $tag = '${{ github.ref_name }}' -replace '^v', ''
@@ -35,7 +38,11 @@ jobs:
           if ($tag -ne $manifest) {
             throw "tag $tag does not match Cargo.toml version $manifest"
           }
-          Write-Output "tag and manifest agree on $manifest"
+          $changelog = Get-Content CHANGELOG.md -Raw
+          if (-not [regex]::IsMatch($changelog, '(?m)^## ' + [regex]::Escape($tag) + ' ')) {
+            throw "CHANGELOG.md has no section for $tag"
+          }
+          Write-Output "tag, manifest and changelog agree on $manifest"
 
       - name: Add the target
         run: rustup target add ${{ matrix.target }}
@@ -100,8 +107,18 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           $version = '${{ github.ref_name }}' -replace '^v', ''
+          # What changed is written once, in the changelog. The release body
+          # opens with that version's section taken from it rather than a
+          # second copy written by hand, so a reader sees what this release
+          # brings without following a link, and the two cannot disagree. The
+          # heading is dropped: the release is already titled with its version.
+          $changelog = Get-Content CHANGELOG.md -Raw
+          $pattern = '(?ms)^## ' + [regex]::Escape($version) + ' .*?(?=\r?\n## |\z)'
+          $section = [regex]::Match($changelog, $pattern).Value.TrimEnd()
+          if (-not $section) { throw "CHANGELOG.md has no section for $version" }
+          $summary = ($section -split '\r?\n', 2)[1].Trim()
           $notes = (Get-Content .github/release-notes.md -Raw) -replace '\{version\}', $version
-          Set-Content -Path notes.md -Value $notes -Encoding utf8
+          Set-Content -Path notes.md -Value ($summary + "`n`n" + $notes) -Encoding utf8
           $files = @(
             "release/WinStoreRegion-$version-x64.exe",
             "release/WinStoreRegion-$version-arm64.exe",

@@ -88,10 +88,10 @@ to `C:\temp\WinStoreRegion`.
 │               ├── startup.rs      Conflict-safe classification and execution
 │               └── store.rs        Durable storage boundary for the record
 ├── .github/
-│   ├── release-notes.md            Release text, with {version} filled in by the workflow
+│   ├── release-notes.md            Release text under the changelog section, {version} filled in
 │   └── workflows/
 │       ├── ci.yml                  Format, lints, tests, and a release build per architecture
-│       └── release.yml             Tag-triggered build and GitHub release
+│       └── release.yml             Tag-triggered build, changelog section, and GitHub release
 ├── Cargo.lock                      Locked Rust dependency graph
 ├── Cargo.toml                      Workspace manifest and shared lint policy
 ├── CHANGELOG.md                    What changed in each version, in English only

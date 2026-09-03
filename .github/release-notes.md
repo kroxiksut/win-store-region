@@ -26,6 +26,6 @@ and the workflow run that produced them is public:
 Get-FileHash .\WinStoreRegion-{version}-x64.exe -Algorithm SHA256
 ```
 
-What changed is in [CHANGELOG.md](CHANGELOG.md). What the program does, and what
-it has and has not established, is in [README.md](README.md) — also in
-[Russian](README.ru.md) and [Chinese](README.zh-CN.md).
+The full history is in [CHANGELOG.md](CHANGELOG.md). What the program does, and
+what it has and has not established, is in [README.md](README.md), which links
+to the same document in every other interface language.
